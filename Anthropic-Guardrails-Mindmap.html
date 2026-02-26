@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>Markmap</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+#mindmap {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+.markmap-dark {
+  background: #27272a;
+  color: white;
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
+</head>
+<body>
+<svg id="mindmap"></svg>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script><script>((r) => {
+          setTimeout(r);
+        })(() => {
+  const { markmap, mm } = window;
+  const toolbar = new markmap.Toolbar();
+  toolbar.attach(mm);
+  const el = toolbar.render();
+  el.setAttribute("style", "position:absolute;bottom:20px;right:20px");
+  document.body.append(el);
+})</script><script>((getMarkmap, getOptions, root2, jsonOptions) => {
+              const markmap = getMarkmap();
+              window.mm = markmap.Markmap.create(
+                "svg#mindmap",
+                (getOptions || markmap.deriveOptions)(jsonOptions),
+                root2
+              );
+              if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("markmap-dark");
+              }
+            })(() => window.markmap,null,{"content":"Anthropic vs US DoD &#x2014; Guardrails for Claude","children":[{"content":"Core: Who sets binding rules for military AI?","children":[{"content":"Vendor-governed constraints (licensing + model steering)","children":[],"payload":{"tag":"li","lines":"3,4"}},{"content":"Executive/DoD-governed &#x201c;all lawful use&#x201d;","children":[],"payload":{"tag":"li","lines":"4,5"}},{"content":"Legislative governance (Congress sets durable rules)","children":[],"payload":{"tag":"li","lines":"5,7"}}],"payload":{"tag":"h2","lines":"2,3"}},{"content":"Positions (the &#x201c;ask&#x201d;)","children":[{"content":"Anthropic: guardrails + two red lines","children":[{"content":"No mass surveillance of Americans","children":[],"payload":{"tag":"li","lines":"9,10"}},{"content":"No fully autonomous weapons (human-in-the-loop)","children":[],"payload":{"tag":"li","lines":"10,11"}}],"payload":{"tag":"li","lines":"8,11"}},{"content":"DoD/DoW: &#x201c;all lawful use&#x201d;","children":[{"content":"No vendor veto; no case-by-case approvals","children":[],"payload":{"tag":"li","lines":"12,13"}},{"content":"&#x201c;AI will not be woke&#x201d; / reject ideological constraints framing","children":[],"payload":{"tag":"li","lines":"13,15"}}],"payload":{"tag":"li","lines":"11,15"}}],"payload":{"tag":"h2","lines":"7,8"}},{"content":"Leverage &amp; escalation","children":[{"content":"Contract / funding pressure (OTAs; prototype money)","children":[],"payload":{"tag":"li","lines":"16,17"}},{"content":"&#x201c;Supply chain risk&#x201d; designation threat (ecosystem pressure)","children":[],"payload":{"tag":"li","lines":"17,18"}},{"content":"Defense Production Act (DPA) threat (novel, contested use for software constraints)","children":[],"payload":{"tag":"li","lines":"18,20"}}],"payload":{"tag":"h2","lines":"15,16"}},{"content":"Technical reality (Risky Biz frame)","children":[{"content":"&#x201c;Tool&#x201d; vs &#x201c;system&#x201d; mismatch","children":[],"payload":{"tag":"li","lines":"21,22"}},{"content":"Removing constraints &#x2260; military-aligned behavior","children":[],"payload":{"tag":"li","lines":"22,23"}},{"content":"Safer alternative: mission-tuned models + eval gates + auditability","children":[],"payload":{"tag":"li","lines":"23,25"}}],"payload":{"tag":"h2","lines":"20,21"}},{"content":"Governance critique (Lawfare frame)","children":[{"content":"Bilateral coercion is unstable governance","children":[],"payload":{"tag":"li","lines":"26,27"}},{"content":"&#x201c;All lawful&#x201d; is underspecified at AI scale (esp. surveillance)","children":[],"payload":{"tag":"li","lines":"27,28"}},{"content":"Congress should set durable rules + oversight mechanisms","children":[],"payload":{"tag":"li","lines":"28,30"}}],"payload":{"tag":"h2","lines":"25,26"}},{"content":"Historical anchors (why this repeats)","children":[{"content":"Dual-use tech cycles: vendor ethics vs state demands","children":[],"payload":{"tag":"li","lines":"31,32"}},{"content":"Post-9/11 surveillance expansion debates &#x2192; legitimacy + backlash risk","children":[],"payload":{"tag":"li","lines":"32,33"}},{"content":"Autonomy governance in weapons: &#x201c;human judgment&#x201d; norms + review gates","children":[],"payload":{"tag":"li","lines":"33,35"}}],"payload":{"tag":"h2","lines":"30,31"}},{"content":"EU &#x201c;SO WHAT&#x201d; (implications)","children":[{"content":"EU AI Act defense exclusion &#x2192; governance gap for military AI","children":[],"payload":{"tag":"li","lines":"36,37"}},{"content":"Dual-use leakage: border security, intelligence fusion, critical infrastructure","children":[],"payload":{"tag":"li","lines":"37,38"}},{"content":"Transatlantic dependency: US procurement norms can become de facto standards","children":[],"payload":{"tag":"li","lines":"38,39"}},{"content":"Supply-chain coercion spillover: EU primes exposed via US contracts","children":[],"payload":{"tag":"li","lines":"39,40"}},{"content":"Norm divergence risk on surveillance + autonomy within NATO","children":[],"payload":{"tag":"li","lines":"40,42"}}],"payload":{"tag":"h2","lines":"35,36"}},{"content":"EU &#x201c;THEN WHAT&#x201d; (recommended actions)","children":[{"content":"Immediate (0&#x2013;6 months)","children":[{"content":"Audit foundation-model exposure across defense supply chains","children":[],"payload":{"tag":"li","lines":"44,45"}},{"content":"Procurement clauses: logs, red-team reports, portability/exit, incident reporting","children":[],"payload":{"tag":"li","lines":"45,46"}},{"content":"Align EU baseline red lines: mass surveillance constraints + human control over lethal force","children":[],"payload":{"tag":"li","lines":"46,47"}}],"payload":{"tag":"li","lines":"43,47"}},{"content":"Medium (6&#x2013;24 months)","children":[{"content":"EU/NATO military AI assurance framework (evals, V&amp;V, audits, gating)","children":[],"payload":{"tag":"li","lines":"48,49"}},{"content":"&#x201c;Sovereign enough&#x201d; compute + model options for sensitive workflows","children":[],"payload":{"tag":"li","lines":"49,50"}},{"content":"Use funding leverage to standardize assurance requirements","children":[],"payload":{"tag":"li","lines":"50,51"}}],"payload":{"tag":"li","lines":"47,51"}},{"content":"Strategic (diplomatic)","children":[{"content":"Push US/EU &#x201c;democratic AI for defense&#x201d; baseline","children":[],"payload":{"tag":"li","lines":"52,53"}},{"content":"Advance international norms separating warfighting from domestic control","children":[],"payload":{"tag":"li","lines":"53,54"}}],"payload":{"tag":"li","lines":"51,54"}}],"payload":{"tag":"h2","lines":"42,43"}}],"payload":{"tag":"h1","lines":"0,1"}},null)</script>
+</body>
+</html>
