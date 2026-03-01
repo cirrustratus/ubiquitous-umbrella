@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="icon" href="https://cirrustratus.github.io/ubiquitous-umbrella/favicon.ico" sizes="any">
+<title>Iran APT Lineage</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+#mindmap {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+.markmap-dark {
+  background: #27272a;
+  color: white;
+}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/markmap-toolbar@0.18.12/dist/style.css">
+</head>
+<body>
+<svg id="mindmap"></svg>
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script><script src="https://unpkg.com/markmap-view@0.18.12/dist/browser/index.js"></script><script src="https://unpkg.com/markmap-toolbar@0.18.12/dist/index.js"></script><script>((r) => {
+          setTimeout(r);
+        })(() => {
+  const { markmap, mm } = window;
+  const toolbar = new markmap.Toolbar();
+  toolbar.attach(mm);
+  const el = toolbar.render();
+  el.setAttribute("style", "position:absolute;bottom:20px;right:20px");
+  document.body.append(el);
+})</script><script>((getMarkmap, getOptions, root2, jsonOptions) => {
+              const markmap = getMarkmap();
+              window.mm = markmap.Markmap.create(
+                "svg#mindmap",
+                (getOptions || markmap.deriveOptions)(jsonOptions),
+                root2
+              );
+              if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("markmap-dark");
+              }
+            })(() => window.markmap,null,{"content":"Iranian Cyber Threat Landscape","children":[{"content":"Government Leadership (Supreme Leader &amp; Presidency)","children":[{"content":"Supreme National Security Council","children":[],"payload":{"tag":"h3","lines":"2,3"}},{"content":"Islamic Revolutionary Guard Corps (IRGC) - Military/Destructive","children":[{"content":"IRGC Cyber-Electronic Command (IRGC-CEC)","children":[{"content":"CyberAv3ngers","children":[{"content":"ICS/OT Targeting (Water/Wastewater PLCs)","children":[],"payload":{"tag":"h6","lines":"6,7"}},{"content":"Faux-Hacktivist Persona (False-Flag)","children":[],"payload":{"tag":"h6","lines":"7,8"}}],"payload":{"tag":"h5","lines":"5,6"}}],"payload":{"tag":"h4","lines":"4,5"}},{"content":"IRGC Intelligence Organization (IRGC-IO)","children":[{"content":"APT33 (Peach Sandstorm / Curious Serpens)","children":[{"content":"Cloud-First Identity Attacks (Azure/M365)","children":[],"payload":{"tag":"h6","lines":"10,11"}},{"content":"Tickler, FalseFont, SHAPESHIFT Wiper","children":[],"payload":{"tag":"h6","lines":"11,12"}}],"payload":{"tag":"h5","lines":"9,10"}},{"content":"APT42 / APT35 (Charming Kitten / Agent Serpens)","children":[{"content":"IRGC Unit 1500 (Abbas Rahrovi)","children":[],"payload":{"tag":"h6","lines":"13,14"}},{"content":"Spearphishing, BellaCiao, Mobile Surveillance (PINEFLOWER)","children":[],"payload":{"tag":"h6","lines":"14,15"}}],"payload":{"tag":"h5","lines":"12,13"}},{"content":"Tortoiseshell (Imperial Kitten / Devious Serpens)","children":[{"content":"Supply Chain / IT Providers (Syskit Malware)","children":[],"payload":{"tag":"h6","lines":"16,17"}}],"payload":{"tag":"h5","lines":"15,16"}},{"content":"Agrius (Pink Sandstorm / Agonizing Serpens)","children":[{"content":"Wipers Masked as Ransomware (Apostle, Deadwood)","children":[],"payload":{"tag":"h6","lines":"18,19"}}],"payload":{"tag":"h5","lines":"17,18"}},{"content":"HomeLand Justice","children":[{"content":"Albania Gov Attack (ZeroCleare Wiper)","children":[],"payload":{"tag":"h6","lines":"20,21"}}],"payload":{"tag":"h5","lines":"19,20"}}],"payload":{"tag":"h4","lines":"8,9"}}],"payload":{"tag":"h3","lines":"3,4"}},{"content":"Ministry of Intelligence and Security (MOIS) - Civilian/Espionage","children":[{"content":"APT34 (OilRig / Evasive Serpens)","children":[{"content":"Custom Backdoors (Marlin, SideTwist, Helminth)","children":[],"payload":{"tag":"h5","lines":"23,24"}},{"content":"DNS Tunneling &amp; Cloud C2","children":[],"payload":{"tag":"h5","lines":"24,25"}},{"content":"Subgroup: Lyceum (Targeting Middle East)","children":[],"payload":{"tag":"h5","lines":"25,26"}}],"payload":{"tag":"h4","lines":"22,23"}},{"content":"MuddyWater (Boggy Serpens / Static Kitten)","children":[{"content":"Initial Access Brokerage for OilRig/Lyceum","children":[],"payload":{"tag":"h5","lines":"27,28"}},{"content":"MuddyViper, BugSleep, PowGoop","children":[],"payload":{"tag":"h5","lines":"28,29"}},{"content":"RMM Tool Abuse (Atera, AnyDesk)","children":[],"payload":{"tag":"h5","lines":"29,30"}}],"payload":{"tag":"h4","lines":"26,27"}},{"content":"APT39 (Chafer)","children":[{"content":"Rana Intelligence Computing (Front Company)","children":[],"payload":{"tag":"h5","lines":"31,32"}},{"content":"Tracking Dissidents / Telecom Sector Exploitation","children":[],"payload":{"tag":"h5","lines":"32,33"}}],"payload":{"tag":"h4","lines":"30,31"}}],"payload":{"tag":"h3","lines":"21,22"}},{"content":"Ancillary Organs &amp; Contractor Ecosystem","children":[{"content":"Private Contractor Front Companies","children":[{"content":"Mahak Rayan Afzar / Mehrsam Andisheh Saz Nik (IRGC)","children":[],"payload":{"tag":"h5","lines":"35,36"}},{"content":"Najee Technology / Afkar System (IRGC/MOIS)","children":[],"payload":{"tag":"h5","lines":"36,37"}},{"content":"Mabna Institute (Academic Serpens)","children":[],"payload":{"tag":"h5","lines":"37,38"}},{"content":"ITSec Team / Mersad Co. (Operation Ababil)","children":[],"payload":{"tag":"h5","lines":"38,39"}}],"payload":{"tag":"h4","lines":"34,35"}},{"content":"State Defense &amp; Militia","children":[{"content":"Basij Cyber Battalions","children":[],"payload":{"tag":"h5","lines":"40,41"}},{"content":"Passive Defense Organization (PDO)","children":[],"payload":{"tag":"h5","lines":"41,42"}},{"content":"FATA (Cyber and Information Exchange Police)","children":[],"payload":{"tag":"h5","lines":"42,43"}}],"payload":{"tag":"h4","lines":"39,40"}}],"payload":{"tag":"h3","lines":"33,34"}}],"payload":{"tag":"h2","lines":"1,2"}},{"content":"The Axis of Resistance (Proxy Ecosystem)","children":[{"content":"Lebanese Hezbollah","children":[{"content":"Unit 8000 / Division 18000 (IRGC Liaison)","children":[],"payload":{"tag":"h4","lines":"45,46"}},{"content":"Post-Stuxnet Cyber Training","children":[],"payload":{"tag":"h4","lines":"46,47"}},{"content":"Intelligence Gathering vs. Israel Unit 8200","children":[],"payload":{"tag":"h4","lines":"47,48"}}],"payload":{"tag":"h3","lines":"44,45"}},{"content":"Houthi Movement (Ansar Allah)","children":[{"content":"OilAlpha Cyber Unit","children":[{"content":"Android Spyware (SpyNote/SpyMax)","children":[],"payload":{"tag":"h5","lines":"50,51"}},{"content":"Targeting Arabian Peninsula NGOs via WhatsApp","children":[],"payload":{"tag":"h5","lines":"51,52"}}],"payload":{"tag":"h4","lines":"49,50"}}],"payload":{"tag":"h3","lines":"48,49"}},{"content":"Iraqi Shiite Militias","children":[{"content":"Kata&apos;ib Hezbollah / Asa&apos;ib Ahl al-Haq","children":[],"payload":{"tag":"h4","lines":"53,54"}},{"content":"E-Militias (Telecom Sector Capture &amp; Threat Finance)","children":[],"payload":{"tag":"h4","lines":"54,55"}},{"content":"Al-Tahirah Team / Sabereen News","children":[{"content":"DDoS &amp; Website Defacements (Targeting Israel &amp; Sunni Media)","children":[],"payload":{"tag":"h5","lines":"56,57"}}],"payload":{"tag":"h4","lines":"55,56"}}],"payload":{"tag":"h3","lines":"52,53"}}],"payload":{"tag":"h2","lines":"43,44"}}],"payload":{"tag":"h1","lines":"0,1"}},null)</script>
+</body>
+</html>
