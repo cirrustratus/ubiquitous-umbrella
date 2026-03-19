@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="icon" href="https://cirrustratus.github.io/ubiquitous-umbrella/favicon.ico" sizes="any">
+<title>DarkSword iOS Exploit Kit - Overview</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+#mindmap {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+.markmap-dark {
+  background: #27272a;
+  color: white;
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
+</head>
+<body>
+<svg id="mindmap"></svg>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script><script>((r) => {
+          setTimeout(r);
+        })(() => {
+  const { markmap, mm } = window;
+  const toolbar = new markmap.Toolbar();
+  toolbar.attach(mm);
+  const el = toolbar.render();
+  el.setAttribute("style", "position:absolute;bottom:20px;right:20px");
+  document.body.append(el);
+})</script><script>((getMarkmap, getOptions, root2, jsonOptions) => {
+              const markmap = getMarkmap();
+              window.mm = markmap.Markmap.create(
+                "svg#mindmap",
+                (getOptions || markmap.deriveOptions)(jsonOptions),
+                root2
+              );
+              if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("markmap-dark");
+              }
+            })(() => window.markmap,null,{"content":"DarkSword Overview","children":[{"content":"What it is","children":[{"content":"Separate from Coruna, but part of the same broader proliferation story","children":[],"payload":{"tag":"h3","lines":"2,3"}},{"content":"Full-chain iOS exploit + infostealer","children":[],"payload":{"tag":"h3","lines":"3,4"}},{"content":"Multiple users, not one bespoke operator","children":[],"payload":{"tag":"h3","lines":"4,5"}}],"payload":{"tag":"h2","lines":"1,2"}},{"content":"Delivery","children":[{"content":"1-click / 1-visit, not 0-click","children":[],"payload":{"tag":"h3","lines":"6,7"}},{"content":"Victim had to load a malicious or compromised website","children":[{"content":"Ukrainian watering holes","children":[],"payload":{"tag":"h4","lines":"8,9"}},{"content":"Themed lure sites","children":[],"payload":{"tag":"h4","lines":"9,10"}}],"payload":{"tag":"h3","lines":"7,8"}},{"content":"Safari/WebKit + iframe-based delivery","children":[],"payload":{"tag":"h3","lines":"10,11"}}],"payload":{"tag":"h2","lines":"5,6"}},{"content":"Scope","children":[{"content":"Google observed use since at least Nov 2025","children":[],"payload":{"tag":"h3","lines":"12,13"}},{"content":"Countries seen in reporting","children":[{"content":"Saudi Arabia","children":[],"payload":{"tag":"h4","lines":"14,15"}},{"content":"Turkey","children":[],"payload":{"tag":"h4","lines":"15,16"}},{"content":"Malaysia","children":[],"payload":{"tag":"h4","lines":"16,17"}},{"content":"Ukraine","children":[],"payload":{"tag":"h4","lines":"17,18"}}],"payload":{"tag":"h3","lines":"13,14"}},{"content":"Version coverage","children":[{"content":"iVerify recovered: iOS 18.4&#x2013;18.6.2","children":[],"payload":{"tag":"h4","lines":"19,20"}},{"content":"Google observed: up to iOS 18.7","children":[],"payload":{"tag":"h4","lines":"20,21"}}],"payload":{"tag":"h3","lines":"18,19"}}],"payload":{"tag":"h2","lines":"11,12"}},{"content":"What compromise enabled","children":[{"content":"Full device compromise","children":[],"payload":{"tag":"h3","lines":"22,23"}},{"content":"Pure JavaScript chain","children":[],"payload":{"tag":"h3","lines":"23,24"}},{"content":"No persistence / hit-and-run exfiltration","children":[],"payload":{"tag":"h3","lines":"24,25"}},{"content":"Data theft","children":[{"content":"Keychain + credentials","children":[],"payload":{"tag":"h4","lines":"26,27"}},{"content":"Messages + accounts","children":[],"payload":{"tag":"h4","lines":"27,28"}},{"content":"Safari/history/location","children":[],"payload":{"tag":"h4","lines":"28,29"}},{"content":"Crypto wallets + exchange app data","children":[],"payload":{"tag":"h4","lines":"29,30"}}],"payload":{"tag":"h3","lines":"25,26"}},{"content":"Crash-log cleanup to reduce visibility","children":[],"payload":{"tag":"h3","lines":"30,31"}}],"payload":{"tag":"h2","lines":"21,22"}},{"content":"Actors and payloads","children":[{"content":"UNC6353","children":[{"content":"suspected Russian espionage actor","children":[],"payload":{"tag":"h4","lines":"33,34"}},{"content":"used DarkSword in Ukrainian watering holes","children":[],"payload":{"tag":"h4","lines":"34,35"}},{"content":"previously linked to Coruna activity","children":[],"payload":{"tag":"h4","lines":"35,36"}}],"payload":{"tag":"h3","lines":"32,33"}},{"content":"Other observed users","children":[{"content":"UNC6748","children":[],"payload":{"tag":"h4","lines":"37,38"}},{"content":"PARS Defense-linked customers","children":[],"payload":{"tag":"h4","lines":"38,39"}}],"payload":{"tag":"h3","lines":"36,37"}},{"content":"Payload families","children":[{"content":"GHOSTBLADE","children":[],"payload":{"tag":"h4","lines":"40,41"}},{"content":"GHOSTKNIFE","children":[],"payload":{"tag":"h4","lines":"41,42"}},{"content":"GHOSTSABER","children":[],"payload":{"tag":"h4","lines":"42,43"}}],"payload":{"tag":"h3","lines":"39,40"}}],"payload":{"tag":"h2","lines":"31,32"}},{"content":"Patch story","children":[{"content":"6 vulnerabilities in the chain","children":[],"payload":{"tag":"h3","lines":"44,45"}},{"content":"26.1 / 18.7.2 fixed two kernel stages","children":[],"payload":{"tag":"h3","lines":"45,46"}},{"content":"26.2 / 18.7.3 fixed major zero-day components","children":[],"payload":{"tag":"h3","lines":"46,47"}},{"content":"26.3 fixed the remaining dyld PAC-bypass piece","children":[],"payload":{"tag":"h3","lines":"47,48"}},{"content":"Practical floor now","children":[{"content":"26.3.1 or 18.7.6","children":[],"payload":{"tag":"h4","lines":"49,50"}}],"payload":{"tag":"h3","lines":"48,49"}}],"payload":{"tag":"h2","lines":"43,44"}},{"content":"Provenance clues","children":[{"content":"Early-stage comments in Russian","children":[],"payload":{"tag":"h3","lines":"51,52"}},{"content":"Later exploit code/comments in English","children":[],"payload":{"tag":"h3","lines":"52,53"}},{"content":"Verbose logs + debugging helpers left in code","children":[],"payload":{"tag":"h3","lines":"53,54"}},{"content":"Suggests mixed provenance or brokered reuse","children":[],"payload":{"tag":"h3","lines":"54,55"}}],"payload":{"tag":"h2","lines":"50,51"}},{"content":"Peter Williams / Operation Zero angle","children":[{"content":"Plausible in theory","children":[{"content":"stolen U.S. exploit tools were sold onward to Russia","children":[],"payload":{"tag":"h4","lines":"57,58"}},{"content":"Russian actors already reused Coruna","children":[],"payload":{"tag":"h4","lines":"58,59"}}],"payload":{"tag":"h3","lines":"56,57"}},{"content":"But not proven","children":[{"content":"no public DarkSword report ties it directly to Williams","children":[],"payload":{"tag":"h4","lines":"60,61"}},{"content":"no public proof it came from Trenchant","children":[],"payload":{"tag":"h4","lines":"61,62"}},{"content":"no public proof it was brokered by Operation Zero","children":[],"payload":{"tag":"h4","lines":"62,63"}}],"payload":{"tag":"h3","lines":"59,60"}}],"payload":{"tag":"h2","lines":"55,56"}},{"content":"Executive takeaway","children":[{"content":"Advanced iOS exploitation is now multi-actor and reusable","children":[],"payload":{"tag":"h3","lines":"64,65"}},{"content":"Same chain can support espionage and financial theft","children":[],"payload":{"tag":"h3","lines":"65,66"}},{"content":"&quot;Minimal click&quot; is still not &quot;no click&quot;","children":[],"payload":{"tag":"h3","lines":"66,67"}},{"content":"Patch lag matters when one critical bypass survives into a later release","children":[],"payload":{"tag":"h3","lines":"67,68"}}],"payload":{"tag":"h2","lines":"63,64"}}],"payload":{"tag":"h1","lines":"0,1"}},null)</script>
+</body>
+</html>
