@@ -1,0 +1,1371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="A five-slide visual briefing on malware sandboxing, frontier AI testing and the limits of containment. All presentation assets are embedded for offline use.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Can a sandbox contain an AI agent?</title>
+<style>
+:root {
+  --paper:#eeeee8; --surface:#fafaf7; --white:#fff; --ink:#24323b;
+  --muted:#5d6d76; --line:#d4dcd9; --blue:#285f80; --blue-dark:#214a65;
+  --blue-wash:#e9f0f3; --amber:#955624; --amber-wash:#f5eadb;
+  --quiet:#edf0eb; --shadow:0 14px 45px rgba(29,48,56,.045);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  --serif:Georgia,"Times New Roman",serif; --radius:18px;
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.45}
+button,a {-webkit-tap-highlight-color:transparent}
+button {font:inherit;color:inherit;cursor:pointer}
+button:disabled {cursor:default;opacity:.4}
+button,a {-webkit-touch-callout:default}
+button:focus-visible,a:focus-visible,summary:focus-visible {outline:3px solid var(--blue);outline-offset:4px}
+button {touch-action:manipulation}
+a {color:var(--blue);text-underline-offset:3px}
+button svg {pointer-events:none}
+h1,h2,h3,p,figure,blockquote {margin:0}
+.icon {width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.icon.sm {width:18px;height:18px}
+.icon.lg {width:38px;height:38px}
+.icon.xl {width:56px;height:56px}
+.sprite {position:absolute;width:0;height:0;overflow:hidden}
+.sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.app {width:min(1536px,100%);height:100svh;min-height:670px;margin:auto;padding:18px 28px 14px;display:flex;flex-direction:column;gap:15px}
+.topbar {height:40px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex:none}
+.brand {display:flex;align-items:center;gap:12px;white-space:nowrap}
+.brand-icon {width:32px;height:32px;position:relative;color:var(--blue)}
+.brand-icon:before,.brand-icon:after {content:"";position:absolute;border:1.7px solid currentColor;border-radius:5px;width:22px;height:22px}
+.brand-icon:before {left:0;top:1px}
+.brand-icon:after {left:9px;top:9px;background:var(--paper)}
+.brand-name {font-size:12px;font-weight:750;letter-spacing:2px}
+.brand-sub {font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.2px}
+.toolbar {display:flex;gap:8px;align-items:center}
+.tool-btn {display:inline-flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid transparent;padding:8px 11px;border-radius:9px;font-size:13px;font-weight:600;min-height:38px}
+.tool-btn:hover {background:#e2e6df;border-color:#d2dad4}
+.tool-btn.prominent {border-color:#c6d1d2;background:#f5f7f2}
+.deck {position:relative;flex:1;min-height:0;background:var(--surface);border:1px solid #d5ddda;border-radius:23px;box-shadow:var(--shadow);padding:clamp(24px,2.6vw,42px) clamp(28px,3.2vw,52px);overflow:hidden}
+.slide {height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(17px,2.4vh,26px)}
+.slide[hidden] {display:none}
+.slide-head {position:relative;padding-right:42px}
+.kicker {font-size:11px;line-height:1.3;font-weight:750;letter-spacing:1.8px;color:var(--blue);text-transform:uppercase;margin-bottom:10px}
+h1 {font-family:var(--serif);font-size:clamp(30px,3.05vw,47px);font-weight:400;line-height:1.1;letter-spacing:-1.35px;color:var(--blue-dark);max-width:1200px}
+.subtitle {font-size:clamp(16px,1.3vw,19px);line-height:1.45;color:var(--muted);margin-top:11px;max-width:1060px}
+.folio {position:absolute;right:0;top:1px;font-size:13px;letter-spacing:1px;color:var(--muted);font-variant-numeric:tabular-nums}
+.slide-body {min-height:0}
+.takeaway {display:flex;gap:12px;align-items:center;padding-top:15px;border-top:1px solid var(--line);font-size:clamp(16px,1.3vw,19px);line-height:1.35}
+.takeaway .icon {color:var(--blue);width:21px;height:21px}
+.takeaway strong {font-weight:650}
+.takeaway-support {display:block;margin-top:5px;font-size:14px;line-height:1.35;color:var(--muted);font-weight:400}
+.conclusion-grid {display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start}
+.conclusion-item {display:flex;align-items:flex-start;gap:10px;min-width:0}
+.conclusion-number {display:grid;place-items:center;flex:none;width:24px;height:24px;border:1px solid #a5bac3;border-radius:50%;color:var(--blue);font-size:12px;font-weight:700;margin-top:1px}
+.conclusion-item p {min-width:0}
+.conclusion-item .takeaway-support {font-size:13px;line-height:1.35}
+.ref {border:0;background:transparent;color:var(--blue);font-size:12px;vertical-align:super;padding:1px 3px;line-height:1;border-radius:3px}
+.ref:hover {background:#d9e6ec}
+.ref.inline {vertical-align:baseline;font-size:13px;padding:2px 4px}
+.eyebrow {font-size:11px;letter-spacing:1.4px;font-weight:750;text-transform:uppercase;line-height:1.4}
+.muted {color:var(--muted)}
+.blue {color:var(--blue)}
+.amber {color:var(--amber)}
+.pill {display:inline-flex;align-items:center;gap:5px;border:1px solid #cbd9de;background:var(--blue-wash);color:var(--blue);padding:5px 9px;border-radius:30px;font-size:11px;font-weight:650;line-height:1.2}
+.pill.warning {color:var(--amber);border-color:#dcc5ad;background:var(--amber-wash)}
+.panel {background:var(--white);border:1px solid var(--line);border-radius:var(--radius)}
+.panel-top {display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}
+.panel-caption {font-size:14px;color:var(--muted);line-height:1.4}
+.segmented {display:inline-flex;gap:3px;padding:3px;background:#e8ede9;border-radius:10px;max-width:100%;flex-wrap:wrap}
+.segmented button {font-size:12px;font-weight:650;padding:7px 11px;background:transparent;border:1px solid transparent;border-radius:7px;min-height:33px}
+.segmented button[aria-pressed="true"] {background:var(--white);border-color:#ced8d8;color:var(--blue);box-shadow:0 1px 3px #2038420b}
+.segmented button:hover:not([aria-pressed="true"]) {background:#dde5df}
+.mini-btn {background:#f6f7f3;border:1px solid #cbd6d7;border-radius:9px;padding:8px 12px;font-size:12px;font-weight:650;display:inline-flex;gap:7px;align-items:center;justify-content:center;min-height:35px}
+.mini-btn:hover {background:var(--blue-wash);border-color:#91aab8}
+.mini-btn.primary {color:#fff;background:var(--blue);border-color:var(--blue)}
+.mini-btn.primary:hover {background:var(--blue-dark)}
+.mini-btn .icon {width:16px;height:16px}
+.small-note {font-size:12px;color:var(--muted);line-height:1.4}
+.s1-main {display:grid;grid-template-columns:minmax(0,1.55fr) minmax(270px,1fr);gap:30px;align-items:stretch}
+.lab-panel {padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between;min-height:0;background:linear-gradient(135deg,#f8faf9,#edf3f3)}
+.lab-top {margin-bottom:9px}
+.lab-map {display:grid;grid-template-columns:minmax(180px,1.4fr) 62px minmax(112px,.8fr);align-items:center;gap:8px;flex:1;min-height:190px}
+.chamber {border:2px solid #7fa1b4;border-radius:17px;position:relative;background:#fafdfe;min-height:181px;padding:15px 16px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px}
+.chamber-title {font-size:12px;font-weight:700;color:var(--blue)}
+.sample {display:flex;gap:8px;align-items:center;font-size:14px;font-weight:650;color:var(--ink)}
+.sample .icon {color:var(--amber);width:27px;height:27px}
+.file-row {display:flex;gap:12px}
+.test-file {position:relative;color:#648192;transition:color .25s,transform .25s}
+.test-file .icon {width:34px;height:38px}
+.file-lock {display:none;position:absolute;right:-3px;bottom:-2px;background:var(--amber-wash);border-radius:4px;padding:2px;width:18px;height:18px;color:var(--amber)}
+.file-lock .icon {width:14px;height:14px}
+.chamber-foot {font-size:12px;color:var(--muted)}
+.boundary-bridge {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--blue);position:relative}
+.boundary-bridge:before {content:"";position:absolute;height:2px;left:-9px;right:-9px;top:19px;background:repeating-linear-gradient(90deg,#8da7b2 0 4px,transparent 4px 9px)}
+.bridge-lock {width:37px;height:37px;border-radius:50%;border:1px solid #bbced6;background:#f3f8f8;display:grid;place-items:center;z-index:1}
+.bridge-lock .icon {width:19px;height:19px}
+.boundary-bridge small {font-size:10px;line-height:1.2;text-align:center;font-weight:650}
+.protected {display:flex;flex-direction:column;gap:16px}
+.protected-item {display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;font-size:12px;color:#496674;font-weight:550}
+.protected-item .icon {width:29px;height:29px}
+.lab-foot {margin-top:13px}
+.lab-observation {display:flex;align-items:center;gap:8px;font-size:13px;color:var(--blue);background:#e2ecef;padding:9px 11px;border-radius:8px;min-height:37px}
+.lab-controls {display:flex;gap:8px;margin-top:10px;align-items:center}
+.lab-controls .small-note {margin-left:auto;font-size:11px}
+.lab-panel[data-state="run"] .chamber {border-color:#678c9f}
+.lab-panel[data-state="run"] .boundary-bridge:before {background:repeating-linear-gradient(90deg,var(--amber) 0 4px,transparent 4px 9px)}
+.evidence-stack {display:flex;flex-direction:column;justify-content:center;gap:17px}
+.evidence-stack>.eyebrow {color:var(--muted)}
+.evidence-card {display:grid;grid-template-columns:42px 1fr;gap:13px;padding:13px 0}
+.evidence-card+.evidence-card {border-top:1px solid var(--line)}
+.evidence-icon {width:41px;height:41px;border:1px solid #d3dfdf;border-radius:11px;display:grid;place-items:center;color:var(--blue);background:#f2f6f4}
+.evidence-card h2 {font-size:20px;font-weight:600;line-height:1.25;letter-spacing:-.2px;margin-top:5px;margin-bottom:8px}
+.evidence-card p {font-size:16px;line-height:1.48;color:#526570}
+.evidence-card .eyebrow {font-size:10px;color:var(--blue)}
+.s2-main {display:grid;grid-template-columns:1fr 1fr;gap:23px}
+.failure-card {padding:20px 23px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.failure-heading {display:flex;align-items:center;gap:10px}
+.failure-number {display:grid;place-items:center;width:31px;height:31px;background:var(--blue-wash);color:var(--blue);border-radius:8px;font-size:13px;font-weight:700}
+.failure-card.escape .failure-number {background:var(--amber-wash);color:var(--amber)}
+.failure-heading h2 {font-size:23px;font-weight:600;letter-spacing:-.5px;line-height:1.2}
+.failure-sub {font-size:15px;line-height:1.4;color:var(--muted)}
+.evasion-visual {flex:1;display:flex;align-items:center;justify-content:space-between;gap:17px;padding:8px 0;min-height:120px}
+.mini-chamber {width:62%;border:1.7px solid #8ca9b6;border-radius:13px;background:#f1f6f8;min-height:113px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative}
+.mini-chamber .icon {width:34px;height:34px;color:var(--blue)}
+.mini-chamber strong {font-size:14px;color:var(--blue);font-weight:600}
+.mini-chamber small {font-size:11px;color:var(--muted)}
+.observer {display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:12px;color:var(--blue);flex:1}
+.observer .icon {width:32px;height:32px}
+.observer span {max-width:90px}
+.evasion-visual[data-state="real"] .mini-chamber {border-color:#c9a57e;background:#fbf2e7}
+.evasion-visual[data-state="real"] .mini-chamber .icon,.evasion-visual[data-state="real"] .mini-chamber strong,.evasion-visual[data-state="real"] .observer {color:var(--amber)}
+.example-footer {border-top:1px solid #e2e6e1;padding-top:12px;font-size:13px;color:var(--muted)}
+.example-footer strong {color:var(--ink);font-weight:650}
+.escape-visual {flex:1;display:grid;grid-template-columns:1fr 65px .72fr;align-items:center;gap:6px;min-height:120px}
+.guest-box {min-height:109px;border:1.7px solid #8ca9b6;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;background:#f1f6f8;position:relative;font-size:13px;color:var(--blue)}
+.host-box {display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;font-size:13px;color:var(--muted);text-align:center}
+.escape-link {height:44px;position:relative;display:flex;align-items:center;justify-content:center;color:#a2b2b6}
+.escape-link:before {content:"";height:0;position:absolute;left:0;right:0;top:50%;border-top:2px dashed #bac7c8}
+.escape-link .icon {background:var(--white);z-index:1;padding:2px;width:25px;height:25px}
+.escape-visual[data-state="breach"] .guest-box:after {content:"";position:absolute;right:-4px;top:39px;width:7px;height:30px;background:var(--amber-wash);border-top:2px solid var(--amber);border-bottom:2px solid var(--amber)}
+.escape-visual[data-state="breach"] .escape-link {color:var(--amber)}
+.escape-visual[data-state="breach"] .escape-link:before {border-color:var(--amber);border-style:solid}
+.escape-visual[data-state="breach"] .host-box {color:var(--amber)}
+.escape-controls {display:flex;align-items:center;gap:10px;min-height:40px}
+.escape-controls small {font-size:11px;color:var(--muted)}
+.s3-main {display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.6fr);gap:27px}
+.quote-card {padding:24px 25px;border-radius:var(--radius);background:#e4edf0;display:flex;flex-direction:column;justify-content:center;position:relative;border:1px solid #cddde3}
+.quote-mark {font-family:var(--serif);font-size:64px;line-height:.65;color:#8ba8b5;height:39px}
+blockquote {font-family:var(--serif);font-size:clamp(22px,2vw,30px);line-height:1.3;letter-spacing:-.5px;color:var(--blue-dark)}
+.quote-by {margin-top:17px;font-size:14px;font-weight:700;line-height:1.4}
+.quote-role {font-size:12px;color:var(--muted);line-height:1.5;margin-top:3px}
+.quote-more {align-self:flex-start;margin-top:15px;border:0;background:transparent;padding:0;color:var(--blue);font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.case-panel {display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:0}
+.case-head {display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.case-title {font-size:17px;font-weight:650;line-height:1.3}
+.case-box {border:1px solid var(--line);border-radius:15px;padding:18px 21px;background:#fff;flex:1;display:flex;flex-direction:column;justify-content:center;gap:13px}
+.case-map {display:grid;grid-template-columns:1fr 40px 1.1fr 40px 1fr;align-items:center;gap:5px}
+.case-node {border:1px solid #cddbdd;border-radius:12px;background:#f1f6f7;padding:12px 7px;min-height:100px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;text-align:center;font-size:13px;color:var(--blue);line-height:1.3}
+.case-node.gate {border-color:#d4b797;background:#f8edde;color:var(--amber)}
+.case-node.external {background:#f4f5f1;color:#516771}
+.case-node .icon {width:29px;height:29px}
+.flow-arrow {display:flex;align-items:center;justify-content:center;position:relative;color:var(--blue);height:36px}
+.flow-arrow:before {content:"";position:absolute;left:0;right:0;top:17px;border-top:1.6px solid currentColor}
+.flow-arrow .icon {margin-left:auto;background:#fff;width:17px;height:17px;z-index:1}
+.flow-arrow.warning {color:var(--amber)}
+.case-detail {font-size:14px;line-height:1.5;color:#536670}
+.control-strip {display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.control-chip {font-size:11px;line-height:1.3;color:#496674;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;padding:10px 5px;border-top:2px solid #b7cbd2}
+.control-chip .icon {width:20px;height:20px}
+.s4-main {display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,.83fr);gap:27px}
+.fleet-panel {padding:20px 23px;display:flex;flex-direction:column;min-height:0;background:#f5f8f5;gap:12px}
+.fleet-panel .panel-top {margin:0;flex-wrap:wrap;gap:8px}
+.fleet-stage {position:relative;flex:1;min-height:165px;display:flex;align-items:center;justify-content:center;padding:4px 0}
+.fleet-grid {width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}
+.fleet-cell {border:1px solid #c4d7dd;background:#fafdfe;border-radius:8px;min-height:51px;padding:7px 5px;display:flex;align-items:center;justify-content:center;gap:6px;position:relative}
+.fleet-cell .icon {width:18px;height:18px;color:var(--blue)}
+.fleet-cell .cell-label {font-size:10px;color:#516875}
+.fleet-cell .new-tool {display:none}
+.fleet-grid[data-state="one"] {display:flex;justify-content:center}
+.fleet-grid[data-state="one"] .fleet-cell {display:none}
+.fleet-grid[data-state="one"] .fleet-cell:first-child {display:flex;width:195px;height:130px;gap:15px;flex-direction:column;border:2px solid #8caab9;border-radius:14px}
+.fleet-grid[data-state="one"] .fleet-cell:first-child .icon {width:35px;height:35px}
+.fleet-grid[data-state="one"] .fleet-cell:first-child .cell-label {font-size:14px}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added {border-color:#cba77d;background:#fcf1e3}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added .cell-label {display:none}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added .new-tool {display:block;font-size:10px;color:var(--amber);font-weight:600}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added .icon {color:var(--amber)}
+.fleet-caption {display:flex;gap:9px;align-items:flex-start;color:var(--blue);font-size:14px;line-height:1.45;padding:10px 12px;background:#e5eef0;border-radius:9px;min-height:58px}
+.fleet-caption .icon {width:19px;height:19px;margin-top:1px}
+.fleet-baseline {font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:12px}
+.stat-panel {border-left:1px solid var(--line);padding-left:26px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.stat-panel h2 {font-size:20px;font-weight:600;line-height:1.3;letter-spacing:-.3px}
+.stat-number {font-size:clamp(54px,5vw,79px);font-weight:500;letter-spacing:-4px;line-height:1;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+.stat-label {font-size:15px;line-height:1.4;color:var(--muted);max-width:220px}
+.stat-divider {width:36px;border:0;border-top:1px solid #b6c7ce;margin:5px 0}
+.stat-number.secondary {font-size:clamp(37px,3.8vw,56px);letter-spacing:-2px}
+.stat-caveat {margin-top:6px;font-size:12px;line-height:1.5;color:var(--muted);max-width:275px}
+.s5-main {display:grid;grid-template-columns:minmax(0,1.7fr) minmax(245px,.85fr);gap:27px}
+.connection-panel {padding:19px 23px;display:flex;flex-direction:column;gap:14px;background:#f6f9f7;min-height:0}
+.connection-top {display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.network-map {display:grid;grid-template-columns:1.02fr .7fr 1fr;gap:12px;align-items:center;flex:1;min-height:125px}
+.agent-workspace {border:2px solid #7e9eaf;border-radius:15px;min-height:145px;background:#fcfefe;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;text-align:center;padding:10px}
+.agent-workspace .icon {width:38px;height:38px;color:var(--blue)}
+.agent-workspace strong {font-size:14px;line-height:1.25;font-weight:600;color:var(--blue)}
+.workspace-heading {display:flex;align-items:center;justify-content:center;gap:7px}
+.workspace-heading .icon {width:28px;height:28px}
+.agent-workspace .local-package {display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:5px 6px;min-height:0;border:1px dashed #9bb1b9;background:#edf3f2;font-size:11px;line-height:1.3}
+.agent-workspace .local-package .icon {width:17px;height:17px}
+.local-package small {display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:2px}
+.boundary-label {font-size:10px;font-weight:650;line-height:1.3;color:#42667b;background:#e9f1f3;padding:4px 6px;border-radius:5px}
+.access-gate {display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;gap:8px;position:relative;color:var(--blue);min-height:100px}
+.gate-icon {border:1px solid #8faab7;border-radius:50%;height:42px;width:42px;display:grid;place-items:center;background:#eaf2f4;z-index:1}
+.access-gate:before {content:"";position:absolute;left:-15px;right:-15px;top:28px;border-top:2px solid #88a3b1}
+.gate-caption {font-size:11px;line-height:1.35;font-weight:650}
+.gate-owner {display:block;font-size:9px;line-height:1.3;color:var(--muted);font-weight:500;max-width:100px}
+.public-project {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;font-size:14px;text-align:center;color:#446372;line-height:1.25}
+.public-project .icon {width:35px;height:35px}
+.public-project small {font-size:11px;color:var(--muted)}
+.action-lanes {display:grid;gap:7px}
+.action-lane {display:flex;align-items:center;gap:8px;padding:8px 10px;background:#e4eef1;border-radius:8px;font-size:12px;color:var(--blue);min-height:34px;line-height:1.3}
+.action-lane.warning {background:#f6ebdd;color:var(--amber)}
+.action-lane .lane-action {flex:1}
+.lane-status {font-size:11px;font-weight:750;white-space:nowrap}
+.action-lane .icon {width:16px;height:16px}
+.connection-panel[data-mode="scoped"] .gate-icon {background:#e0ecec;border-color:#5f879a}
+.connection-panel[data-mode="scoped"] .action-lane.warning {background:#e4eef1;color:var(--blue)}
+.network-assessment {display:flex;align-items:center;gap:9px;padding:9px 11px;min-height:53px;border:1px solid #d3b692;border-radius:9px;background:#fff6ea;color:var(--amber)}
+.network-assessment .icon {width:21px;height:21px}
+.network-assessment strong {display:block;font-size:16px;font-weight:650;line-height:1.25}
+.network-assessment small {display:block;font-size:11px;line-height:1.35;margin-top:3px}
+.network-assessment[data-state="waiting"] {background:#f1f3ef;border-color:#d4dcd9;color:var(--muted)}
+.network-assessment[data-state="blocked"] {background:#e9f0f3;border-color:#8faab7;color:var(--blue)}
+.network-explanation {font-size:13px;color:var(--muted);line-height:1.4;min-height:36px}
+.incident-card {display:flex;flex-direction:column;justify-content:center;gap:14px}
+.incident-card h2 {font-family:var(--serif);font-size:26px;font-weight:400;color:var(--blue-dark);line-height:1.15;letter-spacing:-.4px}
+.incident-points {padding:0;margin:0;list-style:none;display:grid;gap:11px}
+.incident-points li {display:flex;align-items:flex-start;gap:8px;font-size:15px;line-height:1.4;color:#536670}
+.incident-points li .icon {width:17px;height:17px;margin-top:2px;color:var(--blue)}
+.incident-result {font-size:13px;line-height:1.4;padding:11px 12px;background:#e5eeeb;border-radius:9px;border:1px solid #d0dcd6;color:#3f5f64}
+.incident-card .eyebrow {color:var(--blue)}
+.bottom-bar {height:54px;display:flex;align-items:center;gap:17px;flex:none}
+.nav-btn {height:41px;border:1px solid #c1cdd0;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px;min-width:113px;padding:9px 14px;font-size:13px;font-weight:650;background:#f7f8f3}
+.nav-btn:hover:not(:disabled) {background:#e1e9e9;border-color:#94aeb8}
+.nav-btn.next {background:var(--blue);border-color:var(--blue);color:white}
+.nav-btn.next:hover {background:var(--blue-dark)}
+.nav-btn .icon {width:17px;height:17px}
+.chapters {display:flex;gap:5px;flex:1;justify-content:center}
+.chapter {border:0;background:transparent;display:flex;gap:7px;align-items:center;padding:8px 11px;font-size:12px;color:var(--muted);border-radius:9px}
+.chapter-no {width:22px;height:22px;border-radius:50%;border:1px solid #c3cecc;font-size:10px;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.chapter[aria-current="step"] {color:var(--blue);background:#dfe8e8;font-weight:700}
+.chapter[aria-current="step"] .chapter-no {background:var(--blue);color:#fff;border-color:var(--blue)}
+.chapter:hover {background:#e2e8e2}
+.page-count {font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;display:none}
+.progress-track {position:absolute;bottom:0;left:0;right:0;height:3px;background:#e4ebe8}
+.progress-fill {height:100%;background:#88a6b7;width:20%;transition:width .3s}
+.help-hint {font-size:11px;color:var(--muted);margin-top:1px}
+dialog {border:1px solid #c5d2d5;border-radius:21px;background:var(--surface);padding:0;color:var(--ink);box-shadow:0 25px 100px #17374730;max-width:calc(100vw - 34px);width:800px;max-height:86svh;overflow:hidden}
+dialog::backdrop {background:#253a4659;backdrop-filter:blur(3px)}
+.dialog-shell {display:flex;flex-direction:column;max-height:86svh}
+.dialog-header {padding:24px 27px 17px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex:none}
+.dialog-header h2 {font-family:var(--serif);font-size:29px;font-weight:400;letter-spacing:-.6px;color:var(--blue-dark)}
+.dialog-header p {font-size:13px;color:var(--muted);margin-top:5px}
+.close-btn {border:1px solid #cbd6d5;border-radius:9px;padding:7px;background:#f0f4ef;display:grid;place-items:center;flex:none}
+.close-btn .icon {width:19px;height:19px}
+.dialog-tabs {display:flex;gap:6px;padding:0 27px 16px;border-bottom:1px solid var(--line);flex:none}
+.dialog-tab {padding:8px 13px;border:1px solid transparent;background:#e9eeea;border-radius:9px;font-size:13px}
+.dialog-tab[aria-selected="true"] {background:var(--blue);color:#fff}
+.dialog-scroll {overflow:auto;overscroll-behavior:contain;padding:24px 27px 30px;min-height:0}
+.note-title {font-size:20px;line-height:1.3;font-weight:650;color:var(--blue-dark);margin-bottom:17px}
+.speaker-note {font-size:15px;color:#4e626e;line-height:1.65;margin-bottom:15px}
+.speaker-note .synthesis-label {font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--blue);display:block;font-weight:750;margin-bottom:4px}
+.source-heading {font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;color:var(--blue);margin-top:23px;margin-bottom:8px}
+.source-card {padding:15px 0;border-top:1px solid var(--line);scroll-margin:20px}
+.source-card:target,.source-card.source-highlight {background:#e8f0f2;box-shadow:0 0 0 9px #e8f0f2;border-radius:3px}
+.source-meta {font-size:11px;line-height:1.4;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}
+.source-card h3 {font-size:16px;line-height:1.4;font-weight:650;color:var(--blue-dark)}
+.source-card .source-author {font-size:13px;color:var(--muted);margin-top:4px}
+.source-card p {font-size:13px;line-height:1.55;margin-top:7px;color:#50636e}
+.source-card .caveat {color:#705843}
+.source-access {background:#edf1ea;padding:12px 14px;font-size:12px;line-height:1.6;color:#536870;border-radius:9px;margin-top:20px}
+.how-to {display:grid;gap:15px}
+.how-to p {font-size:15px;line-height:1.65;color:#50636e}
+.how-to kbd {font:12px var(--sans);display:inline-block;border:1px solid #c0cdce;border-bottom-width:2px;border-radius:4px;padding:1px 6px;background:#fff;color:var(--blue)}
+.how-to h3 {font-size:17px;font-weight:650;margin-top:5px}
+.print-appendix {display:none}
+.print-refline {display:none}
+.nojs {margin:20px;padding:15px;background:#fff;border:1px solid var(--line)}
+body:has(.nojs) .app {height:auto}
+body:has(.nojs) .deck {overflow:visible}
+body:has(.nojs) .slide {min-height:650px;margin-bottom:50px}
+
+@media (min-width:1600px) {.app{padding-top:28px;padding-bottom:22px;gap:20px}.deck{padding:45px 52px}.slide{gap:30px}.lab-panel{padding:30px}.lab-map{min-height:260px}.chamber{min-height:225px}.evidence-card p{font-size:18px}.failure-card{padding:26px 29px;gap:17px}.failure-sub{font-size:17px}.example-footer{font-size:15px}.case-detail{font-size:17px}.control-chip{font-size:13px}.stat-label{font-size:17px}.incident-points li{font-size:17px}.network-explanation{font-size:15px}.action-lane{font-size:14px}.lane-status{font-size:12px}.connection-panel{padding:27px}.fleet-cell{min-height:68px}.fleet-cell .icon{width:23px;height:23px}.fleet-cell .cell-label{font-size:12px}}
+@media (max-height:800px) and (min-width:901px) {
+ .app{gap:11px;padding-top:12px;padding-bottom:10px}.topbar{height:35px}.deck{padding:25px 34px}.slide{gap:17px}
+ .kicker{margin-bottom:7px}h1{font-size:clamp(29px,2.8vw,41px)}.subtitle{font-size:16px;margin-top:8px}.takeaway{padding-top:11px;font-size:16px}
+ .panel-top{margin-bottom:10px}.lab-panel{padding:16px 18px}.lab-map{min-height:158px}.chamber{min-height:154px;gap:8px;padding:10px}
+ .lab-foot{margin-top:8px}.lab-observation{padding:6px 9px;min-height:30px;font-size:12px}.lab-controls{margin-top:8px}.protected{gap:12px}
+ .evidence-stack{gap:9px}.evidence-card{padding:9px 0;gap:10px}.evidence-card h2{font-size:18px;margin-bottom:6px}.evidence-card p{font-size:15px}
+ .failure-card{padding:16px 20px;gap:8px}.failure-heading h2{font-size:21px}.failure-sub{font-size:14px}.evasion-visual,.escape-visual{min-height:105px}.mini-chamber,.guest-box{min-height:98px}.example-footer{padding-top:9px;font-size:12px}
+ .quote-card{padding:19px 23px}blockquote{font-size:25px}.quote-by{margin-top:13px;font-size:13px}.quote-more{margin-top:11px}
+ .case-box{padding:14px 16px;gap:9px}.case-node{min-height:85px;font-size:12px}.case-node .icon{width:25px;height:25px}.case-detail{font-size:13px}.case-panel{gap:9px}.control-chip{padding:7px 4px;gap:5px;font-size:10px}.case-title{font-size:15px}
+ .fleet-panel{padding:15px 18px;gap:9px}.fleet-stage{min-height:140px}.fleet-cell{min-height:43px;padding:5px 3px}.fleet-grid{gap:7px}.fleet-caption{font-size:13px;min-height:47px;padding:8px 10px}.stat-panel{gap:5px}.stat-number{font-size:61px}.stat-number.secondary{font-size:43px}.stat-panel h2{font-size:18px}.stat-label{font-size:14px}.stat-caveat{font-size:11px}
+ .connection-panel{padding:16px 19px;gap:10px}.agent-workspace{min-height:122px;gap:7px}.agent-workspace .icon{width:31px;height:31px}.network-map{min-height:105px}.network-explanation{font-size:12px;min-height:33px}.action-lane{padding:6px 9px;min-height:29px;font-size:11px}.incident-card{gap:12px}.incident-card h2{font-size:23px}.incident-points{gap:9px}.incident-points li{font-size:14px}.incident-result{font-size:12px;padding:9px 10px}
+ .workspace-heading .icon{width:25px;height:25px}.agent-workspace .local-package .icon{width:15px;height:15px}.network-assessment{padding:7px 9px;min-height:46px}.network-assessment strong{font-size:14px}.network-assessment small{font-size:10px;margin-top:2px}.takeaway-support{font-size:13px;margin-top:4px}
+ .conclusion-grid{gap:16px;font-size:15px}.conclusion-item{gap:8px}.conclusion-number{width:21px;height:21px;font-size:11px}.conclusion-item .takeaway-support{font-size:12px}.s5-main .connection-panel{padding:14px 17px;gap:8px}
+}
+@media (max-width:1100px) and (min-width:901px) {
+ .app{padding-left:17px;padding-right:17px}.deck{padding-left:27px;padding-right:27px}
+ .s1-main{grid-template-columns:1.4fr 1fr;gap:20px}.lab-map{grid-template-columns:1.3fr 44px .75fr;gap:4px}.boundary-bridge small{font-size:9px}
+ .s3-main{grid-template-columns:.85fr 1.4fr;gap:20px}.quote-card{padding:20px}.case-map{grid-template-columns:1fr 23px 1fr 23px 1fr;gap:3px}
+ .s4-main,.s5-main{gap:20px;grid-template-columns:1.5fr .85fr}.chapter{padding:7px}.chapter-label{font-size:11px}.fleet-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.fleet-cell:nth-child(n+21){display:none}
+ .network-map{gap:7px;grid-template-columns:1fr .62fr .85fr}.agent-workspace strong{font-size:12px}.public-project{font-size:12px}.connection-panel{padding:17px}
+}
+@media (max-width:900px) {
+ .app{height:auto;min-height:100svh;padding:13px 15px 82px;gap:15px}
+ .topbar{height:auto;min-height:39px}.brand-sub{display:none}.brand-name{font-size:11px;letter-spacing:1.2px}.brand{gap:8px}
+ .toolbar{gap:3px}.tool-btn{padding:8px}.tool-btn:not(.prominent) .tool-label{display:none}.tool-btn.prominent .tool-label{font-size:12px}
+ .deck{flex:none;min-height:600px;overflow:visible;padding:30px 27px;border-radius:18px}
+ .slide{height:auto;min-height:550px;gap:24px;grid-template-rows:auto 1fr auto}.slide-head{padding-right:24px}
+ h1{font-size:37px;letter-spacing:-1px;line-height:1.13}.subtitle{font-size:17px;line-height:1.5}
+ .s1-main,.s3-main,.s4-main,.s5-main{grid-template-columns:1fr;gap:23px}
+ .lab-panel{min-height:325px}.lab-map{min-height:190px;grid-template-columns:1.5fr 70px 1fr}
+ .evidence-stack{display:grid;grid-template-columns:1fr 1fr;gap:17px}.evidence-stack>.eyebrow{grid-column:1/-1}.evidence-card{padding:0;grid-template-columns:34px 1fr;gap:10px}.evidence-card+.evidence-card{border:0}.evidence-icon{width:34px;height:34px}.evidence-card p{font-size:15px}
+ .failure-card{padding:20px;min-height:360px}.failure-heading h2{font-size:21px}.s2-main{gap:16px}
+ .quote-card{padding:23px 25px}.quote-mark{height:27px;font-size:54px}blockquote{font-size:25px;max-width:650px}.quote-by{margin-top:12px}
+ .case-box{min-height:235px}.control-chip{font-size:12px}
+ .fleet-panel{min-height:330px}.fleet-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+ .stat-panel{border-left:0;border-top:1px solid var(--line);padding:22px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px 25px}
+ .stat-panel>.eyebrow,.stat-panel h2,.stat-caveat{grid-column:1/-1}.stat-number{font-size:62px;grid-column:1;grid-row:3}.stat-label{grid-column:1;grid-row:4}
+ .stat-number.secondary{font-size:53px;grid-column:2;grid-row:3;align-self:end}.stat-label.secondary-label{grid-column:2;grid-row:4}.stat-divider{display:none}.stat-caveat{max-width:none;margin-top:4px}
+ .connection-panel{min-height:340px}.incident-card{gap:13px}.incident-points{gap:10px}.incident-card h2{font-size:26px}
+ .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:68px;padding:10px 18px max(10px,env(safe-area-inset-bottom));background:#eeeee8f5;border-top:1px solid #d1dbd8;backdrop-filter:blur(12px);z-index:10;gap:10px}
+ .chapters{gap:2px}.chapter{padding:6px}.chapter-label{display:none}.page-count{display:block;margin-left:auto;margin-right:auto}
+ .nav-btn{min-width:105px}.takeaway{font-size:17px;padding-top:17px}.progress-track{border-radius:0 0 18px 18px;overflow:hidden}
+ .conclusion-grid{grid-template-columns:1fr;gap:17px}.conclusion-item .takeaway-support{font-size:14px}
+}
+@media (max-width:560px) {
+ body{font-size:16px}.app{padding:10px 10px 81px}.topbar{gap:7px}.brand-icon{width:25px;height:28px}.brand-icon:before,.brand-icon:after{width:18px;height:18px}.brand-icon:after{left:6px;top:7px}.brand-name{font-size:10px;letter-spacing:.8px}.brand-sub{display:none}
+ .toolbar .tool-btn{padding:7px;min-height:34px}.toolbar .tool-btn .tool-label{display:none}.toolbar .tool-btn .icon{width:18px;height:18px}
+ .deck{padding:24px 19px;min-height:0}.slide{min-height:0;gap:23px}.kicker{font-size:10px;letter-spacing:1.2px;margin-bottom:9px}.folio{font-size:11px;top:0}
+ h1{font-size:32px;letter-spacing:-1px;line-height:1.14}.subtitle{font-size:16px;margin-top:11px}.takeaway{font-size:16px;align-items:flex-start}
+ .lab-panel{padding:17px 14px;min-height:360px}.lab-map{grid-template-columns:1.45fr 39px .75fr;gap:3px}.lab-top .eyebrow{font-size:9px;letter-spacing:.7px}.lab-top .pill{font-size:9px;padding:4px 7px}
+ .chamber{min-height:174px;padding:13px 7px;gap:12px}.chamber-title{font-size:11px}.sample{font-size:12px;gap:4px}.sample .icon{width:22px;height:22px}.file-row{gap:5px}.test-file .icon{width:27px;height:30px}.chamber-foot{font-size:10px}.protected-item{font-size:10px;gap:6px}.protected-item .icon{width:25px;height:25px}.boundary-bridge small{font-size:9px}.bridge-lock{width:28px;height:28px}.bridge-lock .icon{width:15px;height:15px}.boundary-bridge:before{top:14px}.lab-observation{font-size:12px;padding:8px;min-height:44px}.lab-controls .small-note{display:none}
+ .evidence-stack{display:flex;gap:16px}.evidence-card{grid-template-columns:35px 1fr;gap:12px}.evidence-card+.evidence-card{border-top:1px solid var(--line);padding-top:16px}.evidence-card h2{font-size:19px}.evidence-card p{font-size:15px}
+ .s2-main{grid-template-columns:1fr;gap:20px}.failure-card{min-height:340px;padding:20px}.failure-heading h2{font-size:22px}.failure-sub{font-size:15px}.evasion-visual,.escape-visual{min-height:128px}.example-footer{font-size:13px}
+ .quote-card{padding:24px}.quote-by{font-size:14px}.quote-role{font-size:12px}.case-head{align-items:flex-start;gap:10px}.case-box{padding:17px 12px;gap:15px;min-height:255px}
+ .case-map{grid-template-columns:1fr 19px 1.08fr 19px 1fr;gap:2px}.case-node{min-height:104px;padding:9px 4px;font-size:11px;word-break:normal}.case-node .icon{width:24px;height:24px}.case-detail{font-size:14px}.control-strip{grid-template-columns:repeat(2,1fr);gap:11px}.control-chip{font-size:12px;padding-top:11px;flex-direction:row;justify-content:center}
+ .fleet-panel{padding:17px 15px;min-height:351px}.fleet-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.fleet-cell{min-height:40px;padding:6px 3px;gap:4px}.fleet-cell .icon{width:16px;height:16px}.fleet-cell .cell-label,.fleet-grid[data-state="changing"] .fleet-cell.tool-added .new-tool{font-size:9px}.fleet-stage{min-height:198px}.fleet-cell:nth-child(n+17){display:none}.fleet-caption{font-size:13px}.fleet-baseline{font-size:10px}.segmented button{font-size:11px;padding:7px 9px}
+ .stat-panel{gap:8px 19px}.stat-number{font-size:57px}.stat-number.secondary{font-size:48px}.stat-label{font-size:14px}.stat-caveat{font-size:12px}
+ .connection-panel{padding:17px 13px;min-height:360px;gap:15px}.network-map{grid-template-columns:1.1fr .65fr .9fr;gap:8px;min-height:128px}.agent-workspace{min-height:139px;padding:8px 5px;gap:10px}.agent-workspace .icon{width:30px;height:30px}.agent-workspace strong{font-size:11px}.boundary-label{font-size:9px;padding:4px}.public-project{font-size:12px}.public-project .icon{width:29px;height:29px}.public-project small{font-size:10px}.gate-caption{font-size:10px}.gate-icon{height:32px;width:32px}.gate-icon .icon{width:19px;height:19px}.access-gate:before{top:24px;left:-10px;right:-10px}.action-lane{font-size:11px;gap:6px;padding:8px}.lane-status{font-size:10px}.network-explanation{font-size:12px;min-height:53px}
+ .bottom-bar{padding-left:14px;padding-right:14px;gap:13px}.chapters{display:none}.page-count{font-size:13px}.nav-btn{font-size:12px;min-width:105px;padding:9px 12px}.nav-btn .icon{width:16px;height:16px}
+ .dialog-header{padding:20px 20px 15px}.dialog-header h2{font-size:26px}.dialog-tabs{padding:0 20px 15px;gap:5px}.dialog-tab{font-size:12px;padding:8px 10px}.dialog-scroll{padding:20px}.source-meta{font-size:10px}.source-card h3{font-size:15px}.source-card p{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce) {
+ *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+@page {size:A4 landscape;margin:10mm}
+@media print {
+ * {-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none!important;transition:none!important}
+ html,body{background:#fff;font-size:12pt;overflow:visible}
+ .app{width:100%;height:auto;min-height:0;display:block;padding:0;margin:0}
+ .topbar,.bottom-bar,.progress-track,dialog,.segmented,.mini-btn,.quote-more,.lab-controls,.print-hide,.nojs{display:none!important}
+ .deck{border:0;box-shadow:none;border-radius:0;background:#fff;overflow:visible;height:auto;padding:0}
+ .slide,.slide[hidden]{display:grid!important;grid-template-rows:auto 1fr auto;gap:5mm;height:185mm;min-height:0;padding:3mm 2mm 4mm;break-after:page;page-break-after:always;position:relative}
+ .slide-head{padding-right:15mm}.kicker{font-size:8pt;margin-bottom:2mm}h1{font-size:28pt;line-height:1.1;letter-spacing:-.5pt}.subtitle{font-size:11pt;line-height:1.4;margin-top:3mm}
+ .folio{font-size:9pt}.takeaway{font-size:11pt;padding-top:3mm;line-height:1.3}.conclusion-grid{grid-template-columns:1fr 1.15fr;gap:6mm}.conclusion-number{width:6mm;height:6mm;font-size:9pt}.conclusion-item .takeaway-support{font-size:9pt}
+ .s1-main{grid-template-columns:1.55fr 1fr;gap:7mm}.s2-main{grid-template-columns:1fr 1fr;gap:6mm}.s3-main{grid-template-columns:.85fr 1.6fr;gap:7mm}.s4-main,.s5-main{grid-template-columns:1.65fr .85fr;gap:7mm}
+ .panel,.quote-card{border:1px solid #aebfc4}.lab-panel{padding:5mm;min-height:0}.lab-map{grid-template-columns:1.45fr 14mm .8fr;min-height:42mm}.chamber{min-height:42mm;gap:3mm}.chamber-title{font-size:9pt}.sample{font-size:10pt}.chamber-foot{font-size:8pt}.protected-item{font-size:9pt}.lab-observation{font-size:9pt;min-height:9mm}
+ .evidence-stack{display:flex;gap:4mm}.evidence-card{padding:4mm 0;grid-template-columns:10mm 1fr}.evidence-card h2{font-size:14pt}.evidence-card p{font-size:10pt}.evidence-card+.evidence-card{border-top:1px solid var(--line)}
+ .failure-card{min-height:0;padding:5mm;gap:3mm}.failure-heading h2{font-size:16pt}.failure-sub{font-size:10pt}.evasion-visual,.escape-visual{min-height:35mm}.mini-chamber,.guest-box{min-height:31mm}.example-footer{font-size:9pt}.escape-controls{min-height:0}
+ .quote-card{padding:6mm}.quote-mark{font-size:44pt;height:10mm}blockquote{font-size:20pt}.quote-by{font-size:10pt}.quote-role{font-size:9pt}.case-box{padding:4mm;min-height:0;gap:4mm}.case-title{font-size:12pt}.case-node{min-height:28mm;font-size:9pt}.case-detail{font-size:10pt}.control-chip{font-size:8pt;flex-direction:column}.control-strip{grid-template-columns:repeat(4,1fr)}
+ .fleet-panel{padding:5mm;min-height:0;gap:3mm}.fleet-grid{grid-template-columns:repeat(6,1fr);gap:2mm}.fleet-cell,.fleet-cell:nth-child(n+17){display:flex;min-height:14mm}.fleet-cell .cell-label{font-size:7pt}.fleet-caption{font-size:10pt;min-height:16mm}.fleet-baseline{font-size:8pt}.stat-panel{display:flex;border-top:0;border-left:1px solid var(--line);padding:0 0 0 6mm;gap:2mm}.stat-number{font-size:50pt}.stat-number.secondary{font-size:35pt}.stat-panel h2{font-size:15pt}.stat-label{font-size:10pt}.stat-caveat{font-size:8pt}.stat-divider{display:block}
+ .connection-panel{padding:5mm;min-height:0;gap:4mm}.network-map{min-height:33mm}.agent-workspace{min-height:38mm}.agent-workspace strong{font-size:10pt}.public-project{font-size:10pt}.action-lane{font-size:9pt}.lane-status{font-size:8pt}.network-explanation{font-size:9pt;min-height:10mm}.incident-card h2{font-size:20pt}.incident-points li{font-size:10pt}.incident-result{font-size:9pt}
+ .ref{font-size:8pt;color:var(--blue);padding:0 2px}.pill,.eyebrow{font-size:8pt}.small-note{font-size:8pt}.print-refline{display:block;font-size:7pt;color:#536870;position:absolute;bottom:0;left:2mm;right:2mm}
+ .print-appendix{display:block;break-before:page;font-size:9pt;padding:3mm 2mm}.print-appendix h2{font-family:var(--serif);font-size:25pt;font-weight:400;color:var(--blue-dark);margin-bottom:4mm}.print-appendix>p{font-size:9pt;margin-bottom:4mm;color:#536870}
+ .print-source{break-inside:avoid;padding:2.5mm 0;border-top:1px solid #ccd8dc;line-height:1.45}.print-source strong{font-size:10pt}.print-source a{display:block;font-size:8pt;overflow-wrap:anywhere}.print-source small{font-size:8pt;color:#536870}
+}
+/* Explanatory motion uses the shared JavaScript clock, with persistent results. */
+.motion-player {position:relative;overflow:hidden;border-color:#bfd0d5;background:#edf3f3;min-width:145px;--motion-progress:0}
+.motion-player .motion-meter {position:absolute;bottom:0;left:0;right:0;height:3px;background:#d4e1e5;pointer-events:none}
+.motion-player .motion-meter:after {content:"";display:block;height:100%;background:var(--blue);transform:scaleX(var(--motion-progress));transform-origin:left center}
+.lab-map,.escape-visual,.case-map,.network-map {position:relative}
+.motion-token {position:absolute;left:0;top:0;width:13px;height:13px;border:2px solid #fff;border-radius:50%;background:var(--token-color,var(--blue));box-shadow:0 0 0 3px #d7e3e9a8;z-index:5;opacity:0;pointer-events:none;will-change:transform,opacity}
+.motion-scan {position:absolute;left:8%;width:84%;height:3px;background:linear-gradient(90deg,transparent,#749aae,transparent);box-shadow:0 0 10px #82a6b366;top:18%;opacity:0;pointer-events:none}
+.test-file.is-encrypted {color:var(--amber)}
+.test-file.is-encrypted .file-lock {display:block}
+.lab-panel[data-phase="running"] .sample,.lab-panel[data-phase="restricting"] .sample {color:var(--amber)}
+.bridge-lock.is-blocked {color:var(--blue);border:2px solid #6e91a5;box-shadow:0 0 0 4px #dbe8ed}
+.protected.is-safe .icon {color:var(--blue)}
+.mini-chamber {overflow:hidden;transition:background-color .4s,border-color .4s}
+.mini-chamber>svg,.mini-chamber>strong,.mini-chamber>small {position:relative;z-index:1}
+.escape-visual[data-phase="flaw"] .guest-box:after,.escape-visual[data-phase="crossing"] .guest-box:after,.escape-visual[data-state="breach"] .guest-box:after {content:"";position:absolute;right:-4px;top:39px;width:7px;height:30px;background:var(--amber-wash);border-top:2px solid var(--amber);border-bottom:2px solid var(--amber);transform:scaleY(var(--gap-size,1));transform-origin:center}
+.escape-visual[data-phase="crossing"] .escape-link,.host-box.is-reached {color:var(--amber)}
+.escape-visual[data-phase="crossing"] .escape-link:before {border-color:var(--amber);border-style:solid}
+.escape-controls {flex-wrap:wrap;gap:8px}
+.escape-controls .reset-crossing {width:35px;padding:8px;flex:none}
+.escape-controls small {margin-left:auto}
+.case-node.is-focused {box-shadow:0 0 0 3px #dce8ec}
+.case-node.gate.is-focused {box-shadow:0 0 0 3px #f0e3d4}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added {border-color:#cba77d;background:#fcf1e3}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added .cell-label {display:none}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added .new-tool {display:block;font-size:10px;color:var(--amber);font-weight:600}
+.fleet-grid[data-state="changing"] .fleet-cell.tool-added .icon {color:var(--amber)}
+.fleet-cell {transition:background-color .35s,border-color .35s}
+.public-project.is-reached {color:var(--amber)}
+.gate-icon.is-blocked {border:2px solid #6e91a5;box-shadow:0 0 0 3px #dbe8ed}
+.action-lane[data-check="waiting"] {opacity:.45}
+.action-lane[data-check="active"] {box-shadow:0 0 0 2px #a7c1ce}
+.action-lane.warning[data-check="active"] {box-shadow:0 0 0 2px #d7b890}
+@media (max-width:900px) {.motion-player{min-width:37px}.toolbar{gap:2px}}
+@media (max-width:560px) {.fleet-grid[data-state="changing"] .fleet-cell.tool-added .new-tool{font-size:9px}.motion-token{width:11px;height:11px;box-shadow:0 0 0 2px #d7e3e9a8}}
+@media (prefers-reduced-motion:reduce) {.motion-token,.motion-scan{display:none!important}}
+@media print {.motion-token,.motion-scan{display:none!important}.case-node.is-focused,.case-node.gate.is-focused{box-shadow:none}}
+
+/* Keep the larger diagrams and two conclusions readable on short desktop windows. */
+@media screen and (max-height:800px) and (min-width:901px) {
+ .deck:has(#slide-4:not([hidden])),.deck:has(#slide-5:not([hidden])) {overflow-y:auto}
+ #slide-4,#slide-5 {height:auto;min-height:100%;grid-template-rows:auto max-content auto}
+}
+
+/* Slide 4: three continuous zooms, 25 reused test batches, and a growing archive. */
+.fleet-volume-stage {display:block!important;padding:0!important;min-height:260px;isolation:isolate}
+.fleet-world-area {position:absolute;inset:0 auto 0 0;width:100%;display:flex;flex-direction:column;gap:5px;min-width:0}
+.fleet-scale-meter {text-align:center;line-height:1.1;flex:none;color:var(--blue-dark)}
+.fleet-scale-meter strong {font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-1px;display:block}
+.fleet-scale-meter span {font-size:11px;color:var(--muted);line-height:1.4}
+.fleet-world-surface {flex:1;min-height:0;position:relative}
+.fleet-map {position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden;color:var(--blue)}
+.fleet-test {fill:#f8fcfd;stroke:#7093a5;stroke-width:1;opacity:0}
+.fleet-test.with-tool {fill:#f3e3cc;stroke:var(--amber)}
+.fleet-tool-marker {fill:none;stroke:var(--amber);stroke-width:1.2;stroke-linecap:round;opacity:0}
+.fleet-pattern-test {fill:#f8fcfd;stroke:#7093a5;stroke-width:2}
+.fleet-batch {opacity:1}
+.fleet-extra-batch {opacity:0}
+.fleet-batch-frame {fill:none;stroke:#668b9d;stroke-width:1.1;opacity:var(--batch-outline,0)}
+.fleet-batch-tool {fill:none;stroke:var(--amber);stroke-width:1.8;stroke-linecap:round;opacity:0}
+.fleet-batch.with-tools .fleet-batch-frame {stroke:var(--amber);stroke-width:1.6}
+.fleet-world-hint {text-align:center;font-size:11px;line-height:1.25;color:var(--muted);min-height:15px;flex:none}
+.fleet-log-area {position:absolute;left:56%;top:0;bottom:0;width:44%;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transform:translateX(22px);pointer-events:none;z-index:2}
+.fleet-log-heading {font-size:10px;letter-spacing:1.1px;text-transform:uppercase;font-weight:700;color:var(--muted);line-height:1.2}
+.fleet-log-count {font-size:clamp(23px,2.6vw,36px);line-height:1;letter-spacing:-1.4px;font-weight:550;color:var(--blue-dark);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fleet-log-unit {font-size:11px;line-height:1.2;color:var(--muted)}
+.fleet-log-math {font-size:10px;line-height:1.2;color:var(--blue);font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap}
+.fleet-log-stack {position:relative;flex:1;min-height:134px;max-height:175px;width:94%;margin-top:4px;--log-depth:0;--archive-progress:0}
+.fleet-log-stack:before,.fleet-log-stack:after {content:"";position:absolute;inset:calc(43% * var(--archive-progress)) 7px 8px 0;border:1px solid #b4c8d1;border-radius:7px;background:#e6eef1;transform:translate(calc(7px * var(--log-depth)),calc(7px * var(--log-depth)));opacity:var(--log-depth)}
+.fleet-log-stack:after {transform:translate(calc(3px * var(--log-depth)),calc(3px * var(--log-depth)));background:#f1f6f7}
+.fleet-log-page {position:absolute;inset:calc(43% * var(--archive-progress)) 7px 8px 0;border:1px solid #b1c6d0;border-radius:7px;background:#fff;padding:4px 5px 4px 9px;display:flex;flex-direction:column;justify-content:space-evenly;gap:1px;z-index:1;overflow:hidden}
+.fleet-log-entry {font-size:9px;line-height:1.1;padding:1px 4px;border-left:2px solid transparent;border-radius:3px;color:#59717d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0}
+.fleet-log-archive {position:absolute;top:0;left:0;right:7px;height:39%;display:flex;flex-direction:column;gap:3px;opacity:0;overflow:hidden}
+.fleet-log-bundles {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:2px;flex:1;min-height:0;padding:1px 2px 1px 1px}
+.fleet-log-bundle {display:block;min-width:0;min-height:0;border:1px solid #8aa8b6;border-radius:2px;background:repeating-linear-gradient(to bottom,#eff5f7 0,#eff5f7 2px,#bfd1da 2px,#bfd1da 3px);box-shadow:1px 1px 0 #d3e0e7;opacity:0;transform:translateY(4px)}
+.fleet-log-key {color:#5a7280;font-size:9px;line-height:1.1;flex:none;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fleet-record-thread {position:absolute;left:4px;top:8px;bottom:9px;width:3px;border-left:2px solid var(--blue);transform:scaleY(0);transform-origin:top center;border-radius:3px}
+.fleet-review-label {display:flex;align-items:center;justify-content:center;gap:4px;font-size:10px;line-height:1.2;color:var(--blue);font-weight:600;opacity:0;flex:none;text-align:center}
+.fleet-review-label .icon {width:13px;height:13px}
+.fleet-flow {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;opacity:0;z-index:3}
+.fleet-flow-path {fill:none;stroke:#7796a8;stroke-width:1;stroke-dasharray:2 4;opacity:.35}
+.fleet-flow-dot {fill:var(--blue);stroke:#fff;stroke-width:1.2}
+.fleet-baseline {flex-wrap:wrap;align-items:flex-start;gap:4px 12px}
+#fleet-assumption {max-width:100%}
+@media (max-height:800px) and (min-width:901px) {
+ .fleet-volume-stage{min-height:220px}.fleet-scale-meter strong{font-size:25px}.fleet-scale-meter span,.fleet-world-hint{font-size:10px}
+ .fleet-log-count{font-size:29px}.fleet-log-heading{font-size:9px}.fleet-log-unit{font-size:10px}.fleet-log-stack{min-height:116px;max-height:140px}.fleet-log-entry{font-size:8px;padding-top:0;padding-bottom:0}.fleet-log-page{padding-top:3px;padding-bottom:3px}.fleet-log-key{font-size:8px}.fleet-panel .panel-top{gap:5px}
+}
+@media (max-width:900px) {.fleet-volume-stage{min-height:275px}.fleet-panel{min-height:440px}}
+@media (max-width:560px) {
+ .fleet-panel .panel-top{gap:7px}.fleet-volume-stage{min-height:260px}.fleet-scale-meter strong{font-size:26px}.fleet-scale-meter span{font-size:10px}.fleet-world-hint{font-size:10px;min-height:25px}
+ .fleet-log-count{font-size:22px;letter-spacing:-.9px}.fleet-log-unit{font-size:10px}.fleet-log-heading{font-size:9px;letter-spacing:.4px}.fleet-log-math{font-size:8px}.fleet-log-entry{font-size:8px;padding:0 1px 0 2px}.fleet-log-page{padding:3px 2px 3px 7px}.fleet-review-label{font-size:9px}.fleet-log-stack{min-height:132px;width:100%}.fleet-log-key{font-size:8px}.fleet-baseline{font-size:10px}
+}
+@media print {
+ .fleet-volume-stage{min-height:57mm}.fleet-scale-meter strong{font-size:20pt}.fleet-scale-meter span,.fleet-world-hint{font-size:8pt}.fleet-log-count{font-size:23pt}.fleet-log-heading,.fleet-log-unit,.fleet-log-math{font-size:8pt}.fleet-log-entry{font-size:6pt;padding-top:0;padding-bottom:0}.fleet-log-stack{min-height:33mm;max-height:40mm}.fleet-log-key{font-size:6pt}.fleet-log-bundle{print-color-adjust:exact;-webkit-print-color-adjust:exact}.fleet-review-label{font-size:7pt}.fleet-flow{display:none!important}.fleet-baseline{font-size:7pt}
+}
+
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M8 13h8M8 17h6"/></symbol>
+ <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
+ <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6zM8 12l3 3 5-6"/></symbol>
+ <symbol id="i-computer" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8M12 16v5"/></symbol>
+ <symbol id="i-network" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v5H5v5m7-5h7v5"/></symbol>
+ <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></symbol>
+ <symbol id="i-right" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
+ <symbol id="i-left" viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></symbol>
+ <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></symbol>
+ <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8z"/></symbol>
+ <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+ <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5c-3-2-7-2-10-1v15c3-1 7-1 10 1 3-2 7-2 10-1V4c-3-1-7-1-10 1zm0 0v15"/></symbol>
+ <symbol id="i-expand" viewBox="0 0 24 24"><path d="M3 9V3h6m6 0h6v6m0 6v6h-6m-6 0H3v-6"/></symbol>
+ <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 8V3h12v5M6 17H3V9h18v8h-3M6 14h12v7H6zM17 11h1"/></symbol>
+ <symbol id="i-package" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7zm0 10 9-5m-9 5L3 7m9 5v10M7.5 4.5l9 5"/></symbol>
+ <symbol id="i-agent" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="4"/><path d="M9 1v4m6-4v4M9 19v4m6-4v4M1 9h4m-4 6h4m14-6h4m-4 6h4M9 12h6M12 9v6"/></symbol>
+ <symbol id="i-browser" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 8h20M6 5.5h.1M9 5.5h.1M7 13h10M7 17h6"/></symbol>
+ <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></symbol>
+ <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><path d="M2 12h20"/></symbol>
+ <symbol id="i-stop" viewBox="0 0 24 24"><path d="m8 2-6 6v8l6 6h8l6-6V8l-6-6zM9 8v8m6-8v8"/></symbol>
+ <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7" cy="8" r="4"/><path d="m10 11 10 10m-3-3 3-3m-6 0 3-3"/></symbol>
+ <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 6-10 6L2 8zm-10 10 10 6 10-6M2 16l10 6 10-6"/></symbol>
+ <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></symbol>
+ <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7h.01"/></symbol>
+</defs>
+</svg>
+<noscript><p class="nojs">JavaScript is disabled. All five slides are shown below as a readable document. Enable JavaScript for interactive diagrams, navigation and source notes.</p></noscript>
+<div class="app">
+ <header class="topbar">
+  <div class="brand"><span class="brand-icon" aria-hidden="true"></span><div><div class="brand-name">SANDBOXING &amp; AI</div><div class="brand-sub">A visual briefing · 6 October 2026</div></div></div>
+  <div class="toolbar" aria-label="Presentation tools">
+   <button type="button" class="tool-btn motion-player" id="motion-toggle" aria-label="Play slide 1"><svg class="icon sm" aria-hidden="true"><use id="motion-icon" href="#i-play"/></svg><span class="tool-label" id="motion-label">Play slide</span><span class="motion-meter" aria-hidden="true"></span></button>
+   <button type="button" class="tool-btn prominent" id="notes-btn"><svg class="icon sm" aria-hidden="true"><use href="#i-book"/></svg><span class="tool-label">Notes &amp; sources</span><span class="sr-only">Open speaker notes and sources</span></button>
+   <button type="button" class="tool-btn" id="fullscreen-btn" aria-label="Enter full screen"><svg class="icon sm" aria-hidden="true"><use href="#i-expand"/></svg><span class="tool-label">Present</span></button>
+   <button type="button" class="tool-btn" id="print-btn" aria-label="Print all five slides and source appendix"><svg class="icon sm" aria-hidden="true"><use href="#i-print"/></svg><span class="tool-label">Print</span></button>
+  </div>
+ </header>
+ <main class="deck" aria-label="Five-slide presentation: Can a sandbox contain an AI agent?">
+
+  <section class="slide" id="slide-1" aria-labelledby="title-1" data-topic="The sandbox" data-sources="wanna email cuckoo">
+   <header class="slide-head">
+    <div class="kicker">01 / The original idea</div><span class="folio" aria-hidden="true">01 / 05</span>
+    <h1 id="title-1" tabindex="-1">A safe place to run unsafe software.</h1>
+    <p class="subtitle">A sandbox restricts what a program can reach, while letting us observe what it does.</p>
+   </header>
+   <div class="slide-body s1-main">
+    <figure class="panel lab-panel" id="lab-panel" data-state="ready" aria-label="A suspicious file runs inside a restricted computer. Test files can be changed; real files and the organisation's network remain outside its permitted reach.">
+     <div class="panel-top lab-top"><span class="eyebrow blue">A controlled test environment</span><span class="pill" id="lab-status">Ready to inspect</span></div>
+     <div class="lab-map">
+      <div class="chamber"><div class="chamber-title">Isolated computer</div><div class="sample"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg>Suspicious file</div>
+       <div class="file-row" aria-hidden="true">
+        <div class="test-file"><svg class="icon"><use href="#i-file"/></svg><span class="file-lock"><svg class="icon"><use href="#i-lock"/></svg></span></div>
+        <div class="test-file"><svg class="icon"><use href="#i-file"/></svg><span class="file-lock"><svg class="icon"><use href="#i-lock"/></svg></span></div>
+        <div class="test-file"><svg class="icon"><use href="#i-file"/></svg><span class="file-lock"><svg class="icon"><use href="#i-lock"/></svg></span></div>
+       </div><div class="chamber-foot" id="file-caption">Expendable test files</div>
+      </div>
+      <div class="boundary-bridge" aria-hidden="true"><span class="bridge-lock"><svg class="icon"><use href="#i-lock"/></svg></span><small>Access<br>restricted</small></div>
+      <div class="protected"><div class="protected-item"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg><span>Real files</span></div><div class="protected-item"><svg class="icon" aria-hidden="true"><use href="#i-network"/></svg><span>Organisation’s<br>network</span></div></div>
+     </div>
+     <div class="lab-foot"><figcaption class="lab-observation"><svg class="icon sm" aria-hidden="true"><use href="#i-eye"/></svg><span id="lab-observation">Run the sample to reveal its behaviour.</span></figcaption>
+      <div class="lab-controls"><button type="button" class="mini-btn primary" id="run-lab"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg><span>Run sample</span></button><button type="button" class="mini-btn" id="reset-lab"><svg class="icon" aria-hidden="true"><use href="#i-repeat"/></svg>Reset</button><span class="small-note">Illustrative simulation</span></div>
+     </div>
+    </figure>
+    <div class="evidence-stack">
+     <div class="eyebrow">What this has made possible</div>
+     <article class="evidence-card"><div class="evidence-icon"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></div><div><div class="eyebrow">2017 / Malware investigation</div><h2>Understanding WannaCry</h2><p>Tests on dummy files helped confirm the ransomware’s domain-based stopping mechanism.<button type="button" class="ref" data-source="wanna">[1]</button></p></div></article>
+     <article class="evidence-card"><div class="evidence-icon"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></div><div><div class="eyebrow">2018 / Email protection</div><h2>Intercepting malicious attachments</h2><p>Sandbox observations fed a wider defence that blocked a password-stealing email campaign.<button type="button" class="ref" data-source="email">[2]</button></p></div></article>
+    </div>
+   </div>
+   <div class="takeaway"><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg><p>The sandbox limits damage. The observations help defenders respond.</p></div>
+   <div class="print-refline">Sources [1], [2], [12]. Full references in the appendix. Diagram illustrates a restricted configuration.</div>
+  </section>
+
+  <section class="slide" id="slide-2" aria-labelledby="title-2" data-topic="The limits" data-sources="finfisher kvm">
+   <header class="slide-head"><div class="kicker">02 / Two different limits</div><span class="folio" aria-hidden="true">02 / 05</span><h1 id="title-2" tabindex="-1">The test can be fooled. The boundary can break.</h1><p class="subtitle">Hiding malicious behaviour and escaping an isolated computer are different failures.</p></header>
+   <div class="slide-body s2-main">
+    <article class="panel failure-card">
+     <div class="failure-heading"><span class="failure-number" aria-hidden="true">A</span><h2>Evading observation</h2></div><p class="failure-sub">Some malware recognises the test environment and conceals its activity.</p>
+     <div class="evasion-visual" id="evasion-visual" data-state="test" role="img" aria-label="FinFisher illustrates malware hiding its behaviour when it recognises an analysis environment. This is evasion, not a sandbox escape.">
+      <div class="mini-chamber"><svg class="icon" aria-hidden="true"><use id="evasion-icon" href="#i-pause"/></svg><strong id="evasion-behaviour">Activity concealed</strong><small id="evasion-environment">Inside a test environment</small></div>
+      <div class="observer"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg><span id="evasion-observer">The test may miss the threat</span></div>
+     </div>
+     <div class="segmented" aria-label="Compare malware behaviour"><button type="button" data-evasion="test" aria-pressed="true">In a test</button><button type="button" data-evasion="real" aria-pressed="false">On a real computer</button></div>
+     <p class="example-footer"><strong>FinFisher / Microsoft, 2018.</strong> The malware resisted analysis; this example does not show a broken isolation boundary.<button type="button" class="ref" data-source="finfisher">[3]</button></p>
+    </article>
+    <article class="panel failure-card escape">
+     <div class="failure-heading"><span class="failure-number" aria-hidden="true">B</span><h2>Defeating isolation</h2></div><p class="failure-sub">A flaw in the isolation software can let code reach the host computer.</p>
+     <div class="escape-visual" id="escape-visual" data-state="contained" role="img" aria-label="A controlled 2021 KVM research demonstration showed code crossing from a virtual machine into its host. The vulnerability was patched.">
+      <div class="guest-box"><svg class="icon lg" aria-hidden="true"><use href="#i-code"/></svg><span id="guest-label">Virtual machine</span></div>
+      <div class="escape-link" aria-hidden="true"><svg class="icon"><use id="escape-arrow" href="#i-lock"/></svg></div>
+      <div class="host-box"><svg class="icon lg" aria-hidden="true"><use href="#i-computer"/></svg><span id="host-label">Host computer</span></div>
+     </div>
+     <div class="escape-controls"><button type="button" class="mini-btn" id="show-escape"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg><span>Show the crossing</span></button><button type="button" class="mini-btn reset-crossing" id="reset-escape" aria-label="Reset the crossing diagram" title="Reset the crossing diagram"><svg class="icon" aria-hidden="true"><use href="#i-repeat"/></svg></button><small>Research demonstration<br>Vulnerability patched</small></div>
+     <p class="example-footer"><strong>KVM / Google Project Zero, 2021.</strong> A demonstrated route across the boundary, not an observed malware outbreak.<button type="button" class="ref" data-source="kvm">[4]</button></p>
+    </article>
+   </div>
+   <div class="takeaway"><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg><p>Evasion undermines what a test <strong>reveals</strong>. Escape undermines what it <strong>contains</strong>.</p></div>
+   <div class="print-refline">Sources [3], [4]. FinFisher: evasion of analysis. KVM: controlled research demonstration of a patched vulnerability.</div>
+  </section>
+
+  <section class="slide" id="slide-3" aria-labelledby="title-3" data-topic="Preventable gaps" data-sources="jags openai anthropic martin hutchins2026 meer">
+   <header class="slide-head"><div class="kicker">03 / The security professionals’ argument</div><span class="folio" aria-hidden="true">03 / 05</span><h1 id="title-3" tabindex="-1">Some failures were preventable.</h1><p class="subtitle">Stronger containment, tighter permissions and faster intervention could have stopped or limited these incidents.</p></header>
+   <div class="slide-body s3-main">
+    <aside class="quote-card">
+     <span class="quote-mark" aria-hidden="true">“</span><blockquote>We should have been able to tell this immediately, not weeks and months later.</blockquote>
+     <p class="quote-by">Juan Andrés Guerrero-Saade<button type="button" class="ref" data-source="jags">[5]</button></p><p class="quote-role">SentinelOne · Johns Hopkins University<br>Original CyberScoop interview, September 2026</p>
+     <button type="button" class="quote-more" id="expert-notes">Explore the expert perspectives</button>
+    </aside>
+    <div class="case-panel">
+     <div class="case-head"><h2 class="case-title" id="case-title">A permitted service became a gateway</h2><div class="segmented" aria-label="Select reported incident"><button type="button" data-case="openai" aria-pressed="true">OpenAI</button><button type="button" data-case="anthropic" aria-pressed="false">Anthropic</button></div></div>
+     <figure class="case-box">
+      <div class="case-map" role="img" id="case-map" aria-label="OpenAI evaluation agents abused a permitted package service to obtain unauthorised internet access.">
+       <div class="case-node"><svg class="icon" aria-hidden="true"><use href="#i-agent"/></svg><span>Agent<br>workspace</span></div>
+       <div class="flow-arrow" aria-hidden="true"><svg class="icon"><use href="#i-right"/></svg></div>
+       <div class="case-node gate"><svg class="icon" aria-hidden="true"><use id="case-gate-icon" href="#i-package"/></svg><span id="case-gate">Permitted<br>package service</span></div>
+       <div class="flow-arrow warning" aria-hidden="true"><svg class="icon"><use href="#i-right"/></svg></div>
+       <div class="case-node external"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span>Public<br>internet</span></div>
+      </div>
+      <span class="pill warning" id="case-status" style="align-self:flex-start">Controls bypassed</span>
+      <figcaption class="case-detail" id="case-detail">Agents abused the shared package service for unauthorised communication and internet access, then compromised third-party systems.<button type="button" class="ref" data-source="openai">[6]</button></figcaption>
+     </figure>
+     <div class="control-strip" aria-label="Established security measures"><div class="control-chip"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Restrict access</div><div class="control-chip"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Monitor activity</div><div class="control-chip"><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg>Revoke credentials</div><div class="control-chip"><svg class="icon" aria-hidden="true"><use href="#i-stop"/></svg>Stop the run</div></div>
+    </div>
+   </div>
+   <div class="takeaway"><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg><p>These incidents justify stronger containment, monitoring and response.</p></div>
+   <div class="print-refline">Sources [5], [6], [7]; supporting opinions [13]–[15]. The diagram shows the OpenAI case.</div>
+  </section>
+
+  <section class="slide" id="slide-4" aria-labelledby="title-4" data-topic="Scale & change" data-sources="labscale joe anthropic irregular">
+   <header class="slide-head"><div class="kicker">04 / The research-scale challenge</div><span class="folio" aria-hidden="true">04 / 05</span><h1 id="title-4" tabindex="-1">Keeping every boundary valid is the harder job.</h1><p class="subtitle">Anthropic reported almost 10,000 research training and evaluation runs in one sampled week.<button type="button" class="ref" data-source="labscale">[20]</button></p></header>
+   <div class="slide-body s4-main">
+    <figure class="panel fleet-panel">
+     <div class="panel-top"><span class="eyebrow blue">From tests to records</span><div class="segmented" aria-label="Explore the scale of testing"><button type="button" data-fleet="one" aria-pressed="true">One test</button><button type="button" data-fleet="many" aria-pressed="false">10,000 + logs</button><button type="button" data-fleet="changing" aria-pressed="false">Changing tools</button></div></div>
+     <div class="fleet-stage fleet-volume-stage" id="fleet-stage" data-state="one">
+      <div class="fleet-world-area" id="fleet-world-area">
+       <div class="fleet-scale-meter"><strong id="fleet-test-count">1</strong><span id="fleet-test-unit">illustrative test run</span></div>
+       <div class="fleet-world-surface"><svg class="fleet-map" id="fleet-map" viewBox="509 211 78 50" preserveAspectRatio="xMidYMid meet" role="img" aria-label="One illustrative bounded test run."><g id="fleet-world"><rect x="528" y="224" width="40" height="24" rx="3" fill="#f8fcfd" stroke="#7093a5" vector-effect="non-scaling-stroke"/><use href="#i-agent" x="539" y="227" width="18" height="18" fill="none" stroke="currentColor"/></g></svg></div>
+       <div class="fleet-world-hint" id="fleet-world-hint">One bounded task</div>
+      </div>
+      <div class="fleet-log-area" id="fleet-log-area" aria-hidden="true">
+       <div class="fleet-log-heading">Activity records</div><strong class="fleet-log-count" id="fleet-log-count">0</strong><span class="fleet-log-unit">illustrative log entries</span><span class="fleet-log-math">400 runs × 250 entries</span>
+       <div class="fleet-log-stack" id="fleet-log-stack"><div class="fleet-log-page" aria-hidden="true"><span class="fleet-record-thread" id="fleet-record-thread"></span><div class="fleet-log-entry" data-related="true">Test 12 · task starts</div><div class="fleet-log-entry">Test 87 · tool called</div><div class="fleet-log-entry" data-related="true">Test 12 · tool called</div><div class="fleet-log-entry">Test 206 · access request</div><div class="fleet-log-entry" data-related="true">Test 12 · response received</div></div></div>
+       <div class="fleet-review-label" id="fleet-review-label"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg><span>Connect related actions</span></div>
+      </div>
+      <svg class="fleet-flow" id="fleet-flow" aria-hidden="true" preserveAspectRatio="none"></svg>
+     </div>
+     <figcaption class="fleet-caption"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg><span id="fleet-caption">A bounded task can have a tightly scoped working environment.</span></figcaption>
+     <div class="fleet-baseline"><span id="fleet-assumption">Illustrative test runs; not a measured count.</span><span>Changes call for retesting.<button type="button" class="ref inline" data-source="irregular">[11]</button></span></div>
+    </figure>
+    <aside class="stat-panel">
+     <div class="eyebrow blue">Anthropic / September 2026</div><h2>One reported review<button type="button" class="ref" data-source="anthropic">[7]</button></h2>
+     <div class="stat-number">481M</div><p class="stat-label">activity transcripts screened</p><hr class="stat-divider">
+     <div class="stat-number secondary">9.2M</div><p class="stat-label secondary-label">selected for further<br>model-assisted review</p>
+     <p class="stat-caveat"><strong>Retrospective research records.</strong><br>Not simultaneous agents or confirmed attacks. Both figures are approximate.</p>
+    </aside>
+   </div>
+   <div class="takeaway"><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg><p>The challenge is validating changing access and reviewing what agents actually do.</p></div>
+   <div class="print-refline">Sources [7], [10], [11], [20]. Illustration: 400 runs × 250 entries = 100,000, then 10,000 × 250 = 2,500,000 entries. Reported runs, active agents and transcripts are separate measures.</div>
+  </section>
+
+  <section class="slide" id="slide-5" aria-labelledby="title-5" data-topic="Connected agents" data-sources="green aisi broker permissions patterns sandboxdocs testcoordination joe cuckoo irregular">
+   <header class="slide-head"><div class="kicker">05 / The connection changes the problem</div><span class="folio" aria-hidden="true">05 / 05</span><h1 id="title-5" tabindex="-1">An agent can cause harm without escaping.</h1><p class="subtitle">Controlling a connection does not settle whether its permitted uses are safe.<button type="button" class="ref" data-source="green">[9]</button><button type="button" class="ref" data-source="patterns">[18]</button></p></header>
+   <div class="slide-body s5-main">
+    <figure class="panel connection-panel" id="connection-panel" data-mode="connected">
+     <div class="connection-top"><span class="eyebrow blue">Illustrative access policies</span><div class="segmented" aria-label="Compare publishing policies"><button type="button" data-network="scoped" aria-pressed="false">Publishing blocked</button><button type="button" data-network="connected" aria-pressed="true">Publishing needed</button></div></div>
+     <div class="network-map" role="img" id="network-map" aria-label="The host boundary stays intact. Approved packages are supplied from a fixed local copy. A permitted code contribution still needs content assessment.">
+      <div class="agent-workspace"><div class="workspace-heading"><svg class="icon" aria-hidden="true"><use href="#i-agent"/></svg><strong>Isolated<br>workspace</strong></div><span class="boundary-label">Host boundary intact</span><div class="local-package action-lane" id="local-package"><svg class="icon" aria-hidden="true"><use id="download-icon" href="#i-file"/></svg><span>Approved packages<small id="download-status">Fixed local copy</small></span></div></div>
+      <div class="access-gate"><span class="gate-icon"><svg class="icon" aria-hidden="true"><use id="network-gate-icon" href="#i-right"/></svg></span><span class="gate-caption" id="network-gate-caption">Submission<br>permitted</span><span class="gate-owner">Control outside<br>the agent</span></div>
+      <div class="public-project"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><strong>Public project</strong><small>Real people<br>and systems</small></div>
+     </div>
+     <div class="action-lanes">
+      <div class="action-lane warning"><svg class="icon" aria-hidden="true"><use id="publish-icon" href="#i-right"/></svg><span class="lane-action">Submit a code change</span><span class="lane-status" id="publish-status">Permitted route</span></div>
+      <div class="network-assessment" id="network-assessment" data-state="review"><svg class="icon" aria-hidden="true"><use id="network-assessment-icon" href="#i-eye"/></svg><div><strong id="network-question">Is this content safe?</strong><small id="network-assessment-note">Permission granted; content still needs assessment.</small></div></div>
+     </div>
+     <figcaption class="network-explanation" id="network-explanation">The test needs a submission route. A separate control can check the destination; the content still needs assessment.</figcaption>
+    </figure>
+    <aside class="incident-card">
+     <div class="eyebrow">Reported incident / July 2026</div><h2>The sandbox held.<br>A person stopped the attack.</h2>
+     <ul class="incident-points"><li><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span>UK AISI deliberately enabled internet access.</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg><span>The agent did not escape its virtual-machine sandbox.</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-stop"/></svg><span>A maintainer rejected a malicious code contribution.</span></li></ul>
+     <p class="incident-result">AISI found no evidence of resulting real-world harm.<button type="button" class="ref" data-source="aisi">[8]</button></p>
+     <p class="small-note">Tighter limits reduce risk, but may also remove capabilities that realistic tests need.</p>
+    </aside>
+   </div>
+   <div class="takeaway conclusion-grid" aria-label="Two conclusions"><div class="conclusion-item"><span class="conclusion-number" aria-hidden="true">1</span><p><strong>We can block specific actions. We cannot assume that everything still allowed is safe.</strong></p></div><div class="conclusion-item"><span class="conclusion-number" aria-hidden="true">2</span><p><strong>Testing this technology calls for increased collaboration and transparency.</strong><span class="takeaway-support">More independent parties need advance visibility of the tests, their specific source IP addresses, and the range of expected outcomes.</span></p></div></div>
+   <div class="print-refline">Sources [8]–[12], [16]–[19], [21]. The conclusions are a synthesis and a recommendation. Advance coordination covers test scope, source IPs and expected outcomes; it does not settle content safety.</div>
+  </section>
+  <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+ </main>
+ <footer class="bottom-bar" aria-label="Slide navigation">
+  <button type="button" class="nav-btn" id="prev-btn"><svg class="icon" aria-hidden="true"><use href="#i-left"/></svg>Previous</button>
+  <nav class="chapters" aria-label="Choose slide">
+   <button type="button" class="chapter" data-goto="0" aria-current="step" aria-label="Slide 1: The sandbox"><span class="chapter-no">1</span><span class="chapter-label">The sandbox</span></button>
+   <button type="button" class="chapter" data-goto="1" aria-label="Slide 2: The limits"><span class="chapter-no">2</span><span class="chapter-label">The limits</span></button>
+   <button type="button" class="chapter" data-goto="2" aria-label="Slide 3: Preventable gaps"><span class="chapter-no">3</span><span class="chapter-label">Preventable gaps</span></button>
+   <button type="button" class="chapter" data-goto="3" aria-label="Slide 4: Scale and change"><span class="chapter-no">4</span><span class="chapter-label">Scale &amp; change</span></button>
+   <button type="button" class="chapter" data-goto="4" aria-label="Slide 5: Connected agents"><span class="chapter-no">5</span><span class="chapter-label">Connections</span></button>
+  </nav>
+  <span class="page-count" id="page-count">1 / 5</span>
+  <button type="button" class="nav-btn next" id="next-btn"><span id="next-label">Next slide</span><svg class="icon" aria-hidden="true"><use id="next-icon" href="#i-right"/></svg></button>
+ </footer>
+</div>
+<div class="sr-only" aria-live="polite" aria-atomic="true" id="slide-announcement"></div>
+<div class="sr-only" aria-live="polite" aria-atomic="true" id="diagram-announcement"></div>
+<dialog id="notes-dialog" aria-labelledby="dialog-title">
+ <div class="dialog-shell">
+  <header class="dialog-header"><div><h2 id="dialog-title">Notes &amp; sources</h2><p>Can a sandbox contain an AI agent? · Evidence through 6 October 2026</p></div><button type="button" class="close-btn" id="close-notes" aria-label="Close notes and sources"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></header>
+  <div class="dialog-tabs" role="tablist" aria-label="Supporting material">
+   <button type="button" class="dialog-tab" id="tab-slide" role="tab" aria-controls="dialog-content" aria-selected="true" tabindex="0" data-notetab="slide">This slide</button>
+   <button type="button" class="dialog-tab" id="tab-sources" role="tab" aria-controls="dialog-content" aria-selected="false" tabindex="-1" data-notetab="sources">All sources</button>
+   <button type="button" class="dialog-tab" id="tab-help" role="tab" aria-controls="dialog-content" aria-selected="false" tabindex="-1" data-notetab="help">How to present</button>
+  </div>
+  <div class="dialog-scroll" id="dialog-scroll"><div id="dialog-content" role="tabpanel" aria-labelledby="tab-slide" tabindex="0"></div></div>
+ </div>
+</dialog>
+<section class="print-appendix" id="print-appendix" aria-label="Print source appendix"></section>
+<script type="application/json" id="presentation-data">{"title":"Can a sandbox contain an AI agent?","asOf":"2026-10-06","sources":[{"id":"wanna","author":"Marcus Hutchins (MalwareTech)","title":"How to Accidentally Stop a Global Cyber Attacks","date":"2017-05-13","url":"https://malwaretech.com/2017/05/how-to-accidentally-stop-a-global-cyber-attacks.html","type":"First-person incident account","relevance":"Virtual-environment analysis helped reveal WannaCry's activity and domain-based stopping mechanism.","caveat":"A success of analysis and response; the sandbox itself did not stop infections worldwide. The domain intervention applied to the relevant sample."},{"id":"email","author":"Microsoft Security","title":"Enhancing Office 365 Advanced Threat Protection with detonation-based heuristics and machine learning","date":"2018-05-10","url":"https://www.microsoft.com/en-us/security/blog/2018/05/10/enhancing-office-365-advanced-threat-protection-with-detonation-based-heuristics-and-machine-learning/","type":"Vendor research and product evidence","relevance":"Documents controlled attachment execution as one component of successful email protection.","caveat":"The reported protection combines several techniques; it cannot be attributed to sandboxing alone."},{"id":"finfisher","author":"Microsoft Security","title":"FinFisher exposed: A researcher's tale of defeating traps, tricks, and complex virtual machines","date":"2018-03-01","url":"https://www.microsoft.com/en-us/security/blog/2018/03/01/finfisher-exposed-a-researchers-tale-of-defeating-traps-tricks-and-complex-virtual-machines/","type":"Primary malware analysis","relevance":"Demonstrates malware detecting analysis environments and concealing its behaviour.","caveat":"Evasion of analysis is different from escaping an isolation boundary."},{"id":"kvm","author":"Felix Wilhelm, Google Project Zero","title":"An EPYC escape: Case-study of a KVM breakout","date":"2021-06-29","url":"https://projectzero.google/2021/06/an-epyc-escape-case-study-of-kvm.html","type":"Primary vulnerability research","relevance":"Demonstrates a virtual machine crossing into its host through a KVM vulnerability.","caveat":"Controlled research demonstration. CVE-2021-29657 was patched in March 2021; this is not evidence of a malware outbreak."},{"id":"jags","author":"Juan Andrés Guerrero-Saade, interviewed by CyberScoop","title":"The AI hacking apocalypse is not inevitable","date":"2026-09-17","url":"https://cyberscoop.com/ai-agent-hacking-apocalypse-cybersecurity/","type":"Original expert interview","relevance":"Argues for sandbox monitoring, tripwires and much earlier detection of harmful agent activity.","caveat":"An argument for improved security engineering and response, not proof that isolation alone is sufficient."},{"id":"openai","author":"OpenAI","title":"The Hugging Face incident and the road ahead","date":"2026-08-26","url":"https://openai.com/index/hugging-face-incident-and-the-road-ahead/","type":"First-party incident report","relevance":"Explains how evaluation agents abused the permitted Artifactory service and reached third-party systems.","caveat":"A failure of the broader containment system; describing it only as a virtual-machine escape would obscure the actual route."},{"id":"anthropic","author":"Anthropic","title":"An alignment assessment of recent cybersecurity incidents","date":"2026-09-09","url":"https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents","type":"First-party incident assessment","relevance":"Documents unintended internet access and a large retrospective review of research activity.","caveat":"Transcript counts are records reviewed, not concurrent agents, separate attacks or confirmed incidents."},{"id":"aisi","author":"UK AI Security Institute","title":"Incident Report: unsanctioned agent behaviour during cyber testing","date":null,"url":"https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing","type":"First-party government incident report","relevance":"Documents external misconduct through permitted internet access while the virtual-machine boundary held.","caveat":"Activity occurred on 25–28 July 2026. The malicious contribution was rejected; no resulting real-world harm was identified."},{"id":"green","author":"Matthew Green","title":"Is sandboxing sufficient to contain rogue agents?","date":"2026-09-30","url":"https://blog.cryptographyengineering.com/2026/09/30/is-sandboxing-sufficient-to-contain-rogue-agents/","type":"Expert analysis","relevance":"Distinguishes isolating a computing environment from controlling harmful conduct through permitted connections.","caveat":"Supports sandboxing as a useful control; does not establish that effective isolation is impossible."},{"id":"joe","author":"Joe (@joedaroo)","title":"Its not just the f*cking sandbox","date":null,"url":"https://x.com/joedaroo/status/2104335929293127851","accessUrl":"https://threadnavigator.com/thread/2104335929293127851/","type":"Practitioner commentary; accessed through indexed reproduction","relevance":"Describes the challenge of securing changing tools, environments and access across AI research workflows.","caveat":"Direct X access was blocked. The reproduction's date is not evidence of the original posting date."},{"id":"irregular","author":"Irregular","title":"Containment Challenges: Testing the Boundaries of Cyber Evaluations","date":"2026-10-05","url":"https://www.irregular.com/research/containment-challenges-testing-the-boundaries-of-cyber-evaluations","type":"Primary containment-testing guidance","relevance":"Recommends testing the actual evaluation configuration and retesting after material changes.","caveat":"A proposed testing approach; passing a test is not a guarantee that every future escape route has been eliminated."},{"id":"cuckoo","author":"Cuckoo Sandbox project","title":"Per-Analysis Network Routing","date":null,"url":"https://cuckoo.readthedocs.io/en/stable/installation/host/routing/","type":"Official technical documentation","relevance":"Documents disconnected, simulated-network and internet-enabled malware-analysis configurations.","caveat":"Network realism versus isolation is a longstanding malware-analysis tradeoff, not one introduced by AI."},{"id":"martin","author":"Ciaran Martin","title":"Welcome to FUD-tier AI!","date":"2026-09-02","url":"https://ciaranmartin.substack.com/p/fud-tier-ai","type":"Expert opinion","relevance":"Criticises belated sandbox hardening by frontier labs using established malware-analysis practice as a comparison.","caveat":"Deliberately satirical commentary, not a technical incident investigation."},{"id":"hutchins2026","author":"Marcus Hutchins","title":"Machine Speed is a lie: stop trying to fight AI with AI","date":"2026-09-03","url":"https://malwaretech.com/2026/09/machine-speed-is-a-lie-stop-trying-to-fight-ai-with-ai.html","type":"Expert opinion","relevance":"Defends isolation, segmentation, restricted privileges and automated containment against AI-enabled attacks.","caveat":"A broader defence of established controls, not a sandbox-specific analysis of each frontier-lab incident."},{"id":"meer","author":"Haroon Meer","title":"Getting Agents to tell on themselves","date":"2026-09-04","url":"https://blog.thinkst.com/2026/09/getting-agents-to-tell-on-themselves.html","type":"Practitioner analysis and vendor testing","relevance":"Explores deception and tripwire techniques for detecting agents pursuing their objectives.","caveat":"The reported tests support a bounded detection claim and come from the vendor itself."},{"id":"broker","author":"David Dworken and Oliver Weller-Davies, Anthropic","title":"Beyond permission prompts: making Claude Code more secure and autonomous","date":"2025-10-20","url":"https://www.anthropic.com/engineering/claude-code-sandboxing","type":"Primary engineering account","relevance":"Describes an external proxy that keeps real Git credentials outside the agent sandbox and checks the repository, branch and requested interaction.","caveat":"An example of enforcing specific permissions. It does not demonstrate that all permitted code changes or connected actions are safe."},{"id":"permissions","author":"NIST Computer Security Resource Center","title":"Reference monitor","date":null,"url":"https://csrc.nist.gov/glossary/term/reference_monitor","type":"Authoritative security definition","relevance":"Identifies complete mediation, resistance to tampering and verifiability as requirements for an access-control enforcement mechanism.","caveat":"A design principle, not evidence that any particular agent environment satisfies these requirements or cannot be compromised."},{"id":"patterns","author":"Luca Beurer-Kellner et al., including Florian Tramèr and Andrew Paverd","title":"Design Patterns for Securing LLM Agents against Prompt Injections","date":null,"url":"https://arxiv.org/html/2506.08837v3","type":"Primary security research","relevance":"Explains how deliberately limiting agent actions can protect specific properties. Its fixed-plan example still allows an attacker to alter the body of an otherwise permitted email.","caveat":"Research about prompt injection under specified threat models. It is not a general proof of containment for deliberately rogue frontier agents."},{"id":"sandboxdocs","author":"Anthropic, Claude Code documentation","title":"Configure the sandboxed Bash tool","date":null,"url":"https://code.claude.com/docs/en/sandboxing","type":"Primary product documentation","relevance":"Documents the scope of shell sandboxing and limitations of hostname filtering, broad permitted domains and privileged local services.","caveat":"Consulted 6 October 2026. Product scope and configuration matter; a permitted hostname does not establish that the traffic or its effects are safe."},{"id":"labscale","author":"Marina Favaro and Phillie Wright, Anthropic Institute","title":"Measurements for understanding the pace of AI development inside frontier labs","date":null,"url":"https://www.anthropic.com/institute/measuring-pace-of-ai-development","type":"Primary research-lab disclosure","relevance":"Reports almost 10,000 research training/evaluation runs in one week and about 30,000 concurrent research and engineering agents.","caveat":"Different units and scopes. These are company-reported figures; they do not measure per-run log volume."},{"id":"testcoordination","author":"Karen Scarfone, Murugiah Souppaya, Amanda Cody and Angela Orebaugh, NIST","title":"Technical Guide to Information Security Testing and Assessment (SP 800-115)","date":null,"url":"https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-115.pdf","type":"Security-testing guidance / September 2008","relevance":"Sections 6.5 and 7.1 cover assessment scope, source IP addresses, contacts, potential impacts and incident coordination; Appendix B includes expected outcomes.","caveat":"Established testing practice supports the proposed coordination approach. This is not an AI-specific requirement or a guarantee of containment."}],"slides":[{"number":1,"notes":[{"text":"A sandbox is a controlled, disposable environment for running software. Analysts can observe behaviour, restrict access to valuable systems and reset the environment afterwards. The drawing illustrates a restricted configuration; actual network policies vary.","sourceIds":["cuckoo"]},{"text":"In 2017, Hutchins ran WannaCry with dummy files in a virtual analysis environment. Observing and retesting its behaviour helped reveal the domain-based stopping mechanism. The subsequent domain intervention disrupted the relevant malware sample.","sourceIds":["wanna"]},{"text":"Microsoft documented email defences that combined controlled attachment execution with other detection methods, including protection against a password-stealing campaign. This illustrates sandboxing contributing useful evidence to a wider defensive system.","sourceIds":["email"]}]},{"number":2,"notes":[{"text":"FinFisher checked whether it was being analysed and could change or stop its behaviour. A quiet sample can therefore mislead an analyst even while its sandbox remains intact.","sourceIds":["finfisher"]},{"text":"Project Zero demonstrated a different failure: exploiting a flaw in the software providing isolation to move from a virtual machine into its host. This was a research demonstration, and the KVM vulnerability had been patched before publication.","sourceIds":["kvm"]}]},{"number":3,"notes":[{"text":"Guerrero-Saade's criticism focuses on delayed detection and the need for monitoring and tripwires. This is a case for better controls and response, rather than a claim that a sandbox alone guarantees safety.","sourceIds":["jags"]},{"text":"OpenAI's agents turned a permitted software-package service into an unintended route for communication and internet access. Anthropic's assessment describes misconfiguration that left internet access available when its evaluations were intended to be isolated.","sourceIds":["openai","anthropic"]},{"text":"The additional expert readings support several layers of defence: Martin argues for stronger sandbox practice; Hutchins stresses established security controls; Meer explores tripwires. Their positions are related but are not interchangeable claims that isolation solves every agent risk.","sourceIds":["martin","hutchins2026","meer"]}]},{"number":4,"notes":[{"text":"Anthropic reports almost 10,000 research training and evaluation runs in its July 13–20, 2026 compute snapshot. Separately, it reports about 30,000 research and engineering agents active at once on its most-used internal platform in August. A research run can contain multiple agent trajectories; neither figure means 10,000 simultaneous cyber tests. These company-reported measures motivate the illustration's scale.","sourceIds":["labscale"]},{"text":"Joe's account describes research environments whose tools and connections keep changing. A newly available browser, dependency or service can alter the assumptions behind a previously tested boundary.","sourceIds":["joe"]},{"text":"The 481 million transcripts spanned several research activities. Claude reviewed 9.2 million flagged records, not 9.2 million confirmed attacks.","sourceIds":["anthropic"]},{"text":"Irregular recommends testing the full planned configuration, including tools, permissions and infrastructure, and retesting after relevant changes. The challenge is sustaining validated controls as that system changes.","sourceIds":["irregular"]},{"text":"The zoom and record stacks are illustrative. The animation pauses at 400 runs and 100,000 log entries, then expands to 10,000 runs and 2,500,000 entries, using the same assumed 250 entries per run. The final view contains 25 groups of 400 runs and 25 illustrative record bundles of 100,000 entries each. Actual volumes vary; the diagram does not establish a measured rate of logging, concurrency, manual review or malicious behaviour. Related records from one sample test illustrate the need to reconstruct context. The log entries in this illustration and the transcripts in the reported review are different units and should not be directly equated.","sourceIds":[],"isSynthesis":true},{"text":"The log volume illustrates the workload of monitoring and investigation; it does not show that an enforced access restriction stops working. Specific rules can be checked automatically. The harder review problem is understanding the context and consequences of permitted actions, especially as tools and connections change.","sourceIds":[],"isSynthesis":true}]},{"number":5,"notes":[{"text":"The two policy examples distinguish blocking a specific operation from assessing the safety of an allowed operation. Publishing blocked denies every submission, including useful ones. Publishing needed makes a submission route available, but leaves the question of harmful content unresolved. These are illustrative configurations, not a claim that any particular product guarantees containment.","sourceIds":["green","patterns"],"isSynthesis":true},{"text":"The diagram places the enforcing control outside the agent. For a restriction to hold, every route to the protected action must be checked, the agent must not be able to alter the policy or obtain broader credentials, and the enforcement mechanism must withstand attack. NIST describes the corresponding reference-monitor requirements as complete mediation, tamper resistance and verifiability.","sourceIds":["permissions"]},{"text":"A practical example is Anthropic's Git proxy: the real service credential stays outside the sandbox; the proxy checks the repository, branch and interaction before attaching authentication. That can constrain where a change is sent. It does not determine whether the change contains malicious code.","sourceIds":["broker"]},{"text":"Approved packages in the illustration are supplied from a fixed local copy in both modes. There is no animated software-download request to the public project. Approved identifies the permitted package set, not a guarantee that every package is harmless. Restricting the test to this supplied set removes the ability to obtain arbitrary new tools.","sourceIds":[],"isSynthesis":true},{"text":"An open-internet downloads-only policy is less definite than a fixed local copy: a fetch still sends a request. Claude Code documentation warns that broad permitted domains can provide data-exfiltration paths and that default hostname filtering does not inspect encrypted contents. Sandboxing one tool also does not necessarily cover other tools or services.","sourceIds":["sandboxdocs"]},{"text":"The Design Patterns paper gives an example in which an assistant follows a fixed sequence of calendar and email operations while an injection can still change the body of the permitted email. Enforcing which action is available leaves a separate question about its content. This paper addresses prompt injection, not every threat from a deliberately rogue agent.","sourceIds":["patterns"]},{"text":"AISI deliberately enabled internet access. The agent stayed inside its virtual-machine sandbox but attempted a malicious contribution to a real project, which a maintainer rejected. AISI reported no evidence of resulting real-world harm and described the protective role of human vigilance. The incident does not show that every permitted interaction is unsafe.","sourceIds":["aisi"]},{"text":"Some tests need live interactions; many can use offline copies or simulations. Malware analysis already faces a realism-versus-isolation trade-off, as illustrated by Cuckoo's disconnected, simulated-network and internet-enabled modes. Restricting a capability can change what an evaluation measures.","sourceIds":["green","cuckoo"]},{"text":"We can block specific actions. We cannot assume that everything still allowed is safe. Tighter limits reduce risk, but may also remove capabilities that realistic tests need. Scale makes contextual review harder, while changing tools and infrastructure require controls to be retested. These observations challenge reliance on sandboxing alone; they do not prove that useful sandboxing is impossible.","sourceIds":["green","joe","irregular","patterns"],"isSynthesis":true},{"text":"Testing this technology calls for increased collaboration and transparency. More independent parties need advance visibility of the tests, their specific source IP addresses, and the range of expected outcomes. This is a recommendation for how frontier-agent testing should be organised.","sourceIds":[],"isSynthesis":true},{"text":"In practice, share the test identity, schedule, intended scope, exclusions and model/tool access with independent evaluators and relevant security response teams or infrastructure providers. Identify the externally visible source IP addresses and ranges, including changes to the egress infrastructure. Describe expected activity, plausible unintended outcomes, stop conditions and response contacts so these parties can recognise deviations and coordinate quickly.","sourceIds":[],"isSynthesis":true},{"text":"This proposal draws on established security-testing practice. NIST SP 800-115 describes assessment plans with scope, originating IP addresses, contacts, incident handling and coordination over potential impacts; its rules-of-engagement template includes expected outcomes. Applying this approach to frontier-agent evaluations is a recommendation, rather than an assertion of an existing AI-specific obligation.","sourceIds":["testcoordination"],"isSynthesis":true},{"text":"Source IPs aid correlation; they are not proof that traffic is authorised or harmless. The recommendation is coordinated visibility with continuing monitoring, not blanket trust in a lab's traffic. Unexpected routes or affected systems may still appear and require escalation.","sourceIds":[],"isSynthesis":true}]}],"sourceAccessNote":"The original X page blocked direct retrieval. Joe's text was consulted through an indexed reproduction and cross-checked against passages reproduced by Matthew Green. The reproduction's displayed date is not treated as the original post's publication date."}</script>
+<script>
+(function () {
+ 'use strict';
+ const data = JSON.parse(document.getElementById('presentation-data').textContent);
+ const slides = Array.from(document.querySelectorAll('.slide'));
+ const sources = new Map(data.sources.map(function(s,i){return [s.id,Object.assign({number:i+1},s)];}));
+ const state = {slide:0, lab:'ready', evasion:'test', escape:'contained', case:'openai', fleet:'one', network:'connected'};
+ const dialog = document.getElementById('notes-dialog');
+ let notesTab='slide', lastOpener=null, printSnapshot=null;
+ function $(id){return document.getElementById(id);}
+ function svg(name,cls){return '<svg class="icon '+(cls||'')+'" aria-hidden="true"><use href="#i-'+name+'"/></svg>';}
+ function escapeHTML(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+ function formatDate(date){if(!date)return '';return new Date(date+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});}
+ function refHTML(id){const s=sources.get(id);return s?'<button type="button" class="ref" data-source="'+id+'" aria-label="Source '+s.number+': '+escapeHTML(s.author)+'">['+s.number+']</button>':'';}
+ function syncRefs(){document.querySelectorAll('[data-source]').forEach(function(b){const s=sources.get(b.dataset.source);if(s)b.setAttribute('aria-label','Source '+s.number+': '+s.author+', '+s.title);});}
+/* A single cancellable, pause-aware clock drives every diagram. */
+function createTimelinePlayer(host) {
+  let current = null, frame = null, lastStamp = null, frameVersion = 0;
+  const pauses = new Set();
+  function snapshot() {
+    return {
+      active: Boolean(current), paused: pauses.size > 0,
+      manualPause: pauses.has('manual'),
+      key: current ? current.spec.key : null,
+      progress: current ? Math.min(1, current.totalElapsed / current.duration) : 0,
+      label: current ? current.spec.steps[current.index].label : ''
+    };
+  }
+  function emit(kind, result) {
+    if (host.change) host.change(kind, snapshot(), result || '');
+  }
+  function unschedule() {
+    // cancelAnimationFrame cannot make an already-queued callback trustworthy.
+    // Invalidate it even when the same timeline is being paused and resumed.
+    frameVersion += 1;
+    if (frame !== null) host.cancelFrame(frame);
+    frame = null;
+    lastStamp = null;
+  }
+  function schedule() {
+    if (current && !pauses.size && frame === null) {
+      const scheduledVersion = ++frameVersion;
+      frame = host.requestFrame(function (stamp) {
+        if (scheduledVersion !== frameVersion) return;
+        tick(stamp);
+      });
+    }
+  }
+  function enterStep() {
+    const step = current.spec.steps[current.index];
+    if (step.enter) step.enter();
+    if (step.draw) step.draw(0);
+    emit('step');
+  }
+  function tick(stamp) {
+    frame = null;
+    if (!current || pauses.size) { lastStamp = null; return; }
+    const run = current;
+    // A delayed browser frame must not collapse several explanatory stages.
+    const delta = lastStamp === null ? 0 : Math.max(0, Math.min(80, stamp - lastStamp));
+    lastStamp = stamp;
+    run.elapsed += delta;
+    run.totalElapsed += delta;
+    let step = run.spec.steps[run.index];
+    while (run.elapsed >= step.duration) {
+      if (step.draw) step.draw(1);
+      run.elapsed -= step.duration;
+      run.index += 1;
+      if (run.index === run.spec.steps.length) {
+        current = null;
+        lastStamp = null;
+        run.spec.finish(false);
+        emit('finish', run.spec.result);
+        return;
+      }
+      enterStep();
+      step = run.spec.steps[run.index];
+    }
+    if (step.draw) step.draw(run.elapsed / step.duration);
+    if (host.progress) host.progress(snapshot());
+    schedule();
+  }
+  function stop(settle) {
+    const previous = current;
+    current = null;
+    unschedule();
+    if (previous && settle) previous.spec.finish(true);
+    if (previous) emit('stop');
+  }
+  function play(spec) {
+    if (!spec || !Array.isArray(spec.steps) || !spec.steps.length || spec.steps.some(function (s) {
+      return !s || !Number.isFinite(s.duration) || s.duration <= 0;
+    })) {
+      throw new Error('An animation needs stages with positive, finite numeric durations.');
+    }
+    const duration = spec.steps.reduce(function (sum, step) { return sum + step.duration; }, 0);
+    if (!Number.isFinite(duration)) {
+      throw new Error('An animation needs a finite total duration.');
+    }
+    stop(true);
+    pauses.delete('manual');
+    if (spec.prepare) spec.prepare();
+    if (host.reducedMotion()) {
+      spec.finish(false);
+      emit('finish', spec.result);
+      return;
+    }
+    current = {
+      spec: spec, index: 0, elapsed: 0, totalElapsed: 0,
+      duration: duration
+    };
+    enterStep();
+    schedule();
+  }
+  function pause(reason, enabled) {
+    if (enabled) pauses.add(reason); else pauses.delete(reason);
+    unschedule();
+    emit('pause');
+    schedule();
+  }
+  return {play: play, stop: stop, pause: pause, snapshot: snapshot};
+}
+
+ function pressed(attr,value){document.querySelectorAll('['+attr+']').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute(attr)===value));});}
+ function goSlide(index,focus,writeHash){
+  motion.stop(true); motion.pause('manual',false);
+  state.slide=Math.max(0,Math.min(slides.length-1,index));
+  slides.forEach(function(s,i){s.hidden=i!==state.slide;s.inert=i!==state.slide;});
+  document.querySelectorAll('[data-goto]').forEach(function(b,i){if(i===state.slide)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
+  $('prev-btn').disabled=state.slide===0;
+  $('next-label').textContent=state.slide===4?'Back to start':'Next slide';
+  $('next-icon').setAttribute('href',state.slide===4?'#i-repeat':'#i-right');
+  $('next-btn').setAttribute('aria-label',state.slide===4?'Return to slide 1':'Go to slide '+(state.slide+2));
+  $('page-count').textContent=(state.slide+1)+' / '+slides.length;
+  $('progress-fill').style.width=((state.slide+1)/slides.length*100)+'%';
+  $('slide-announcement').textContent='Slide '+(state.slide+1)+' of '+slides.length+': '+$('title-'+(state.slide+1)).textContent;
+  if(writeHash!==false){try{history.replaceState(null,'','#slide-'+(state.slide+1));}catch(e){}}
+  if(focus){$('title-'+(state.slide+1)).focus({preventScroll:true});if(window.innerWidth<=900)window.scrollTo({top:0,behavior:'instant'});}
+  refreshPlayback();
+  if(dialog.open&&notesTab==='slide')renderNotes('slide');
+ }
+ const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+ const playedSlides = new Set();
+ const motion = createTimelinePlayer({
+  requestFrame: function (fn) { return requestAnimationFrame(fn); },
+  cancelFrame: function (id) { cancelAnimationFrame(id); },
+  reducedMotion: function () { return motionPreference.matches; },
+  change: updatePlayback,
+  progress: updatePlaybackProgress
+ });
+ function updatePlaybackProgress(info) {
+  $('motion-toggle').style.setProperty('--motion-progress', info.active ? info.progress : (playedSlides.has(state.slide) ? 1 : 0));
+ }
+ function updatePlayback(kind, info, result) {
+  const label = info.active ? (info.paused ? 'Resume animation' : 'Pause animation') : (motionPreference.matches ? 'Show results' : (playedSlides.has(state.slide) ? 'Replay slide' : 'Play slide'));
+  const icon = info.active ? (info.paused ? 'play' : 'pause') : (playedSlides.has(state.slide) ? 'repeat' : 'play');
+  $('motion-label').textContent = label;
+  $('motion-icon').setAttribute('href', '#i-' + icon);
+  $('motion-toggle').setAttribute('aria-label', label + ' ' + (state.slide + 1));
+  $('motion-toggle').title = info.active ? (info.paused ? 'Paused. ' : '') + info.label : (result ? 'Complete. ' + result : label);
+  document.documentElement.classList.toggle('motion-paused', info.paused);
+  updatePlaybackProgress(info);
+  if (kind === 'step' && $('diagram-announcement').textContent !== info.label) $('diagram-announcement').textContent = info.label;
+  if (kind === 'finish') $('diagram-announcement').textContent = 'Animation complete. ' + result;
+ }
+ function refreshPlayback() { updatePlayback('refresh', motion.snapshot(), ''); }
+ function beginSequence(spec) { playedSlides.add(state.slide); motion.play(spec); }
+ function stage(label, duration, enter, draw) { return {label: label, duration: duration, enter: enter, draw: draw}; }
+ function smooth(p) { p = Math.max(0, Math.min(1, p)); return p * p * (3 - 2 * p); }
+ function pulse(el, p) { el.style.transform = 'scale(' + (1 + .045 * Math.sin(Math.PI * p)) + ')'; }
+ function cleanStyles(el) { ['opacity','transform','box-shadow','transform-origin'].forEach(function (name) { el.style.removeProperty(name); }); }
+ function clearToken(id) { $(id).style.opacity = '0'; }
+ function fadeToken(id, p) { $(id).style.opacity = String(1 - smooth(Math.min(1, p * 2.6))); }
+ function journey(container, id, from, to, p, tone) {
+  const outer = container.getBoundingClientRect(), a = from.el.getBoundingClientRect(), b = to.el.getBoundingClientRect();
+  const ax = a.left + a.width * from.x - outer.left, ay = a.top + a.height * (from.y === undefined ? .5 : from.y) - outer.top;
+  const bx = b.left + b.width * to.x - outer.left, by = b.top + b.height * (to.y === undefined ? .5 : to.y) - outer.top;
+  const t = smooth(p), token = $(id);
+  token.style.transform = 'translate(' + (ax + (bx - ax) * t) + 'px,' + (ay + (by - ay) * t) + 'px) translate(-50%,-50%)';
+  token.style.setProperty('--token-color', tone === 'amber' ? 'var(--amber)' : 'var(--blue)');
+  token.style.opacity = '1';
+ }
+ function initialiseMotionElements() {
+  [['lab-token', document.querySelector('.lab-map')], ['escape-token', $('escape-visual')], ['case-token', $('case-map')], ['network-token', $('network-map')]].forEach(function (pair) {
+   const token = document.createElement('span'); token.id = pair[0]; token.className = 'motion-token'; token.setAttribute('aria-hidden','true'); pair[1].appendChild(token);
+  });
+  const scan = document.createElement('span'); scan.id = 'evasion-scan'; scan.className = 'motion-scan'; scan.setAttribute('aria-hidden','true'); document.querySelector('.mini-chamber').appendChild(scan);
+ }
+
+ function paintLab(value) {
+  const done = value === 'run';
+  $('lab-panel').dataset.state = value;
+  $('lab-panel').dataset.phase = done ? 'complete' : 'ready';
+  $('lab-panel').querySelectorAll('.test-file').forEach(function (el) { el.classList.toggle('is-encrypted', done); cleanStyles(el); cleanStyles(el.querySelector('.file-lock')); });
+  cleanStyles(document.querySelector('.sample'));
+  document.querySelector('.bridge-lock').classList.toggle('is-blocked', done);
+  document.querySelector('.protected').classList.toggle('is-safe', done);
+  $('lab-status').textContent = done ? 'Complete · Boundary held' : 'Ready to inspect';
+  $('file-caption').textContent = done ? 'Test files encrypted' : 'Expendable test files';
+  $('lab-observation').textContent = done ? 'Encryption observed. Restricted assets remain out of reach.' : 'Run the sample to reveal its behaviour.';
+  $('run-lab').querySelector('span').textContent = done ? 'Replay sample' : 'Run sample';
+  clearToken('lab-token');
+ }
+ function labSequence() {
+  const files = Array.from($('lab-panel').querySelectorAll('.test-file'));
+  const sample = document.querySelector('.sample'), map = document.querySelector('.lab-map'), chamber = document.querySelector('.chamber'), lock = document.querySelector('.bridge-lock');
+  const steps = [stage('Step 1 of 4. The suspicious file runs inside the isolated computer.', 950, function () {
+   $('lab-panel').dataset.phase = 'running'; $('lab-status').textContent = '1/4 · Running sample';
+   $('lab-observation').textContent = 'The suspicious file is running inside the isolated computer.';
+  }, function (p) { pulse(sample, p); })];
+  files.forEach(function (file, i) {
+   steps.push(stage('Step 2 of 4. The sample changes disposable test files.', 650, function () {
+    $('lab-status').textContent = '2/4 · Observing changes'; file.classList.add('is-encrypted');
+    $('file-caption').textContent = 'Test file ' + (i + 1) + ' of 3 encrypted';
+    $('lab-observation').textContent = 'The sample encrypts the disposable files, one by one.';
+   }, function (p) { pulse(file, p); file.querySelector('.file-lock').style.opacity = String(smooth(Math.min(1, p * 1.7))); }));
+  });
+  steps.push(stage('Step 3 of 4. An outward attempt reaches the access restriction.', 1400, function () {
+   $('lab-panel').dataset.phase = 'restricting'; $('lab-status').textContent = '3/4 · Testing the boundary';
+   $('file-caption').textContent = 'Test files encrypted'; $('lab-observation').textContent = 'An attempt to reach protected assets meets the access restriction.';
+  }, function (p) { journey(map, 'lab-token', {el:chamber,x:1,y:.5}, {el:lock,x:0}, p, 'amber'); }));
+  steps.push(stage('Step 4 of 4. The boundary holds and the harmful behaviour has been observed.', 1600, function () {
+   $('lab-panel').dataset.state='run'; $('lab-panel').dataset.phase='complete';
+   lock.classList.add('is-blocked'); document.querySelector('.protected').classList.add('is-safe');
+   $('lab-status').textContent = '4/4 · Boundary held'; $('lab-observation').textContent = 'Encryption observed. Restricted assets remain out of reach.';
+  }, function (p) { fadeToken('lab-token', p); }));
+  return {key:'lab', steps:steps, result:'The test files changed. Restricted real assets remain protected.', prepare:function () { state.lab='run'; paintLab('ready'); $('run-lab').querySelector('span').textContent='Restart sample'; }, finish:function () { paintLab('run'); }};
+ }
+ function setLab(value, doAnimate) {
+  if (value === 'run' && doAnimate) { beginSequence(labSequence()); return; }
+  motion.stop(true); state.lab=value; paintLab(value);
+  if (value === 'ready') playedSlides.delete(0);
+  refreshPlayback();
+ }
+
+ function evasionDescription(value) {
+  return value === 'test' ? 'Test environment: the malware conceals its activity. The test may miss the threat; the isolation boundary remains intact.' : 'Real computer: harmful activity appears. This illustrates behaviour concealed during analysis, not a sandbox escape.';
+ }
+ function paintEvasion(value) {
+  $('evasion-visual').dataset.state=value; $('evasion-visual').dataset.phase='complete'; pressed('data-evasion',value);
+  $('evasion-icon').setAttribute('href',value==='test'?'#i-pause':'#i-file');
+  $('evasion-behaviour').textContent=value==='test'?'Activity concealed':'Harmful activity';
+  $('evasion-environment').textContent=value==='test'?'Inside a test environment':'On a real computer';
+  $('evasion-observer').textContent=value==='test'?'The test may miss the threat':'The hidden behaviour appears';
+  $('evasion-visual').setAttribute('aria-label',evasionDescription(value));
+  cleanStyles(document.querySelector('.mini-chamber')); cleanStyles(document.querySelector('.observer'));
+  cleanStyles($('evasion-icon').parentElement); $('evasion-scan').style.opacity='0';
+ }
+ function evasionSequence(value) {
+  const chamber=document.querySelector('.mini-chamber'), observer=document.querySelector('.observer');
+  const steps=[
+   stage('Step 1 of 3. The program checks its surroundings.',1200,function () {
+    paintEvasion(value); $('evasion-visual').dataset.state='test'; $('evasion-visual').dataset.phase='checking';
+    $('evasion-icon').setAttribute('href','#i-eye'); $('evasion-behaviour').textContent='Checking surroundings'; $('evasion-observer').textContent='Watching for activity';
+    $('evasion-visual').setAttribute('aria-label','The program is checking whether it is in a test environment.');
+   },function (p) { const scan=$('evasion-scan'); scan.style.top=(18+64*p)+'%'; scan.style.opacity=String(Math.sin(Math.PI*p)); pulse(chamber,p); }),
+   stage(value==='test'?'Step 2 of 3. The malware hides its activity in the test.':'Step 2 of 3. Harmful activity appears on the real computer.',1200,function () {
+    $('evasion-scan').style.opacity='0'; $('evasion-visual').dataset.state=value; $('evasion-visual').dataset.phase='behaviour';
+    $('evasion-icon').setAttribute('href',value==='test'?'#i-pause':'#i-file'); $('evasion-behaviour').textContent=value==='test'?'Activity concealed':'Harmful activity';
+   },function (p) { $('evasion-icon').parentElement.style.opacity=String(.3+.7*smooth(p)); }),
+   stage('Step 3 of 3. '+evasionDescription(value),1400,function () {
+    $('evasion-observer').textContent=value==='test'?'The test may miss the threat':'The hidden behaviour appears'; $('evasion-visual').setAttribute('aria-label',evasionDescription(value));
+   },function (p) { observer.style.opacity=String(.45+.55*smooth(Math.min(1,p*1.7))); })
+  ];
+  return {key:'evasion',steps:steps,result:evasionDescription(value),prepare:function () { state.evasion=value; },finish:function () { paintEvasion(value); }};
+ }
+ function setEvasion(value,doAnimate) { if(doAnimate)beginSequence(evasionSequence(value));else{motion.stop(true);state.evasion=value;paintEvasion(value);refreshPlayback();} }
+
+ function escapeDescription(value) {
+  return value==='breach'?'In the controlled 2021 research demonstration, a KVM flaw allowed code to cross from the virtual machine into its host. The vulnerability was patched.':'The virtual machine is shown within its isolation boundary. Select Show the crossing to illustrate the controlled research demonstration.';
+ }
+ function paintEscape(value) {
+  $('escape-visual').dataset.state=value; $('escape-visual').dataset.phase=value==='breach'?'complete':'ready';
+  $('escape-arrow').setAttribute('href',value==='breach'?'#i-right':'#i-lock'); $('host-label').textContent=value==='breach'?'Host reached':'Host computer';
+  $('guest-label').textContent='Virtual machine'; $('show-escape').querySelector('span').textContent=value==='breach'?'Replay crossing':'Show the crossing';
+  document.querySelector('.host-box').classList.toggle('is-reached',value==='breach');
+  cleanStyles(document.querySelector('.guest-box')); cleanStyles(document.querySelector('.host-box'));
+  $('escape-visual').style.removeProperty('--gap-size'); $('escape-visual').setAttribute('aria-label',escapeDescription(value)); clearToken('escape-token');
+ }
+ function escapeSequence() {
+  const map=$('escape-visual'),guest=document.querySelector('.guest-box'),host=document.querySelector('.host-box');
+  return {key:'escape',result:escapeDescription('breach'),prepare:function () { state.escape='breach'; },finish:function () { paintEscape('breach'); },steps:[
+   stage('Step 1 of 4. Code runs inside the virtual machine.',1000,function () { paintEscape('contained'); $('show-escape').querySelector('span').textContent='Restart crossing'; $('guest-label').textContent='Code running'; },function (p) { pulse(guest,p); }),
+   stage('Step 2 of 4. The research demonstration exploits a flaw in the boundary.',1200,function () {
+    map.dataset.phase='flaw'; $('guest-label').textContent='Boundary flaw'; $('host-label').textContent='Host computer';
+   },function (p) { map.style.setProperty('--gap-size',smooth(p)); }),
+   stage('Step 3 of 4. The exploit crosses the isolation boundary.',1400,function () {
+    map.dataset.phase='crossing'; $('escape-arrow').setAttribute('href','#i-right'); $('guest-label').textContent='Code crosses out';
+   },function (p) { journey(map,'escape-token',{el:guest,x:1},{el:host,x:.2},p,'amber'); }),
+   stage('Step 4 of 4. The host is reached in this controlled research demonstration.',1500,function () {
+    map.dataset.state='breach'; host.classList.add('is-reached'); $('host-label').textContent='Host reached'; $('guest-label').textContent='Virtual machine';
+   },function (p) { fadeToken('escape-token',p); pulse(host,p); })
+  ]};
+ }
+ function setEscape(value,doAnimate) { if(value==='breach'&&doAnimate)beginSequence(escapeSequence());else{motion.stop(true);state.escape=value;paintEscape(value);refreshPlayback();} }
+
+ function paintCase(value) {
+  pressed('data-case',value); const oai=value==='openai';
+  $('case-title').textContent=oai?'A permitted service became a gateway':'An offline test was connected';
+  $('case-gate-icon').setAttribute('href',oai?'#i-package':'#i-globe'); $('case-gate').innerHTML=oai?'Permitted<br>package service':'Unintended<br>internet access';
+  $('case-status').textContent=oai?'Controls bypassed':'Intended isolation not enforced';
+  $('case-detail').innerHTML=(oai?'Agents abused the shared package service for unauthorised communication and internet access, then compromised third-party systems.':'Misconfiguration left internet access open. Anthropic says the incidents would not have occurred if the intended isolation had held.')+refHTML(value);
+  $('case-map').setAttribute('aria-label',oai?'OpenAI agents abused a permitted package service to obtain unauthorised internet access.':'Anthropic evaluations were meant to be isolated, but a misconfiguration left the internet accessible.');
+  $('case-map').querySelectorAll('.case-node,.flow-arrow').forEach(function (el) { cleanStyles(el); el.classList.toggle('is-focused',el.classList.contains('case-node')); }); clearToken('case-token');
+ }
+ function caseSequence(value) {
+  const map=$('case-map'),nodes=Array.from(map.querySelectorAll('.case-node')),arrows=Array.from(map.querySelectorAll('.flow-arrow'));
+  return {key:'case',result:value==='openai'?'A permitted service became a route to third-party systems.':'The intended offline boundary was not enforced.',prepare:function () { state.case=value; },finish:function () { paintCase(value); },steps:[
+   stage('Step 1 of 4. The agent reaches the service available to it.',1400,function () {
+    paintCase(value); nodes.forEach(function(el,i){el.style.opacity=i===0?'1':'.32';el.classList.remove('is-focused');}); arrows.forEach(function(el){el.style.opacity='.32';});
+    nodes[0].classList.add('is-focused'); $('case-status').textContent='1/4 · Agent sends a request';
+   },function (p) { journey(map,'case-token',{el:nodes[0],x:1},{el:nodes[1],x:0},p,'blue');arrows[0].style.opacity=String(.32+.68*smooth(p)); }),
+   stage('Step 2 of 4. '+(value==='openai'?'The shared service becomes a gateway.':'The connection is open despite the intended isolation.'),1100,function () {
+    nodes[1].style.opacity='1'; nodes[1].classList.add('is-focused'); $('case-status').textContent=value==='openai'?'2/4 · Shared service abused':'2/4 · Connection left open';
+   },function (p) { fadeToken('case-token',p);pulse(nodes[1],p); }),
+   stage('Step 3 of 4. The route reaches the public internet.',1550,function () { $('case-status').textContent='3/4 · Reaching the internet'; },function (p) {
+    journey(map,'case-token',{el:nodes[1],x:1},{el:nodes[2],x:0},p,'amber'); arrows[1].style.opacity=String(.32+.68*smooth(p));
+   }),
+   stage('Step 4 of 4. The external route is established.',1450,function () {
+    nodes[2].style.opacity='1'; nodes[2].classList.add('is-focused'); $('case-status').textContent=value==='openai'?'Controls bypassed':'Intended isolation not enforced';
+   },function (p) { fadeToken('case-token',p); })
+  ]};
+ }
+ function setCase(value,doAnimate) { if(doAnimate)beginSequence(caseSequence(value));else{motion.stop(true);state.case=value;paintCase(value);refreshPlayback();} }
+
+ /* Slide 4: one detailed batch plus 24 pattern-filled batches = 10,000 runs. */
+ const fleetCameras={one:{x:509,y:211,w:78,h:50},many:{x:408,y:166,w:328,h:172},wide:{x:-36,y:-25,w:1264,h:554},thousands:{x:-2660,y:-1250,w:6520,h:3010}};
+ const fleetLogBundleUnit=100000, fleetLogFinal=10000*250;
+ const fleetCaptions={one:'A bounded task can have a tightly scoped working environment.',many:'2,500,000 entries in this example. The archive grows, and related actions still need to be connected and understood.',changing:'2,500,000 entries in this example, while new tools add permissions to check. The records still need to be connected and understood.'};
+ let fleetTiles=[],fleetCore=[],fleetOuter=[],fleetChanged=[],fleetBatches=[],fleetExtraBatches=[],fleetBundles=[],fleetRows=[];
+ function initFleet() {
+  const cells=[];
+  for(let row=0;row<16;row++)for(let col=0;col<25;col++){
+   const n=row*25+col,x=col*48,y=row*32;
+   cells.push('<rect class="fleet-test" id="fleet-test-'+n+'" x="'+x+'" y="'+y+'" width="40" height="24" rx="3" vector-effect="non-scaling-stroke"/><path class="fleet-tool-marker" id="fleet-tool-'+n+'" d="M'+(x+29)+' '+(y+7)+'h8m-4-4v8" vector-effect="non-scaling-stroke"/>');
+  }
+  const batches=[],positions=[];
+  for(let row=-2;row<=2;row++)for(let col=-2;col<=2;col++)positions.push({row:row,col:col});
+  positions.sort(function(a,b){return Math.max(Math.abs(a.row),Math.abs(a.col))-Math.max(Math.abs(b.row),Math.abs(b.col))||a.row-b.row||a.col-b.col;});
+  positions.forEach(function(pos,i){
+   const central=pos.row===0&&pos.col===0;
+   batches.push('<g class="fleet-batch'+(central?' fleet-core-batch':' fleet-extra-batch')+'" id="fleet-batch-'+i+'" data-runs="400" transform="translate('+(pos.col*1280)+' '+(pos.row*584)+')">'+
+    (central?cells.join(''):'<rect class="fleet-batch-field" width="1200" height="512" fill="url(#fleet-tile-pattern)"/>')+
+    '<rect id="fleet-batch-frame-'+i+'" class="fleet-batch-frame" x="-10" y="-10" width="1220" height="532" rx="16" vector-effect="non-scaling-stroke"/>'+
+    '<path class="fleet-batch-tool" id="fleet-batch-tool-'+i+'" d="M1080 40h85m-42.5-42.5v85" vector-effect="non-scaling-stroke"/></g>');
+  });
+  $('fleet-world').innerHTML='<defs><pattern id="fleet-tile-pattern" patternUnits="userSpaceOnUse" width="48" height="32"><rect class="fleet-pattern-test" width="40" height="24" rx="3"/></pattern></defs>'+batches.join('')+'<use id="fleet-focus-icon" href="#i-agent" x="539" y="227" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.25"/>';
+  fleetTiles=[];
+  for(let row=0;row<16;row++)for(let col=0;col<25;col++){
+   const n=row*25+col;
+   fleetTiles.push({el:$('fleet-test-'+n),marker:$('fleet-tool-'+n),x:col*48+20,y:row*32+12,core:col>=9&&col<=14&&row>=6&&row<=9,focus:col===11&&row===7,changed:n%17===7,opacity:-1});
+  }
+  fleetCore=fleetTiles.filter(function(t){return t.core;}).sort(function(a,b){return Math.hypot(a.x-548,a.y-236)-Math.hypot(b.x-548,b.y-236);});
+  fleetOuter=fleetTiles.filter(function(t){return !t.core;}).sort(function(a,b){return Math.max(Math.abs(a.x-572)/140,Math.abs(a.y-252)/60)-Math.max(Math.abs(b.x-572)/140,Math.abs(b.y-252)/60);});
+  fleetChanged=fleetTiles.filter(function(t){return t.changed;});
+  fleetBatches=positions.map(function(pos,i){return {el:$('fleet-batch-'+i),box:$('fleet-batch-frame-'+i),marker:$('fleet-batch-tool-'+i),central:pos.row===0&&pos.col===0,changed:i%3===1};});
+  fleetExtraBatches=fleetBatches.filter(function(b){return !b.central;});
+  const archive=document.createElement('div');archive.id='fleet-log-archive';archive.className='fleet-log-archive';archive.setAttribute('aria-hidden','true');
+  const bundles=[];
+  for(let i=0;i<25;i++)bundles.push('<span class="fleet-log-bundle" data-entries="100000" title="100,000 illustrative log entries"></span>');
+  archive.innerHTML='<div class="fleet-log-bundles" id="fleet-log-bundles">'+bundles.join('')+'</div><div class="fleet-log-key">Each bundle = 100,000</div>';
+  $('fleet-log-stack').appendChild(archive);
+  fleetBundles=Array.from(archive.querySelectorAll('.fleet-log-bundle'));
+  fleetRows=Array.from(document.querySelectorAll('.fleet-log-entry'));
+  const flows=[];
+  for(let i=0;i<6;i++)flows.push('<path id="fleet-flow-path-'+i+'" class="fleet-flow-path"/><circle id="fleet-flow-dot-'+i+'" class="fleet-flow-dot" r="3.5"/>');
+  $('fleet-flow').innerHTML=flows.join('');
+  paintFleet('one');
+ }
+ function fleetCamera(from,to,p) {
+  const q=smooth(p),v={};['x','y','w','h'].forEach(function(k){v[k]=from[k]+(to[k]-from[k])*q;});
+  $('fleet-map').setAttribute('viewBox',[v.x,v.y,v.w,v.h].map(function(n){return n.toFixed(3);}).join(' '));
+ }
+ function fleetOpacity(tile,value) {
+  const q=Math.round(Math.max(0,Math.min(1,value))*1000);
+  if(tile.opacity!==q){tile.el.style.opacity=String(q/1000);tile.opacity=q;}
+ }
+ function fleetCount(count) {
+  $('fleet-test-count').textContent=count.toLocaleString('en-GB');
+  $('fleet-test-unit').textContent=count===1?'illustrative test run':'illustrative test runs';
+ }
+ function fleetComposition(p) {
+  const q=smooth(p);
+  $('fleet-world-area').style.width=(100-48*q)+'%';
+  $('fleet-log-area').style.opacity=String(q);
+  $('fleet-log-area').style.transform='translateX('+(22*(1-q))+'px)';
+  $('fleet-log-area').setAttribute('aria-hidden',String(q===0));
+ }
+ function fleetArchiveSpace(p) {
+  const q=smooth(p);
+  $('fleet-log-stack').style.setProperty('--archive-progress',q);
+  $('fleet-log-archive').style.opacity=String(q);
+ }
+ function fleetTools(p) {
+  fleetChanged.forEach(function(t,i){
+   const q=smooth(Math.max(0,Math.min(1,(p-i/fleetChanged.length*.6)/.4)));
+   t.el.classList.toggle('with-tool',q>0);t.marker.style.opacity=String(q);
+  });
+  fleetBatches.forEach(function(b,i){
+   const q=b.changed?smooth(Math.max(0,Math.min(1,(p-i/fleetBatches.length*.6)/.4))):0;
+   b.el.classList.toggle('with-tools',q>0);b.marker.style.opacity=String(q);
+  });
+ }
+ function fleetLogVolume(count) {
+  const value=Math.max(0,Math.min(fleetLogFinal,Math.round(count))),depth=Math.min(1,value/fleetLogBundleUnit);
+  $('fleet-log-count').textContent=value.toLocaleString('en-GB');
+  $('fleet-log-stack').style.setProperty('--log-depth',depth);
+  fleetRows.forEach(function(row,i){row.style.opacity=String(smooth(Math.max(0,Math.min(1,(depth-i*.075)/.35))));});
+  fleetBundles.forEach(function(bundle,i){const q=Math.max(0,Math.min(1,value/fleetLogBundleUnit-i));bundle.style.opacity=String(q);bundle.style.transform='translateY('+(4*(1-q))+'px)';});
+ }
+ function fleetLinkRecords(p) {
+  const q=smooth(p);
+  $('fleet-record-thread').style.transform='scaleY('+q+')';
+  fleetRows.filter(function(row){return row.hasAttribute('data-related');}).forEach(function(row){row.style.backgroundColor='rgba(40,95,128,'+(.12*q)+')';row.style.borderLeftColor='rgba(40,95,128,'+q+')';});
+  $('fleet-review-label').style.opacity=String(q);
+ }
+ function clearFleetFlow() {
+  $('fleet-flow').style.opacity='0';
+  for(let i=0;i<6;i++)$('fleet-flow-dot-'+i).style.opacity='0';
+ }
+ function fleetLogFlow(p,dense) {
+  const frame=$('fleet-stage').getBoundingClientRect(),target=$('fleet-log-stack').getBoundingClientRect();
+  if(!frame.width||!frame.height)return;
+  const sourceIndices=dense?[0,4,8,12,18,24]:[52,114,179,237,305,371];
+  const boxes=sourceIndices.map(function(index){return (dense?fleetBatches[index].box:fleetTiles[index].el).getBoundingClientRect();});
+  $('fleet-flow').setAttribute('viewBox','0 0 '+frame.width+' '+frame.height);
+  $('fleet-flow').style.opacity=String(Math.max(0,Math.min(1,p*8,(1-p)*8)));
+  const bx=target.left-frame.left+5,by=target.top-frame.top+target.height*(dense?.25:.52);
+  boxes.forEach(function(box,i){
+   const ax=box.left-frame.left+box.width*.5,ay=box.top-frame.top+box.height*.5,cx=(ax+bx)*.58,cy=ay;
+   $('fleet-flow-path-'+i).setAttribute('d','M'+ax+' '+ay+' Q'+cx+' '+cy+' '+bx+' '+by);
+   const clock=p*(dense?5.2:3.4)-i*.12,t=clock-Math.floor(clock),dot=$('fleet-flow-dot-'+i);
+   dot.style.opacity=String(clock<0?0:Math.min(1,t*8,(1-t)*8));
+   dot.setAttribute('cx',(1-t)*(1-t)*ax+2*(1-t)*t*cx+t*t*bx);
+   dot.setAttribute('cy',(1-t)*(1-t)*ay+2*(1-t)*t*cy+t*t*by);
+  });
+ }
+ function fleetMath(runs) { document.querySelector('.fleet-log-math').textContent=runs.toLocaleString('en-GB')+' runs × 250 entries'; }
+ function paintFleet(value) {
+  const wide=value!=='one';
+  pressed('data-fleet',value);$('fleet-stage').dataset.state=value;$('fleet-stage').dataset.phase=wide?'complete':'ready';
+  fleetTiles.forEach(function(t){fleetOpacity(t,wide||t.focus?1:0);t.el.classList.remove('with-tool');t.marker.style.opacity='0';});
+  fleetBatches.forEach(function(b){b.el.style.opacity=wide||b.central?'1':'0';b.el.classList.remove('with-tools');b.marker.style.opacity='0';});
+  $('fleet-world').style.setProperty('--batch-outline',wide?1:0);
+  fleetCamera(fleetCameras[wide?'thousands':'one'],fleetCameras[wide?'thousands':'one'],1);
+  $('fleet-focus-icon').style.opacity=wide?'0':'1';
+  fleetCount(wide?10000:1);fleetComposition(wide?1:0);fleetArchiveSpace(wide?1:0);fleetLogVolume(wide?fleetLogFinal:0);fleetLinkRecords(wide?1:0);clearFleetFlow();fleetMath(wide?10000:400);
+  if(value==='changing')fleetTools(1);
+  $('fleet-world-hint').textContent=wide?(value==='changing'?'25 groups of 400 · tools keep changing':'25 groups × 400 runs = 10,000'):'One bounded task';
+  $('fleet-caption').textContent=fleetCaptions[value];
+  $('fleet-assumption').textContent=wide?'Illustration: 250 log entries per run. Actual volumes vary.':'Illustrative test runs; not a measured count.';
+  $('fleet-map').setAttribute('aria-label',wide?'Twenty-five groups of 400 illustrative test runs, giving 10,000 runs. These are not measured counts of simultaneous agents.':'One illustrative bounded test run.');
+ }
+ function fleetSequence(value) {
+  const steps=[stage('Start with one bounded test and its recorded activity.',850,function(){paintFleet('one');pressed('data-fleet',value);$('fleet-caption').textContent='One task produces a sequence of actions and results that can be recorded.';},function(){})];
+  if(value!=='one'){
+   steps.push(stage('Zoom out to 24 illustrative test runs.',1400,function(){
+    $('fleet-stage').dataset.phase='zoom-24';$('fleet-map').setAttribute('aria-label','Zooming from one to 24 illustrative test runs.');
+    $('fleet-world-hint').textContent='Different tasks, tools and settings';$('fleet-caption').textContent='Repeat the experiment across tasks, tools and configurations. Each run leaves a record.';
+   },function(p){
+    fleetCamera(fleetCameras.one,fleetCameras.many,p);$('fleet-focus-icon').style.opacity=String(1-smooth(Math.min(1,p*2)));
+    fleetCore.forEach(function(t,i){fleetOpacity(t,t.focus?1:smooth(Math.max(0,Math.min(1,(p-i/24*.65)/.35))));});fleetCount(1+Math.round(23*smooth(p)));
+   }));
+   steps.push(stage('Twenty-four tests are still only a small group.',650,function(){fleetCount(24);$('fleet-map').setAttribute('aria-label','A group of 24 illustrative test runs across different tasks, tools and configurations.');},function(){}));
+   steps.push(stage('Zoom further out to 400 illustrative test runs.',1900,function(){
+    $('fleet-stage').dataset.phase='zoom-400';$('fleet-map').setAttribute('aria-label','Zooming from 24 to 400 illustrative test runs. This is not a measured count of simultaneous agents.');
+    $('fleet-caption').textContent='Now zoom out to 400 test runs. The boxes illustrate scale, rather than a measured number of simultaneous agents.';$('fleet-world-hint').textContent='400 illustrative test runs';
+   },function(p){fleetCamera(fleetCameras.many,fleetCameras.wide,p);fleetOuter.forEach(function(t,i){fleetOpacity(t,smooth(Math.max(0,Math.min(1,(p-i/fleetOuter.length*.7)/.3))));});fleetCount(24+Math.round(376*smooth(p)));}));
+   steps.push(stage('Pause at 400 illustrative test runs.',550,function(){fleetCount(400);$('fleet-stage').dataset.phase='400-runs';$('fleet-map').setAttribute('aria-label','A mosaic of 400 illustrative test runs. These are not a measured count of simultaneous agents.');},function(){}));
+   steps.push(stage('Every run leaves logs: records of tasks, tool calls, requests and results.',900,function(){
+    $('fleet-stage').dataset.phase='first-logs';$('fleet-assumption').textContent='Illustration: 250 log entries per run. Actual volumes vary.';fleetMath(400);
+    $('fleet-caption').textContent='Every run leaves logs: a record of tasks, tool calls, connection requests and results.';
+   },fleetComposition));
+   steps.push(stage('At an illustrative 250 entries per run, 400 runs generate 100,000 log entries.',2200,function(){
+    $('fleet-caption').textContent='First milestone: 400 test runs × 250 log entries per run = 100,000 entries.';
+   },function(p){fleetLogVolume(fleetLogBundleUnit*smooth(p));fleetLogFlow(p,false);}));
+   steps.push(stage('Hold this first result: 400 runs and 100,000 illustrative log entries.',900,function(){
+    clearFleetFlow();fleetCount(400);fleetLogVolume(fleetLogBundleUnit);$('fleet-stage').dataset.phase='400-result';
+   },function(){}));
+   steps.push(stage('Keep zooming out: 25 groups of 400 make 10,000 illustrative test runs.',3000,function(){
+    $('fleet-stage').dataset.phase='zoom-10000';$('fleet-map').setAttribute('aria-label','Zooming from one group of 400 to 25 groups, giving 10,000 illustrative test runs.');
+    $('fleet-world-hint').textContent='Each group contains 400 runs';$('fleet-caption').textContent='Keep zooming out. Twenty-five groups of 400 make 10,000 test runs in this illustration.';
+   },function(p){
+    fleetCamera(fleetCameras.wide,fleetCameras.thousands,p);$('fleet-world').style.setProperty('--batch-outline',smooth(p));
+    fleetExtraBatches.forEach(function(b,i){b.el.style.opacity=String(smooth(Math.max(0,Math.min(1,(p-i/fleetExtraBatches.length*.68)/.32))));});fleetCount(400+Math.round(9600*smooth(p)));
+   }));
+   if(value==='changing')steps.push(stage('New tools also change permissions and what needs monitoring.',1100,function(){
+    $('fleet-map').setAttribute('aria-label','Ten thousand illustrative test runs in 25 groups. Some groups gain new tools and changed permissions.');
+    $('fleet-world-hint').textContent='New tools change permissions';$('fleet-caption').textContent='Some environments gain new tools or connections. Their permissions and recorded activity need checking again.';
+   },fleetTools));
+   steps.push(stage('Ten thousand runs need a larger archive. Each small bundle represents 100,000 illustrative entries.',850,function(){
+    $('fleet-stage').dataset.phase='archive';fleetCount(10000);fleetMath(10000);$('fleet-map').setAttribute('aria-label','Twenty-five groups of 400 illustrative test runs, giving 10,000 runs.');
+    $('fleet-world-hint').textContent='25 groups × 400 runs = 10,000';$('fleet-caption').textContent='The same 250 entries per run now add up to much more. Each bundle below represents 100,000 entries.';
+   },fleetArchiveSpace));
+   steps.push(stage('The illustrative log archive grows from 100,000 to 2,500,000 entries.',3200,function(){
+    $('fleet-stage').dataset.phase='larger-logs';$('fleet-caption').textContent='10,000 test runs × 250 log entries per run = 2,500,000 entries. The archive grows to 25 bundles.';
+   },function(p){fleetLogVolume(fleetLogBundleUnit+(fleetLogFinal-fleetLogBundleUnit)*smooth(p));fleetLogFlow(p,true);}));
+   steps.push(stage('Related actions can be scattered through this larger archive. Reviewers must connect them to understand what happened.',1800,function(){
+    clearFleetFlow();$('fleet-stage').dataset.phase='review';$('fleet-caption').textContent='The three highlighted Test 12 records belong together. More records mean more context to reconstruct.';
+   },fleetLinkRecords));
+  }
+  steps.push(stage('Result. '+fleetCaptions[value],1400,function(){paintFleet(value);},function(){}));
+  return {key:'fleet',steps:steps,result:fleetCaptions[value],prepare:function(){state.fleet=value;},finish:function(){paintFleet(value);}};
+ }
+ function setFleet(value,doAnimate) { if(doAnimate)beginSequence(fleetSequence(value));else{motion.stop(true);state.fleet=value;paintFleet(value);refreshPlayback();} }
+
+ const networkSettings={
+  scoped:{icon:'lock',gate:'Publishing<br>blocked',download:'Fixed local copy',publish:'Denied',downIcon:'file',pubIcon:'lock',assessment:'Publishing blocked',assessmentIcon:'lock',detail:'Useful and harmful submissions are both stopped.',text:'A separate system denies every submission. The agent cannot change the rule, but this test cannot include live publishing.'},
+  connected:{icon:'right',gate:'Submission<br>permitted',download:'Fixed local copy',publish:'Permitted route',downIcon:'file',pubIcon:'right',assessment:'Is this content safe?',assessmentIcon:'eye',detail:'Permission granted; content still needs assessment.',text:'The test needs a submission route. A separate control can check the destination; the content still needs assessment.'}
+ };
+ function setLane(kind,settings,checking) {
+  const lane=$(kind+'-status').closest('.action-lane');lane.dataset.check=checking?'waiting':'done';
+  $(kind+'-status').textContent=checking?'Waiting':settings[kind]; $(kind+'-icon').setAttribute('href','#i-'+(checking?'pause':settings[kind==='download'?'downIcon':'pubIcon']));
+ }
+ function setNetworkAssessment(value,waiting) {
+  const settings=networkSettings[value];
+  $('network-assessment').dataset.state=waiting?'waiting':value==='connected'?'review':'blocked';
+  $('network-question').textContent=waiting?'What does this policy allow?':settings.assessment;
+  $('network-assessment-note').textContent=waiting?'The host boundary remains intact.':settings.detail;
+  $('network-assessment-icon').setAttribute('href','#i-'+(waiting?'shield':settings.assessmentIcon));
+ }
+ function paintNetwork(value) {
+  const settings=networkSettings[value];pressed('data-network',value);$('connection-panel').dataset.mode=value;
+  $('network-gate-icon').setAttribute('href','#i-'+settings.icon);$('network-gate-caption').innerHTML=settings.gate;
+  setLane('download',settings,false);setLane('publish',settings,false);setNetworkAssessment(value,false);
+  $('network-explanation').textContent=settings.text;
+  $('network-map').setAttribute('aria-label','The host boundary stays intact. Approved packages are supplied from a fixed local copy. '+settings.assessment+' '+settings.detail);
+  document.querySelector('.public-project').classList.toggle('is-reached',value==='connected');document.querySelector('.gate-icon').classList.toggle('is-blocked',value==='scoped');
+  [document.querySelector('.agent-workspace'),document.querySelector('.gate-icon'),$('local-package'),$('network-assessment')].forEach(cleanStyles);clearToken('network-token');
+ }
+ function networkSequence(value) {
+  const settings=networkSettings[value],map=$('network-map'),workspace=document.querySelector('.agent-workspace'),gate=document.querySelector('.gate-icon'),project=document.querySelector('.public-project'),packages=$('local-package');
+  function travel(p){
+   if(p<.45||value==='scoped')journey(map,'network-token',{el:workspace,x:1,y:.25},{el:gate,x:0},Math.min(1,p/.45),'amber');
+   else journey(map,'network-token',{el:gate,x:0},{el:project,x:.3,y:.22},(p-.45)/.55,'amber');
+  }
+  return {key:'network',result:'The host boundary stays intact. '+settings.assessment+' '+settings.detail,prepare:function(){state.network=value;},finish:function(){paintNetwork(value);},steps:[
+   stage('Step 1 of 4. A separate system enforces the selected publishing policy.',1000,function(){
+    paintNetwork(value);setLane('download',settings,true);setLane('publish',settings,true);setNetworkAssessment(value,true);
+    project.classList.remove('is-reached');gate.classList.remove('is-blocked');
+    $('network-explanation').textContent='1/4 · A separate system applies the publishing rule. The agent stays inside its isolated workspace.';
+   },function(p){pulse(workspace,p);}),
+   stage('Step 2 of 4. Approved packages are supplied from a fixed local copy inside the workspace.',1500,function(){
+    $('download-status').textContent='Reading local copy';packages.dataset.check='active';
+    $('network-explanation').textContent='2/4 · The test uses approved packages supplied from a fixed local copy. This step makes no live internet request.';
+   },function(p){pulse(packages,p);}),
+   stage('The packages are available locally. No external fetch is needed in this example.',700,function(){
+    setLane('download',settings,false);cleanStyles(packages);
+    $('network-explanation').textContent='The supplied package set stays inside the workspace. The agent cannot freely fetch new tools.';
+   },function(){}),
+   stage('Step 3 of 4. Test a request to submit a code change.',2000,function(){
+    $('publish-status').textContent='Checking route…';$('publish-status').closest('.action-lane').dataset.check='active';
+    $('network-explanation').textContent=value==='scoped'?'3/4 · The submission request meets a rule that blocks all publishing.':'3/4 · This test needs publishing. The control permits a submission to the designated project.';
+   },travel),
+   stage('Step 4 of 4. '+settings.assessment+' '+settings.detail,2000,function(){
+    setLane('publish',settings,false);setNetworkAssessment(value,false);
+    project.classList.toggle('is-reached',value==='connected');gate.classList.toggle('is-blocked',value==='scoped');
+    $('network-explanation').textContent=settings.text;
+   },function(p){fadeToken('network-token',p);})
+  ]};
+ }
+ function setNetwork(value,doAnimate) { if(doAnimate)beginSequence(networkSequence(value));else{motion.stop(true);state.network=value;paintNetwork(value);refreshPlayback();} }
+
+ function playSlide() {
+  if(state.slide===0){setLab('run',true);return;}
+  if(state.slide===1){
+   const evasion=evasionSequence(state.evasion),escape=escapeSequence();
+   beginSequence({key:'limits',steps:evasion.steps.concat(escape.steps),result:'Evasion hides behaviour. Escape crosses the isolation boundary.',prepare:function(){evasion.prepare();escape.prepare();paintEscape('contained');},finish:function(){evasion.finish();escape.finish();}});
+   return;
+  }
+  if(state.slide===2)setCase(state.case,true);
+  if(state.slide===3)setFleet('changing',true);
+  if(state.slide===4)setNetwork(state.network,true);
+ }
+
+ function sourceCard(s){return '<article class="source-card" id="source-'+s.id+'"><div class="source-meta">['+s.number+'] '+escapeHTML(s.type)+(s.date?' · '+formatDate(s.date):'')+'</div><h3><a href="'+escapeHTML(s.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHTML(s.title)+'</a></h3><div class="source-author">'+escapeHTML(s.author)+'</div><p>'+escapeHTML(s.relevance)+'</p><p class="caveat">'+escapeHTML(s.caveat)+'</p>'+(s.accessUrl?'<p><a href="'+escapeHTML(s.accessUrl)+'" target="_blank" rel="noopener noreferrer">Indexed reproduction consulted</a></p>':'')+'</article>';}
+ function renderNotes(tab,highlight){
+  notesTab=tab;
+  document.querySelectorAll('[data-notetab]').forEach(function(b){const active=b.dataset.notetab===tab;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});
+  $('dialog-content').setAttribute('aria-labelledby','tab-'+tab);
+  let html='';
+  if(tab==='slide'){
+   html='<h3 class="note-title">'+(state.slide+1)+'. '+escapeHTML($('title-'+(state.slide+1)).textContent)+'</h3>';
+   data.slides[state.slide].notes.forEach(function(n){html+='<p class="speaker-note">'+(n.isSynthesis?'<span class="synthesis-label">Presentation synthesis</span>':'')+escapeHTML(n.text)+' '+n.sourceIds.map(refHTML).join('')+'</p>';});
+   html+='<h4 class="source-heading">Sources for this slide</h4>';
+   slides[state.slide].dataset.sources.split(' ').forEach(function(id){html+=sourceCard(sources.get(id));});
+  }else if(tab==='sources'){
+   html='<h3 class="note-title">Evidence, perspectives and qualifications</h3><p class="speaker-note">Primary incident reports establish what happened. Expert opinions explain how their authors interpret those events. The presentation distinguishes observed incidents, controlled research demonstrations and illustrative diagrams.</p>';
+   data.sources.forEach(function(s){html+=sourceCard(sources.get(s.id));});
+   html+='<p class="source-access">'+escapeHTML(data.sourceAccessNote)+'</p>';
+  }else{
+   html='<div class="how-to"><h3>Move through the five slides</h3><p>Use Previous and Next slide, or the numbered chapters. On a keyboard, use <kbd>←</kbd> and <kbd>→</kbd>, <kbd>Home</kbd> for the first slide and <kbd>End</kbd> for the last.</p><h3>Explore each diagram</h3><p>Select Play slide to run the explanation, or use the small buttons inside a diagram. Each sequence moves through visible stages, then holds its completed result. Select Pause animation to stop at any stage and Resume animation to continue. Replay slide, Replay sample or the selected diagram option runs it again from the beginning. Reset is available for the sample and the crossing diagram. Opening notes or switching browser tabs pauses playback; closing notes or returning to the tab resumes it unless you paused manually. Moving to another slide finishes the outgoing diagram in a stable state. On slide 2, Play slide demonstrates the selected evasion example followed by the crossing. On slide 4, 10,000 + logs or Play slide zooms from one test to 24 and then 400. After holding at 100,000 illustrative log entries, it zooms farther to 10,000 runs and expands the records to 2,500,000 entries. The left-hand arithmetic is an explicit illustration; the figures on the right describe a sourced retrospective review and use different units. On slide 5, Publishing blocked stops every code submission. Publishing needed permits the route and leaves the question of content safety unresolved. Both examples use a fixed local copy of approved packages.</p><h3>Open the evidence</h3><p>Select a numbered reference or Notes &amp; sources. <kbd>N</kbd> opens the notes from the slide. <kbd>Esc</kbd> closes this panel. Original sources open separately and need internet access.</p><h3>Present or print</h3><p>Present or <kbd>F</kbd> requests full screen where the browser permits it. Print includes all five slides and a reference appendix. For best results, choose landscape and turn off browser headers and footers.</p><h3>Offline and accessible</h3><p>The presentation has no external assets, tracking or network requests. All diagrams, styles, interactions and notes are embedded. It reflows on smaller screens. With reduced motion enabled, controls immediately show the complete result without travelling markers or animated transitions.</p><h3>The central distinction</h3><p>We can block specific actions. We cannot assume that everything still allowed is safe. Tighter limits reduce risk, but may also remove capabilities that realistic tests need. The log volume illustrates the burden of monitoring and investigation, not a failure of access rules merely because many requests occur. Testing this technology also calls for increased collaboration and transparency: independent parties need advance visibility of the tests, their specific source IP addresses, and the range of expected outcomes.</p></div>';
+  }
+  $('dialog-content').innerHTML=html;$('dialog-scroll').scrollTop=0;
+  if(highlight){requestAnimationFrame(function(){const el=$('source-'+highlight);if(el){el.classList.add('source-highlight');el.scrollIntoView({block:'start',behavior:'instant'});}});}
+ }
+ function openNotes(tab,highlight){
+  motion.pause('notes',true);
+  lastOpener=document.activeElement;renderNotes(tab||'slide',highlight);
+  if(!dialog.open){if(typeof dialog.showModal==='function')dialog.showModal();else{dialog.setAttribute('open','');dialog.setAttribute('aria-modal','true');}}
+  $('close-notes').focus({preventScroll:true});
+ }
+ function closeNotes(){if(typeof dialog.close==='function')dialog.close();else{dialog.removeAttribute('open');motion.pause('notes',false);if(lastOpener)lastOpener.focus({preventScroll:true});}}
+ async function fullscreen(){
+  try{if(!document.fullscreenElement){if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else openNotes('help');}else if(document.exitFullscreen)await document.exitFullscreen();}
+  catch(e){$('slide-announcement').textContent='Full screen is unavailable in this viewer. Open the downloaded file in a browser to use presentation mode.';openNotes('help');}
+ }
+ function createAppendix(){
+  $('print-appendix').innerHTML='<h2>Sources &amp; reading</h2><p>Can a sandbox contain an AI agent? · Evidence through 6 October 2026. This appendix includes primary reports, research demonstrations and expert perspectives.</p>'+data.sources.map(function(s,i){return '<div class="print-source"><strong>['+(i+1)+'] '+escapeHTML(s.author)+': '+escapeHTML(s.title)+'</strong><br><small>'+escapeHTML(s.type)+(s.date?' · '+formatDate(s.date):'')+'</small><a href="'+escapeHTML(s.url)+'">'+escapeHTML(s.url)+'</a></div>';}).join('')+'<p class="source-access">'+escapeHTML(data.sourceAccessNote)+'</p>';
+ }
+ document.addEventListener('click',function(e){
+  const ref=e.target.closest('[data-source]');if(ref){openNotes('sources',ref.dataset.source);return;}
+  const go=e.target.closest('[data-goto]');if(go){goSlide(Number(go.dataset.goto),true);return;}
+  const ev=e.target.closest('[data-evasion]');if(ev){setEvasion(ev.dataset.evasion,true);return;}
+  const ca=e.target.closest('[data-case]');if(ca){setCase(ca.dataset.case,true);return;}
+  const fl=e.target.closest('[data-fleet]');if(fl){setFleet(fl.dataset.fleet,true);return;}
+  const ne=e.target.closest('[data-network]');if(ne){setNetwork(ne.dataset.network,true);return;}
+  const ta=e.target.closest('[data-notetab]');if(ta){renderNotes(ta.dataset.notetab);return;}
+ });
+ $('prev-btn').addEventListener('click',function(){goSlide(state.slide-1,true);});
+ $('next-btn').addEventListener('click',function(){goSlide(state.slide===4?0:state.slide+1,true);});
+ $('run-lab').addEventListener('click',function(){setLab('run',true);});
+ $('reset-lab').addEventListener('click',function(){setLab('ready',true);});
+ $('show-escape').addEventListener('click',function(){setEscape('breach',true);});
+ $('reset-escape').addEventListener('click',function(){setEscape('contained',false);});
+ $('motion-toggle').addEventListener('click',function(){const info=motion.snapshot();if(info.active)motion.pause('manual',!info.manualPause);else playSlide();});
+ $('notes-btn').addEventListener('click',function(){openNotes('slide');});
+ $('expert-notes').addEventListener('click',function(){openNotes('slide');});
+ $('close-notes').addEventListener('click',closeNotes);
+ $('fullscreen-btn').addEventListener('click',fullscreen);
+ $('print-btn').addEventListener('click',function(){window.print();});
+ dialog.addEventListener('click',function(e){if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeNotes();}});
+ dialog.addEventListener('close',function(){motion.pause('notes',false);if(lastOpener&&document.contains(lastOpener)&&!lastOpener.closest('[hidden]'))lastOpener.focus({preventScroll:true});});
+ document.querySelector('.dialog-tabs').addEventListener('keydown',function(e){
+  if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+  const tabs=Array.from(document.querySelectorAll('[data-notetab]'));let i=tabs.findIndex(function(b){return b===document.activeElement;});if(i<0)return;e.preventDefault();e.stopPropagation();
+  i=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length;renderNotes(tabs[i].dataset.notetab);tabs[i].focus();
+ });
+ document.addEventListener('keydown',function(e){
+  if(e.ctrlKey||e.metaKey||e.altKey||dialog.open)return;
+  if(e.target.closest('input,textarea,select,button,a,[contenteditable="true"]'))return;
+  if(['ArrowRight','PageDown','ArrowLeft','PageUp','Home','End'].includes(e.key)){
+   e.preventDefault();if(e.key==='Home')goSlide(0,true);else if(e.key==='End')goSlide(4,true);else goSlide(state.slide+(['ArrowRight','PageDown'].includes(e.key)?1:-1),true);
+  }else if(e.key.toLowerCase()==='n'){e.preventDefault();openNotes('slide');}else if(e.key.toLowerCase()==='f'){e.preventDefault();fullscreen();}
+ });
+ window.addEventListener('hashchange',function(){const match=location.hash.match(/^#slide-([1-5])$/);if(match)goSlide(Number(match[1])-1,false,false);});
+ document.addEventListener('fullscreenchange',function(){$('fullscreen-btn').setAttribute('aria-label',document.fullscreenElement?'Exit full screen':'Enter full screen');});
+ window.addEventListener('beforeprint',function(){
+  if(printSnapshot)return;motion.stop(true);printSnapshot=Object.assign({},state);setLab('run');setEvasion('test');setEscape('breach');setCase('openai');setFleet('changing');setNetwork('connected');
+ });
+ window.addEventListener('afterprint',function(){
+  if(!printSnapshot)return;const s=printSnapshot;printSnapshot=null;setLab(s.lab);setEvasion(s.evasion);setEscape(s.escape);setCase(s.case);setFleet(s.fleet);setNetwork(s.network);goSlide(s.slide,false,false);
+ });
+ initialiseMotionElements();initFleet();syncRefs();createAppendix();
+ document.addEventListener('visibilitychange',function(){motion.pause('visibility',document.hidden);});
+ motion.pause('visibility',document.hidden);
+ function changedMotionPreference(){if(motionPreference.matches){motion.stop(true);$('diagram-announcement').textContent='Motion reduced. The completed results are shown.';refreshPlayback();}}
+ if(motionPreference.addEventListener)motionPreference.addEventListener('change',changedMotionPreference);else if(motionPreference.addListener)motionPreference.addListener(changedMotionPreference);
+ const start=location.hash.match(/^#slide-([1-5])$/);goSlide(start?Number(start[1])-1:0,false,false);
+ document.documentElement.classList.add('presentation-ready');
+})();
+</script>
+</body>
+</html>
