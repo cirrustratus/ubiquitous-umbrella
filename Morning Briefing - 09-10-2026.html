@@ -1,0 +1,868 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cyber and Legal Tech Stories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: neutral tab shell; each story keeps its own palette inside its panel. */
+
+:root{--sh-bg:#f2f1ef;--sh-ink:#1c1c20;--sh-muted:#66656c;--sh-rule:#d6d4d0;--sh-sel:#ffffff;
+ --serif:"Newsreader",Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sh-bg:#121214;--sh-ink:#ecebef;--sh-muted:#a2a1aa;--sh-rule:#2e2d33;--sh-sel:#1d1d21;color-scheme:dark}}
+:root[data-theme="dark"]{--sh-bg:#121214;--sh-ink:#ecebef;--sh-muted:#a2a1aa;--sh-rule:#2e2d33;--sh-sel:#1d1d21;color-scheme:dark}
+body{background:var(--sh-bg);color:var(--sh-ink);font-family:var(--sans)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sh-bg);border-bottom:1px solid var(--sh-rule)}
+.top-in{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:14px 0;display:grid;gap:10px}
+.top h1{font:600 22px/1.15 var(--serif);margin:0}
+.top p{margin:0;font-size:13px;color:var(--sh-muted)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tab{display:flex;align-items:center;gap:8px;font:500 14px var(--sans);color:var(--sh-muted);background:transparent;border:1px solid transparent;border-bottom:none;border-radius:6px 6px 0 0;padding:9px 14px;cursor:pointer;white-space:nowrap}
+.tab i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.tab span{font:400 12px var(--mono);color:var(--sh-muted)}
+.tab[aria-selected="true"]{color:var(--sh-ink);background:var(--sh-sel);border-color:var(--sh-rule)}
+.tab:focus-visible{outline:2px solid var(--sh-ink);outline-offset:-2px}
+.story .wrap{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:grid;gap:14px}
+
+.s-poellm{
+  --paper:#eef1ee; --ink:#18263a; --muted:#5b6878; --rule:#c9d1cc; --card:#f8faf8;
+  --mark:#f3d54a; --markink:#18263a; --alert:#b4432f; --link:#2b5d8a;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .s-poellm{
+  --paper:#121a24; --ink:#e7ece9; --muted:#9aa7b4; --rule:#2d3a49; --card:#1a2431;
+  --mark:#e9c93c; --markink:#121a24; --alert:#e07a64; --link:#8cb8e0; color-scheme:dark}}
+:root[data-theme="dark"] .s-poellm{
+  --paper:#121a24; --ink:#e7ece9; --muted:#9aa7b4; --rule:#2d3a49; --card:#1a2431;
+  --mark:#e9c93c; --markink:#121a24; --alert:#e07a64; --link:#8cb8e0; color-scheme:dark}
+.s-poellm{background:var(--paper);color:var(--ink);font-family:var(--sans)}
+.s-poellm .stage{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;container-type:inline-size}
+.s-poellm .scene{position:absolute;inset:0;padding:5cqw 6cqw 13cqw;display:flex;flex-direction:column;gap:2cqw}
+.s-poellm .cap{position:absolute;left:0;right:0;bottom:0;padding:2cqw 6cqw 2.4cqw;background:var(--ink);color:var(--paper);font-size:2.2cqw;line-height:1.35;min-height:9cqw;display:flex;align-items:center}
+.s-poellm .tag{position:absolute;top:1.8cqw;right:2.2cqw;font:500 1.25cqw var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.s-poellm [data-at]{opacity:0;transform:translateY(.8cqw);transition:opacity .3s ease,transform .3s ease}
+.s-poellm [data-at].on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.s-poellm [data-at],.s-poellm .w,.s-poellm .dict td,.s-poellm .node{transition:none!important}}
+.s-poellm .eyebrow{font:500 1.5cqw var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.s-poellm h2{font:600 5.4cqw/1.05 var(--serif);margin:0;text-wrap:balance}
+.s-poellm h3{font:600 3.4cqw/1.1 var(--serif);margin:0;text-wrap:balance}
+.s-poellm p.lead{font:400 2.3cqw/1.4 var(--serif);margin:0;color:var(--muted);max-width:60ch}
+.s-poellm .mark{background:var(--mark);color:var(--markink);padding:0 .3em;border-radius:2px}
+.s-poellm .row{display:flex;gap:2.6cqw;align-items:stretch}
+.s-poellm .col{display:flex;flex-direction:column;gap:1.3cqw;min-width:0;flex:1}
+.s-poellm .box{border:1px solid var(--rule);border-radius:4px;padding:1.6cqw 1.9cqw;background:var(--paper)}
+.s-poellm .box b{display:block;font:600 1.9cqw var(--sans);margin-bottom:.5cqw}
+.s-poellm .box small{font-size:1.7cqw;line-height:1.4;color:var(--muted);display:block}
+.s-poellm .note{font:400 1.35cqw var(--mono);color:var(--muted);line-height:1.4}
+.s-poellm .fig{font:600 7.5cqw/1 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.s-poellm .fig.sm{font-size:5cqw}
+.s-poellm .chips{display:flex;flex-wrap:wrap;gap:1cqw}
+.s-poellm .chip{font:500 1.8cqw var(--mono);border:1px solid var(--ink);border-radius:2cqw;padding:.5cqw 1.4cqw}
+.s-poellm .chip.maybe{border-style:dashed;color:var(--muted);border-color:var(--muted)}
+.s-poellm .file{border:1px solid var(--rule);border-radius:4px;background:var(--paper);overflow:hidden}
+.s-poellm .file .hd{font:500 1.45cqw var(--mono);padding:1cqw 1.6cqw;border-bottom:1px solid var(--rule);color:var(--muted)}
+.s-poellm .lines{padding:1.6cqw;display:flex;flex-direction:column;gap:1.1cqw}
+.s-poellm .ln{display:flex;gap:.8cqw;align-items:center}
+.s-poellm .bar{height:1.3cqw;border-radius:1cqw;background:var(--rule)}
+.s-poellm .anc{height:1.3cqw;border-radius:1cqw;background:none;border:1.5px dashed var(--muted)}
+.s-poellm .w{font:italic 400 2cqw var(--serif);padding:0 .3em;border-radius:2px;transition:background .3s,color .3s}
+.s-poellm .w.lit{background:var(--mark);color:var(--markink)}
+.s-poellm .dict{width:100%;border-collapse:collapse;font:500 1.9cqw var(--mono)}
+.s-poellm .dict td{border-bottom:1px solid var(--rule);padding:.7cqw .6cqw;transition:background .3s}
+.s-poellm .dict td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.s-poellm .dict tr.lit td{background:var(--mark);color:var(--markink)}
+.s-poellm .addr{font:500 4.2cqw var(--mono);font-variant-numeric:tabular-nums}
+.s-poellm .arrow{font:400 3cqw var(--serif);color:var(--muted);align-self:center}
+.s-poellm svg text{font-family:var(--mono)}
+.s-poellm .node{transition:opacity .3s}
+.s-poellm .k{font:600 1.4cqw var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4cqw}
+.s-poellm .k.known{color:var(--link)}
+.s-poellm .k.assessed{color:var(--ink)}
+.s-poellm .k.unknown{color:var(--alert)}
+.s-poellm .ctl{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.s-poellm .ctl button{font:500 14px var(--sans);background:var(--ink);color:var(--paper);border:0;border-radius:4px;padding:8px 16px;cursor:pointer;min-width:84px}
+.s-poellm .ctl button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.s-poellm .ctl button:focus-visible,.s-poellm .chap button:focus-visible,.s-poellm input:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.s-poellm .time{font:400 13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.s-poellm .seek{flex:1;min-width:160px;accent-color:var(--ink)}
+.s-poellm .chap{display:flex;flex-wrap:wrap;gap:6px}
+.s-poellm .chap button{font:400 12px var(--sans);background:transparent;color:var(--muted);border:1px solid var(--rule);border-radius:3px;padding:4px 8px;cursor:pointer}
+.s-poellm .chap button.cur{color:var(--ink);border-color:var(--ink)}
+.s-poellm .src{font-size:13px;color:var(--muted);line-height:1.5;max-width:75ch;margin:0}
+.s-poellm .src a{color:var(--link)}
+.s-poellm details{border-top:1px solid var(--rule);padding-top:10px}
+.s-poellm summary{cursor:pointer;font:500 14px var(--sans)}
+.s-poellm ol.tx{font:400 15px/1.55 var(--serif);max-width:70ch;padding-left:1.4em}
+.s-poellm ol.tx li{margin-bottom:6px}
+.s-pilot5{
+  --paper:#e8edf1; --ink:#221c45; --muted:#5d5a78; --rule:#c5ccd6; --card:#f5f7f9;
+  --mark:#86d6bd; --markink:#221c45; --alert:#a8304f; --link:#2c6a8a;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .s-pilot5{
+  --paper:#16132b; --ink:#ebe8f7; --muted:#a49fc3; --rule:#35305c; --card:#1f1b3a;
+  --mark:#63c3a6; --markink:#16132b; --alert:#e6738f; --link:#8ec6e2; color-scheme:dark}}
+:root[data-theme="dark"] .s-pilot5{
+  --paper:#16132b; --ink:#ebe8f7; --muted:#a49fc3; --rule:#35305c; --card:#1f1b3a;
+  --mark:#63c3a6; --markink:#16132b; --alert:#e6738f; --link:#8ec6e2; color-scheme:dark}
+.s-pilot5{background:var(--paper);color:var(--ink);font-family:var(--sans)}
+.s-pilot5 .stage{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;container-type:inline-size}
+.s-pilot5 .scene{position:absolute;inset:0;padding:5cqw 6cqw 13cqw;display:flex;flex-direction:column;gap:1.8cqw}
+.s-pilot5 .cap{position:absolute;left:0;right:0;bottom:0;padding:2cqw 6cqw 2.4cqw;background:var(--ink);color:var(--paper);font-size:2.2cqw;line-height:1.35;min-height:9cqw;display:flex;align-items:center}
+.s-pilot5 .tag{position:absolute;top:1.8cqw;right:2.2cqw;font:500 1.25cqw var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.s-pilot5 [data-at]{opacity:0;transform:translateY(.8cqw);transition:opacity .3s ease,transform .3s ease}
+.s-pilot5 [data-at].on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.s-pilot5 [data-at],.s-pilot5 .seat,.s-pilot5 .stg{transition:none!important}}
+.s-pilot5 .eyebrow{font:500 1.5cqw var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.s-pilot5 h2{font:600 5.4cqw/1.05 var(--serif);margin:0;text-wrap:balance}
+.s-pilot5 h3{font:600 3.2cqw/1.1 var(--serif);margin:0;text-wrap:balance}
+.s-pilot5 p.lead{font:400 2.3cqw/1.4 var(--serif);margin:0;color:var(--muted);max-width:60ch}
+.s-pilot5 .mark{background:var(--mark);color:var(--markink);padding:0 .3em;border-radius:2px}
+.s-pilot5 .row{display:flex;gap:2.2cqw;align-items:stretch}
+.s-pilot5 .col{display:flex;flex-direction:column;gap:1.2cqw;min-width:0;flex:1}
+.s-pilot5 .box{border:1px solid var(--rule);border-radius:4px;padding:1.5cqw 1.8cqw;background:var(--paper)}
+.s-pilot5 .box b{display:block;font:600 1.85cqw var(--sans);margin-bottom:.45cqw}
+.s-pilot5 .box small{font-size:1.65cqw;line-height:1.4;color:var(--muted);display:block}
+.s-pilot5 .note{font:400 1.35cqw var(--mono);color:var(--muted);line-height:1.45}
+.s-pilot5 blockquote{margin:0;font:italic 400 5cqw/1.1 var(--serif);text-wrap:balance}
+.s-pilot5 cite{font:500 1.6cqw var(--sans);font-style:normal;color:var(--muted)}
+.s-pilot5 .panel{display:grid;grid-template-columns:repeat(5,1fr);gap:1.4cqw}
+.s-pilot5 .seat{border:1px solid var(--rule);border-radius:4px;padding:1.4cqw 1.2cqw;background:var(--paper);display:flex;flex-direction:column;gap:.6cqw;transition:background .3s,border-color .3s}
+.s-pilot5 .seat .n{font:600 2.2cqw var(--serif)}
+.s-pilot5 .seat small{font-size:1.45cqw;line-height:1.35;color:var(--muted)}
+.s-pilot5 .seat.con{border:2px solid var(--alert)}
+.s-pilot5 .seat.con.lit{background:var(--mark);border-color:var(--mark)}
+.s-pilot5 .seat.con.lit .n,.s-pilot5 .seat.con.lit small{color:var(--markink)}
+.s-pilot5 .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:1.2cqw}
+.s-pilot5 .stg{border-top:3px solid var(--rule);padding-top:1cqw;transition:border-color .3s}
+.s-pilot5 .stg.on{border-color:var(--ink)}
+.s-pilot5 .stg .s{font:500 1.3cqw var(--mono);color:var(--muted);letter-spacing:.08em}
+.s-pilot5 .stg b{display:block;font:600 1.8cqw var(--sans);margin:.4cqw 0}
+.s-pilot5 .stg small{font-size:1.5cqw;line-height:1.35;color:var(--muted);display:block}
+.s-pilot5 .cmp{width:100%;border-collapse:collapse;font-size:1.6cqw;line-height:1.35}
+.s-pilot5 .cmp th{font:500 1.35cqw var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.6cqw .8cqw;border-bottom:2px solid var(--ink)}
+.s-pilot5 .cmp td{padding:.75cqw .8cqw;border-bottom:1px solid var(--rule);vertical-align:top}
+.s-pilot5 .cmp td:first-child{font:600 1.5cqw var(--sans);color:var(--muted);width:14%}
+.s-pilot5 .cmp tr{opacity:0;transition:opacity .3s}
+.s-pilot5 .cmp tr.on{opacity:1}
+.s-pilot5 .price{font:600 3.6cqw/1 var(--serif);font-variant-numeric:tabular-nums}
+.s-pilot5 .k{font:600 1.35cqw var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4cqw;display:block}
+.s-pilot5 .k.known{color:var(--link)}
+.s-pilot5 .k.unknown{color:var(--alert)}
+.s-pilot5 .ctl{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.s-pilot5 .ctl button{font:500 14px var(--sans);background:var(--ink);color:var(--paper);border:0;border-radius:4px;padding:8px 16px;cursor:pointer;min-width:84px}
+.s-pilot5 .ctl button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.s-pilot5 .ctl button:focus-visible,.s-pilot5 .chap button:focus-visible,.s-pilot5 input:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.s-pilot5 .time{font:400 13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.s-pilot5 .seek{flex:1;min-width:160px;accent-color:var(--ink)}
+.s-pilot5 .chap{display:flex;flex-wrap:wrap;gap:6px}
+.s-pilot5 .chap button{font:400 12px var(--sans);background:transparent;color:var(--muted);border:1px solid var(--rule);border-radius:3px;padding:4px 8px;cursor:pointer}
+.s-pilot5 .chap button.cur{color:var(--ink);border-color:var(--ink)}
+.s-pilot5 .src{font-size:13px;color:var(--muted);line-height:1.5;max-width:75ch;margin:0}
+.s-pilot5 .src a{color:var(--link)}
+.s-pilot5 details{border-top:1px solid var(--rule);padding-top:10px}
+.s-pilot5 summary{cursor:pointer;font:500 14px var(--sans)}
+.s-pilot5 ol.tx{font:400 15px/1.55 var(--serif);max-width:70ch;padding-left:1.4em}
+.s-pilot5 ol.tx li{margin-bottom:6px}
+.s-paragon{
+  --paper:#e9e6ee; --ink:#231a33; --muted:#625a70; --rule:#cdc6d6; --card:#f6f4f8;
+  --mark:#a9c8f3; --markink:#231a33; --alert:#2648a8; --link:#6b3f8c; --redact:#231a33;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .s-paragon{
+  --paper:#18131f; --ink:#ece6f4; --muted:#a69cb6; --rule:#3a3048; --card:#211a2b;
+  --mark:#7ea7ea; --markink:#18131f; --alert:#8eaaff; --link:#c9a5e8; --redact:#05030a; color-scheme:dark}}
+:root[data-theme="dark"] .s-paragon{
+  --paper:#18131f; --ink:#ece6f4; --muted:#a69cb6; --rule:#3a3048; --card:#211a2b;
+  --mark:#7ea7ea; --markink:#18131f; --alert:#8eaaff; --link:#c9a5e8; --redact:#05030a; color-scheme:dark}
+.s-paragon{background:var(--paper);color:var(--ink);font-family:var(--sans)}
+.s-paragon .stage{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;container-type:inline-size}
+.s-paragon .scene{position:absolute;inset:0;padding:5cqw 6cqw 13cqw;display:flex;flex-direction:column;gap:1.8cqw}
+.s-paragon .cap{position:absolute;left:0;right:0;bottom:0;padding:2cqw 6cqw 2.4cqw;background:var(--ink);color:var(--paper);font-size:2.2cqw;line-height:1.35;min-height:9cqw;display:flex;align-items:center}
+.s-paragon .tag{position:absolute;top:1.8cqw;right:2.2cqw;font:500 1.25cqw var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.s-paragon [data-at]{opacity:0;transform:translateY(.8cqw);transition:opacity .3s ease,transform .3s ease}
+.s-paragon [data-at].on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.s-paragon [data-at],.s-paragon .ph,.s-paragon .cmp tr,.s-paragon .rd{transition:none!important}}
+.s-paragon .eyebrow{font:500 1.5cqw var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.s-paragon h2{font:600 5.2cqw/1.05 var(--serif);margin:0;text-wrap:balance}
+.s-paragon h3{font:600 3.2cqw/1.1 var(--serif);margin:0;text-wrap:balance}
+.s-paragon p.lead{font:400 2.3cqw/1.4 var(--serif);margin:0;color:var(--muted);max-width:60ch}
+.s-paragon .mark{background:var(--mark);color:var(--markink);padding:0 .3em;border-radius:2px}
+.s-paragon .row{display:flex;gap:2.2cqw;align-items:stretch}
+.s-paragon .col{display:flex;flex-direction:column;gap:1.2cqw;min-width:0;flex:1}
+.s-paragon .box{border:1px solid var(--rule);border-radius:4px;padding:1.5cqw 1.8cqw;background:var(--paper)}
+.s-paragon .box b{display:block;font:600 1.85cqw var(--sans);margin-bottom:.45cqw}
+.s-paragon .box small{font-size:1.65cqw;line-height:1.4;color:var(--muted);display:block}
+.s-paragon .note{font:400 1.35cqw var(--mono);color:var(--muted);line-height:1.45}
+.s-paragon .fig{font:600 6.5cqw/1 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.s-paragon blockquote{margin:0;font:italic 400 4.2cqw/1.15 var(--serif);text-wrap:balance}
+.s-paragon cite{font:500 1.6cqw var(--sans);font-style:normal;color:var(--muted)}
+.s-paragon .k{font:600 1.35cqw var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4cqw;display:block}
+.s-paragon .k.known{color:var(--link)}
+.s-paragon .k.claim{color:var(--ink)}
+.s-paragon .k.unknown{color:var(--alert)}
+.s-paragon .phones{display:grid;grid-template-columns:repeat(15,1fr);gap:.6cqw;width:36cqw}
+.s-paragon .ph{aspect-ratio:.55;border:1.5px solid var(--rule);border-radius:.6cqw;transition:background .25s,border-color .25s}
+.s-paragon .ph.hit{background:var(--alert);border-color:var(--alert)}
+.s-paragon .ledger{border:1px solid var(--rule);border-radius:4px;background:var(--paper);padding:1.6cqw 2cqw;display:grid;gap:1.1cqw;font:500 1.7cqw var(--mono)}
+.s-paragon .ledger div{display:grid;grid-template-columns:13cqw 1fr;gap:1.4cqw;align-items:center}
+.s-paragon .ledger span:first-child{color:var(--muted)}
+.s-paragon .rd{display:block;height:2cqw;background:var(--redact);border-radius:1px;transform-origin:left;transform:scaleX(0);transition:transform .35s ease}
+.s-paragon .rd.on{transform:scaleX(1)}
+.s-paragon .clock{display:flex;gap:2cqw;align-items:center}
+.s-paragon .hours{font:500 7cqw/1 var(--mono);font-variant-numeric:tabular-nums}
+.s-paragon .meter{flex:1;height:2.2cqw;border:1.5px solid var(--ink);border-radius:1cqw;overflow:hidden}
+.s-paragon .meter i{display:block;height:100%;background:var(--alert);width:100%}
+.s-paragon .cmp{width:100%;border-collapse:collapse;font-size:1.65cqw;line-height:1.35}
+.s-paragon .cmp th{font:500 1.35cqw var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.6cqw .8cqw;border-bottom:2px solid var(--ink)}
+.s-paragon .cmp td{padding:.7cqw .8cqw;border-bottom:1px solid var(--rule);vertical-align:top}
+.s-paragon .cmp td:first-child{font:600 1.5cqw var(--sans);color:var(--muted);width:20%}
+.s-paragon .cmp tr{opacity:0;transition:opacity .3s}
+.s-paragon .cmp tr.on{opacity:1}
+.s-paragon .no{color:var(--alert);font-weight:600}
+.s-paragon .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw;border-top:2px solid var(--ink);padding-top:1.3cqw}
+.s-paragon .tl .when{font:600 2.4cqw var(--serif)}
+.s-paragon .tl small{font-size:1.5cqw;color:var(--muted);line-height:1.35;display:block}
+.s-paragon .ctl{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.s-paragon .ctl button{font:500 14px var(--sans);background:var(--ink);color:var(--paper);border:0;border-radius:4px;padding:8px 16px;cursor:pointer;min-width:84px}
+.s-paragon .ctl button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.s-paragon .ctl button:focus-visible,.s-paragon .chap button:focus-visible,.s-paragon input:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.s-paragon .time{font:400 13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.s-paragon .seek{flex:1;min-width:160px;accent-color:var(--ink)}
+.s-paragon .chap{display:flex;flex-wrap:wrap;gap:6px}
+.s-paragon .chap button{font:400 12px var(--sans);background:transparent;color:var(--muted);border:1px solid var(--rule);border-radius:3px;padding:4px 8px;cursor:pointer}
+.s-paragon .chap button.cur{color:var(--ink);border-color:var(--ink)}
+.s-paragon .src{font-size:13px;color:var(--muted);line-height:1.5;max-width:75ch;margin:0}
+.s-paragon .src a{color:var(--link)}
+.s-paragon details{border-top:1px solid var(--rule);padding-top:10px}
+.s-paragon summary{cursor:pointer;font:500 14px var(--sans)}
+.s-paragon ol.tx{font:400 15px/1.55 var(--serif);max-width:70ch;padding-left:1.4em}
+.s-paragon ol.tx li{margin-bottom:6px}
+.s-mimosa{
+  --paper:#efecec; --ink:#1d1a1c; --muted:#635c60; --rule:#d3cccd; --card:#f8f6f6;
+  --mark:#e2242c; --markink:#ffffff; --alert:#c41a22; --link:#2f5f8a;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .s-mimosa{
+  --paper:#161314; --ink:#efe9ea; --muted:#a99fa3; --rule:#3a3235; --card:#201c1d;
+  --mark:#ff4d54; --markink:#160f10; --alert:#ff5a60; --link:#94bde3; color-scheme:dark}}
+:root[data-theme="dark"] .s-mimosa{
+  --paper:#161314; --ink:#efe9ea; --muted:#a99fa3; --rule:#3a3235; --card:#201c1d;
+  --mark:#ff4d54; --markink:#160f10; --alert:#ff5a60; --link:#94bde3; color-scheme:dark}
+.s-mimosa{background:var(--paper);color:var(--ink);font-family:var(--sans)}
+.s-mimosa .stage{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;container-type:inline-size}
+.s-mimosa .scene{position:absolute;inset:0;padding:5cqw 6cqw 13cqw;display:flex;flex-direction:column;gap:1.8cqw}
+.s-mimosa .cap{position:absolute;left:0;right:0;bottom:0;padding:2cqw 6cqw 2.4cqw;background:var(--ink);color:var(--paper);font-size:2.2cqw;line-height:1.35;min-height:9cqw;display:flex;align-items:center}
+.s-mimosa .tag{position:absolute;top:1.8cqw;right:2.2cqw;font:500 1.25cqw var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.s-mimosa [data-at]{opacity:0;transform:translateY(.8cqw);transition:opacity .3s ease,transform .3s ease}
+.s-mimosa [data-at].on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.s-mimosa [data-at],.s-mimosa .ph,.s-mimosa .cmp tr,.s-mimosa .rd{transition:none!important}}
+.s-mimosa .eyebrow{font:500 1.5cqw var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.s-mimosa h2{font:600 5.2cqw/1.05 var(--serif);margin:0;text-wrap:balance}
+.s-mimosa h3{font:600 3.2cqw/1.1 var(--serif);margin:0;text-wrap:balance}
+.s-mimosa p.lead{font:400 2.3cqw/1.4 var(--serif);margin:0;color:var(--muted);max-width:60ch}
+.s-mimosa .mark{background:var(--mark);color:var(--markink);padding:0 .3em;border-radius:2px}
+.s-mimosa .row{display:flex;gap:2.2cqw;align-items:stretch}
+.s-mimosa .col{display:flex;flex-direction:column;gap:1.2cqw;min-width:0;flex:1}
+.s-mimosa .box{border:1px solid var(--rule);border-radius:4px;padding:1.5cqw 1.8cqw;background:var(--paper)}
+.s-mimosa .box b{display:block;font:600 1.85cqw var(--sans);margin-bottom:.45cqw}
+.s-mimosa .box small{font-size:1.65cqw;line-height:1.4;color:var(--muted);display:block}
+.s-mimosa .note{font:400 1.35cqw var(--mono);color:var(--muted);line-height:1.45}
+.s-mimosa .fig{font:600 6.5cqw/1 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.s-mimosa blockquote{margin:0;font:italic 400 4.2cqw/1.15 var(--serif);text-wrap:balance}
+.s-mimosa cite{font:500 1.6cqw var(--sans);font-style:normal;color:var(--muted)}
+.s-mimosa .k{font:600 1.35cqw var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4cqw;display:block}
+.s-mimosa .k.known{color:var(--link)}
+.s-mimosa .k.claim{color:var(--ink)}
+.s-mimosa .k.unknown{color:var(--alert)}
+.s-mimosa .phones{display:grid;grid-template-columns:repeat(15,1fr);gap:.6cqw;width:36cqw}
+.s-mimosa .ph{aspect-ratio:.55;border:1.5px solid var(--rule);border-radius:.6cqw;transition:background .25s,border-color .25s}
+.s-mimosa .ph.hit{background:var(--alert);border-color:var(--alert)}
+.s-mimosa .ledger{border:1px solid var(--rule);border-radius:4px;background:var(--paper);padding:1.6cqw 2cqw;display:grid;gap:1.1cqw;font:500 1.7cqw var(--mono)}
+.s-mimosa .ledger div{display:grid;grid-template-columns:13cqw 1fr;gap:1.4cqw;align-items:center}
+.s-mimosa .ledger span:first-child{color:var(--muted)}
+.s-mimosa .rd{display:block;height:2cqw;background:var(--redact);border-radius:1px;transform-origin:left;transform:scaleX(0);transition:transform .35s ease}
+.s-mimosa .rd.on{transform:scaleX(1)}
+.s-mimosa .clock{display:flex;gap:2cqw;align-items:center}
+.s-mimosa .hours{font:500 7cqw/1 var(--mono);font-variant-numeric:tabular-nums}
+.s-mimosa .meter{flex:1;height:2.2cqw;border:1.5px solid var(--ink);border-radius:1cqw;overflow:hidden}
+.s-mimosa .meter i{display:block;height:100%;background:var(--alert);width:100%}
+.s-mimosa .cmp{width:100%;border-collapse:collapse;font-size:1.65cqw;line-height:1.35}
+.s-mimosa .cmp th{font:500 1.35cqw var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.6cqw .8cqw;border-bottom:2px solid var(--ink)}
+.s-mimosa .cmp td{padding:.7cqw .8cqw;border-bottom:1px solid var(--rule);vertical-align:top}
+.s-mimosa .cmp td:first-child{font:600 1.5cqw var(--sans);color:var(--muted);width:20%}
+.s-mimosa .cmp tr{opacity:0;transition:opacity .3s}
+.s-mimosa .cmp tr.on{opacity:1}
+.s-mimosa .no{color:var(--alert);font-weight:600}
+.s-mimosa .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw;border-top:2px solid var(--ink);padding-top:1.3cqw}
+.s-mimosa .tl .when{font:600 2.4cqw var(--serif)}
+.s-mimosa .tl small{font-size:1.5cqw;color:var(--muted);line-height:1.35;display:block}
+.s-mimosa .ctl{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.s-mimosa .ctl button{font:500 14px var(--sans);background:var(--ink);color:var(--paper);border:0;border-radius:4px;padding:8px 16px;cursor:pointer;min-width:84px}
+.s-mimosa .ctl button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.s-mimosa .ctl button:focus-visible,.s-mimosa .chap button:focus-visible,.s-mimosa input:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.s-mimosa .time{font:400 13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.s-mimosa .seek{flex:1;min-width:160px;accent-color:var(--ink)}
+.s-mimosa .chap{display:flex;flex-wrap:wrap;gap:6px}
+.s-mimosa .chap button{font:400 12px var(--sans);background:transparent;color:var(--muted);border:1px solid var(--rule);border-radius:3px;padding:4px 8px;cursor:pointer}
+.s-mimosa .chap button.cur{color:var(--ink);border-color:var(--ink)}
+.s-mimosa .src{font-size:13px;color:var(--muted);line-height:1.5;max-width:75ch;margin:0}
+.s-mimosa .src a{color:var(--link)}
+.s-mimosa details{border-top:1px solid var(--rule);padding-top:10px}
+.s-mimosa summary{cursor:pointer;font:500 14px var(--sans)}
+.s-mimosa ol.tx{font:400 15px/1.55 var(--serif);max-width:70ch;padding-left:1.4em}
+.s-mimosa ol.tx li{margin-bottom:6px}
+.s-mimosa .fig{font:600 6.5cqw/1 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.s-mimosa .k{font:600 1.35cqw var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4cqw;display:block}
+.s-mimosa .k.known{color:var(--link)}
+.s-mimosa .k.claim{color:var(--ink)}
+.s-mimosa .k.unknown{color:var(--alert)}
+.s-mimosa .tl{display:grid;grid-template-columns:repeat(3,1fr);gap:2cqw;border-top:2px solid var(--ink);padding-top:1.4cqw}
+.s-mimosa .tl .when{font:600 2.6cqw var(--serif);display:flex;align-items:center;gap:1cqw}
+.s-mimosa .tl small{font-size:1.65cqw;color:var(--muted);line-height:1.35;display:block}
+.s-mimosa .dotr{width:1.8cqw;height:1.8cqw;border-radius:50%;background:var(--alert);display:inline-block}
+.s-mimosa .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:1.2cqw}
+.s-mimosa .stg{border-top:3px solid var(--rule);padding-top:1cqw;transition:border-color .3s,opacity .3s}
+.s-mimosa .stg.on{border-color:var(--alert)}
+.s-mimosa .stg .s{font:500 1.3cqw var(--mono);color:var(--muted);letter-spacing:.08em}
+.s-mimosa .stg b{display:block;font:600 1.75cqw var(--sans);margin:.4cqw 0}
+.s-mimosa .stg small{font-size:1.45cqw;line-height:1.35;color:var(--muted);display:block}
+.s-mimosa .tagline{font:500 1.5cqw var(--mono);color:var(--alert)}
+@media (prefers-reduced-motion:reduce){.s-mimosa .stg{transition:none!important}}
+</style>
+<header class="top"><div class="top-in">
+  <h1>Cyber and legal tech stories</h1>
+  <p>Four short captioned animations, each retold from its source. Press Play under each one.</p>
+  <div class="tabs" role="tablist" aria-label="Stories"><button role="tab" class="tab" id="tb-poellm" aria-controls="tab-poellm" data-k="poellm"><i style="background:#f3d54a"></i>PoeLLM<span>1:00</span></button><button role="tab" class="tab" id="tb-pilot5" aria-controls="tab-pilot5" data-k="pilot5"><i style="background:#86d6bd"></i>Pilot5 Legal<span>1:00</span></button><button role="tab" class="tab" id="tb-paragon" aria-controls="tab-paragon" data-k="paragon"><i style="background:#a9c8f3"></i>Paragon<span>2:00</span></button><button role="tab" class="tab" id="tb-mimosa" aria-controls="tab-mimosa" data-k="mimosa"><i style="background:#e2242c"></i>Midnight Mimosa<span>1:00</span></button></div>
+</div></header>
+<section class="story s-poellm" id="tab-poellm" role="tabpanel" aria-labelledby="tb-poellm" hidden>
+<div class="wrap">
+  <div class="stage" aria-live="polite"></div>
+  <div class="ctl"><button class="play">Play</button><button class="restart ghost">Restart</button><input class="seek" type="range" min="0" max="60" step="0.1" value="0" aria-label="Position"><span class="time">0:00</span></div>
+  <div class="chap"></div>
+  <p class="src">Source: Black Lotus Labs, Lumen Technologies, “Canto incognito: tracking the PoeLLM malware,” <a href="https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware" target="_blank" rel="noopener">lumen.com</a>, 7 October 2026. Retold in plain language. The poem’s lines are drawn as bars; only the four keywords from the report’s example are shown. The short definitions of “command-and-control server” and “remote shell” are added for orientation.</p>
+<p class="src">The report’s recommendations: check network logs against its list of indicators; audit what is exposed to the internet and restrict open ports; patch and reboot routers, firewalls and IoT devices; keep AI tools in regular patch cycles and place their APIs behind firewalls.</p>
+  <details><summary>Caption transcript</summary><ol class="tx"></ol></details>
+</div></section>
+<section class="story s-pilot5" id="tab-pilot5" role="tabpanel" aria-labelledby="tb-pilot5" hidden>
+<div class="wrap">
+  <div class="stage" aria-live="polite"></div>
+  <div class="ctl"><button class="play">Play</button><button class="restart ghost">Restart</button><input class="seek" type="range" min="0" max="60" step="0.1" value="0" aria-label="Position"><span class="time">0:00</span></div>
+  <div class="chap"></div>
+  <p class="src">Sources: “Pilot5 Launches Adversarial AI for Lawyers,” <a href="https://www.artificiallawyer.com/2026/10/07/pilot5-launches-adversarial-ai-for-lawyers/" target="_blank" rel="noopener">Artificial Lawyer</a>, 7 October 2026; and the <a href="https://legal.pilot5.ai/" target="_blank" rel="noopener">Pilot5 Legal website</a> (accessed 9 October 2026). Retold in plain language.</p>
+<p class="src">Prices and capabilities are as Pilot5 states them. None of these sources reports independent testing of the product.</p>
+  <details><summary>Caption transcript</summary><ol class="tx"></ol></details>
+</div></section>
+<section class="story s-paragon" id="tab-paragon" role="tabpanel" aria-labelledby="tb-paragon" hidden>
+<div class="wrap">
+  <div class="stage" aria-live="polite"></div>
+  <div class="ctl"><button class="play">Play</button><button class="restart ghost">Restart</button><input class="seek" type="range" min="0" max="60" step="0.1" value="0" aria-label="Position"><span class="time">0:00</span></div>
+  <div class="chap"></div>
+  <p class="src">Source: WIRED, “The Secrets of a US Spyware King,” exclusive interview with Paragon Solutions CEO Andrew Boyd (<a href="https://www.wired.com/story/the-secrets-of-the-us-spyware-king/" target="_blank" rel="noopener">wired.com</a>; updated 2 October 2026). Retold in plain language from the article text. Countries are deliberately not named in the story. Statements about how Paragon’s tools and policies work are Boyd’s, as reported by WIRED.</p>
+  <details><summary>Caption transcript</summary><ol class="tx"></ol></details>
+</div></section>
+<section class="story s-mimosa" id="tab-mimosa" role="tabpanel" aria-labelledby="tb-mimosa" hidden>
+<div class="wrap">
+  <div class="stage" aria-live="polite"></div>
+  <div class="ctl"><button class="play">Play</button><button class="restart ghost">Restart</button><input class="seek" type="range" min="0" max="60" step="0.1" value="0" aria-label="Position"><span class="time">0:00</span></div>
+  <div class="chap"></div>
+  <p class="src">Source: Adrian Mihai Gozob and Alex Baciu, “The phone was compromised before the user turned it on: the rise of Midnight Mimosa,” <a href="https://www.bitdefender.com/en-us/blog/labs/midnight-mimosa-malware" target="_blank" rel="noopener">Bitdefender Labs</a>, 8 October 2026. Retold in plain language. Bitdefender states that its certificate and infrastructure identifications are technical observations only and make no legal determination.</p>
+  <details><summary>Caption transcript</summary><ol class="tx"></ol></details>
+</div></section>
+<script>
+const STORIES={};
+STORIES["poellm"]=[
+ {name:"Title", d:3, html:`
+   <div class="eyebrow" data-at="0">Threat research briefing</div>
+   <h2 data-at="0">A poem that <span class="mark">steers a botnet</span></h2>
+   <p class="lead" data-at="0.3">Black Lotus Labs, Lumen Technologies: “Canto incognito: tracking the PoeLLM malware,” 7 October 2026.</p>`,
+  cap:[[0,"Researchers at Lumen’s Black Lotus Labs traced malware that takes its orders from a poem."]]},
+
+ {name:"Scale", d:7, html:`
+   <div class="eyebrow" data-at="0">Scale, as the report states it</div>
+   <div class="row">
+     <div class="col box" data-at="0"><span class="k known">Key takeaways</span><div class="fig"><span id="c1">0</span>+</div><small>victim servers</small></div>
+     <div class="col box" data-at="3.5"><span class="k unknown">Report body</span><div class="fig">~2,200</div><small>victim servers since April. The report does not explain the difference.</small></div>
+     <div class="col box" data-at="1.2"><span class="k known">Peak</span><div class="fig sm">~800</div><small>active servers per day. Mostly in the US and Western Europe.</small></div>
+   </div>`,
+  cap:[[0,"Tracked since April 2026, PoeLLM has hit more than 3,400 servers, per the report’s summary, peaking near 800 a day."],[3.5,"The body of the same report gives almost 2,200. Victims are mainly in the US and Western Europe."]],
+  tick(t){const c=document.getElementById('c1');if(c)c.textContent=Math.round(3400*Math.min(1,t/1.2)).toLocaleString('en-US');}},
+
+ {name:"Targets", d:7, html:`
+   <div class="eyebrow" data-at="0">What it attacks</div>
+   <h3 data-at="0">Internet-exposed AI and open-source services</h3>
+   <div class="chips" data-at="0.5"><span class="chip">LiteLLM</span><span class="chip">Ollama</span><span class="chip">Gotenberg</span><span class="chip">Gitea</span><span class="chip maybe">Ivanti Sentry (possible)</span></div>
+   <div class="row" data-at="3.5">
+     <div class="box col"><b>Found via</b><small>An investigation into an Ivanti Sentry vulnerability, CVE-2026-10520.</small></div>
+     <div class="box col"><b>Why AI servers</b><small>They may hold useful data and run on powerful hardware suited to mining.</small></div>
+   </div>`,
+  cap:[[0,"It targets exposed AI and open-source services: mainly LiteLLM and Ollama, also Gotenberg, Gitea and possibly Ivanti Sentry."],[3.5,"Researchers found it investigating an Ivanti Sentry flaw. AI servers draw attackers for their data and powerful hardware."]]},
+
+ {name:"The poem", d:7, html:`
+   <div class="eyebrow" data-at="0">The hiding place</div>
+   <div class="row">
+     <div class="file col" data-at="0" style="flex:1.2">
+       <div class="hd">GitHub · copy of the Node.js website repository · dash.css</div>
+       <div class="lines">
+        <div class="eyebrow" style="font-size:1.4cqw">“On the Nature of Connection”</div>
+        <div class="ln"><span class="bar" style="width:30%"></span><span class="bar" style="width:40%"></span></div>
+        <div class="ln"><span class="bar" style="width:55%"></span><span class="bar" style="width:22%"></span></div>
+        <div class="ln"><span class="bar" style="width:62%"></span></div>
+        <div class="ln"><span class="bar" style="width:36%"></span><span class="bar" style="width:30%"></span></div>
+       </div>
+     </div>
+     <div class="col" style="justify-content:center">
+       <div class="box" data-at="1"><b>Unrelated to Node.js</b><small>The report finds no apparent connection between the malware and Node.js.</small></div>
+       <div class="box" data-at="3.8"><b><span class="mark">11</span> updates since 13 April 2026</b><small>Only the four keywords change.</small></div>
+     </div>
+   </div>`,
+  cap:[[0,"The actor hid a two-stanza poem in a style file, inside a copy of the Node.js website’s code on GitHub."],[3.8,"The poem has been updated 11 times since 13 April 2026. Each time, only four keywords change."]]},
+
+ {name:"Mechanism", d:12, html:`
+   <div class="eyebrow" data-at="0">How the poem becomes an address</div>
+   <div class="row">
+     <div class="file col" data-at="0">
+       <div class="hd">poem (illustrative) · dashed = fixed phrase</div>
+       <div class="lines">
+        <div class="ln"><span class="anc" style="width:22%"></span><span class="w" id="w0">driver</span><span class="bar" style="width:25%"></span></div>
+        <div class="ln"><span class="anc" style="width:30%"></span><span class="w" id="w1">diode</span><span class="bar" style="width:10%"></span></div>
+        <div class="ln"><span class="anc" style="width:16%"></span><span class="w" id="w2">decryption</span><span class="bar" style="width:20%"></span></div>
+        <div class="ln"><span class="bar" style="width:12%"></span><span class="w" id="w3">string</span><span class="anc" style="width:26%"></span></div>
+       </div>
+     </div>
+     <div class="arrow" data-at="3">→</div>
+     <div class="col" data-at="3">
+       <div class="eyebrow">Dictionary inside the malware</div>
+       <table class="dict"><tr id="r0"><td>driver</td><td>92</td></tr><tr id="r1"><td>diode</td><td>119</td></tr><tr id="r2"><td>decryption</td><td>165</td></tr><tr id="r3"><td>string</td><td>74</td></tr></table>
+     </div>
+   </div>
+   <div data-at="7"><div class="eyebrow">Combined into the C2 server address</div><div class="addr">92.119.165.74</div><div class="note">Example from a sample dated 23 June 2026, as given in the report.</div></div>`,
+  cap:[[0,"The malware reads the poem and extracts four words, each located by a fixed phrase beside it."],[3,"A dictionary built into the malware converts each word into a number."],[7,"The four numbers make up the address of its command-and-control server, the machine that issues the botnet’s instructions."]],
+  tick(t){for(let i=0;i<4;i++){const w=document.getElementById('w'+i);if(w)w.classList.toggle('lit',t>=0.4+i*0.5);const r=document.getElementById('r'+i);if(r)r.classList.toggle('lit',t>=3.4+i*0.5);}}},
+
+ {name:"Resilience", d:8, html:`
+   <div class="eyebrow" data-at="0">Why the report calls it resilient</div>
+   <div class="row">
+     <div class="col">
+       <div class="box" data-at="0.3"><b>Edit the poem, move the server</b><small>Infected systems calculate the new address themselves. The extraction method had not changed as of publication.</small></div>
+       <div class="box" data-at="4"><b>Borrowed routers</b><small>The actor repeatedly used compromised routers as control servers rather than leasing machines. The report lists 12 control addresses.</small></div>
+     </div>
+     <div class="col" data-at="4" style="justify-content:center">
+       <svg viewBox="0 0 300 170" width="100%" role="img" aria-label="Infected servers report to a control server that runs on a compromised router">
+        <g stroke="var(--rule)" stroke-width="1.5"><line x1="150" y1="40" x2="40" y2="140"/><line x1="150" y1="40" x2="110" y2="140"/><line x1="150" y1="40" x2="190" y2="140"/><line x1="150" y1="40" x2="260" y2="140"/></g>
+        <rect x="118" y="18" width="64" height="40" rx="4" fill="var(--ink)"/>
+        <text x="150" y="43" text-anchor="middle" font-size="12" fill="var(--paper)">router</text>
+        <g fill="var(--alert)"><circle cx="40" cy="140" r="9"/><circle cx="110" cy="140" r="9"/><circle cx="190" cy="140" r="9"/><circle cx="260" cy="140" r="9"/></g>
+        <text x="150" y="166" text-anchor="middle" font-size="11" fill="var(--muted)">infected servers</text>
+       </svg>
+     </div>
+   </div>`,
+  cap:[[0,"When the actor edits the poem, infected systems work out the new server address on their own, with no update needed."],[4,"For those control servers, the actor repeatedly used compromised routers. The report lists 12 such addresses."]]},
+
+ {name:"Activity", d:8, html:`
+   <div class="eyebrow" data-at="0">What it does once inside</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Mines cryptocurrency</b><small>XMRig and Iron miners, connected to Kryptex mining infrastructure.</small></div>
+     <div class="box col" data-at="0.7"><b>Remote shell</b><small>Lets the actor run commands on the server.</small></div>
+     <div class="box col" data-at="4"><b>Recruits</b><small>Infected servers become scanners and exploit servers that find and compromise more systems.</small></div>
+   </div>
+   <div data-at="5.5"><span class="k assessed">Assessed</span> <span class="note" style="font-size:1.7cqw">The campaign appears financially motivated.</span></div>`,
+  cap:[[0,"Inside a server it installs cryptocurrency miners and gives the actor a remote shell, a way to run commands."],[4,"Infected servers are turned into scanners and exploit servers to find new victims. The campaign appears financially motivated."]]},
+
+ {name:"Status", d:6, html:`
+   <div class="eyebrow" data-at="0">Attribution and response</div>
+   <div class="row">
+     <div class="col box" data-at="0.2"><span class="k assessed">Assessed</span><small>Associated with an Italian-speaking threat actor. Italian comments appear in the malware. A server in Italy is judged, with moderate confidence, to be the actor’s administrative interface.</small></div>
+     <div class="col box" data-at="3"><span class="k known">Action taken</span><small>Black Lotus Labs has blocked traffic to and from the known control servers and continues to monitor.</small></div>
+   </div>`,
+  cap:[[0,"Black Lotus Labs assesses the actor is Italian-speaking, citing Italian comments in the code. No individual or group is named."],[3,"It has blocked traffic to and from the known control servers and is still monitoring."]]},
+
+ {name:"Source", d:2, html:`
+   <div class="eyebrow" data-at="0">Source</div>
+   <h3 data-at="0">Black Lotus Labs, Lumen Technologies, 7 October 2026</h3>
+   <p class="lead" data-at="0">“Canto incognito: tracking the PoeLLM malware.” Poem text not reproduced.</p>`,
+  cap:[[0,"Source: Black Lotus Labs, Lumen Technologies."]]}
+];
+STORIES["pilot5"]=[
+ {name:"Title", d:3, html:`
+   <div class="eyebrow" data-at="0">Legal technology briefing</div>
+   <h2 data-at="0">Five AI models, <span class="mark">one assigned to disagree</span></h2>
+   <p class="lead" data-at="0.3">Pilot5 Legal, launched as reported by Artificial Lawyer on 7 October 2026.</p>`,
+  cap:[[0,"A new service puts five AI models on a legal question and assigns one of them to argue against the rest."]]},
+
+ {name:"The pitch", d:7, html:`
+   <div class="eyebrow" data-at="0">The idea</div>
+   <blockquote data-at="0.2">“moot your case before you commit to it”</blockquote>
+   <cite data-at="0.2">Wilfrid Rimbault and Thomas Wainstein, co-CEOs, Pilot5, to Artificial Lawyer</cite>
+   <p class="lead" data-at="3">A lawyer should not first meet the other side’s best argument in court.</p>`,
+  cap:[[0,"Pilot5’s co-CEOs pitch it as a moot: test the case before committing to it."],[3,"Their point: hear the opposing side’s strongest argument, with authority, before you are in court."]]},
+
+ {name:"The panel", d:8, html:`
+   <div class="eyebrow" data-at="0">Five models, five assigned roles</div>
+   <div class="panel">
+     <div class="seat" data-at="0.2"><span class="n">Architect</span><small>Structure, benchmarks, operational logic</small></div>
+     <div class="seat" data-at="0.5"><span class="n">Counsel</span><small>Evidence and legal clarity</small></div>
+     <div class="seat" data-at="0.8"><span class="n">Strategist</span><small>Long-range value and trade-offs</small></div>
+     <div class="seat" data-at="1.1"><span class="n">Engineer</span><small>Feasibility and failure conditions</small></div>
+     <div class="seat con" id="con" data-at="1.4"><span class="n">Contrarian</span><small>Strongest case against the consensus</small></div>
+   </div>
+   <p class="note" data-at="4">Artificial Lawyer describes them as five frontier AI models. Pilot5’s site does not name the providers.</p>`,
+  cap:[[0,"Each of the five models takes a role: architect, counsel, strategist, engineer."],[3.5,"The fifth, the Contrarian, attacks the emerging consensus and brings authority that cuts against it."]],
+  tick(t){const c=document.getElementById('con');if(c)c.classList.toggle('lit',t>=3.5);}},
+
+ {name:"The process", d:14, html:`
+   <div class="eyebrow" data-at="0">How a deliberation runs</div>
+   <div class="flow">
+     <div class="stg" id="g0"><span class="s">BRIEF</span><b>The matter</b><small>Side, goal, jurisdiction, deadlines, known facts, assumptions that could change the answer.</small></div>
+     <div class="stg" id="g1"><span class="s">STAGE 1</span><b>Blind analysis</b><small>Each model forms a view without seeing the others. The lawyer can read them as they arrive.</small></div>
+     <div class="stg" id="g2"><span class="s">STAGE 2</span><b>Anonymous critique</b><small>Models critique each other’s work without knowing who wrote it.</small></div>
+     <div class="stg" id="g3"><span class="s">STAGE 3</span><b>Revision</b><small>Positions are revised under challenge.</small></div>
+     <div class="stg" id="g4"><span class="s">STAGE 4</span><b>Synthesis</b><small>One recommendation with sources, plus a <span class="mark">minority report</span>.</small></div>
+   </div>
+   <p class="lead" data-at="9">The strongest counterargument stays on the record.</p>`,
+  cap:[[0,"First, Pilot5 builds a brief: which side, the goal, jurisdiction, deadlines and the facts that matter."],[3,"The models analyse it blind, then critique each other anonymously and revise their positions."],[8,"The result is one recommendation with its sources, and the dissent preserved, not averaged away."]],
+  tick(t){[0,2.2,4.2,6,8].forEach((a,i)=>{const g=document.getElementById('g'+i);if(g){g.classList.toggle('on',t>=a);g.style.opacity=t>=a?1:.25;}});}},
+
+ {name:"Workflows & price", d:11, html:`
+   <div class="eyebrow" data-at="0">Workflows and price, as Pilot5 states them</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Statutory review</b><div class="price">$0.50</div><small>Checks a separation agreement against federal and state requirements. 11 states plus DC at launch.</small></div>
+     <div class="box col" data-at="0.6"><b>Contract map</b><div class="price">0.2 cr</div><small>Explains each clause, original wording kept.</small></div>
+     <div class="box col" data-at="1"><b>Settlement range</b><div class="price">~4 cr</div><small>Pressure-tests both sides’ positions.</small></div>
+     <div class="box col" data-at="1.4"><b>Full deliberation</b><div class="price">~$7</div><small>About 15 minutes, per Artificial Lawyer.</small></div>
+   </div>
+   <p class="note" data-at="5">Plans from $29 to $999 a month, sold in credits. Authority lookup and firm playbook are free.</p>`,
+  cap:[[0,"Pricing is per task: about fifty cents for a statutory review of a separation agreement."],[4.5,"A complex deliberation runs about seven dollars and fifteen minutes. Monthly plans range from $29 to $999."]]},
+
+ {name:"Safeguards", d:10, html:`
+   <div class="eyebrow" data-at="0">Confidentiality and limits, as Pilot5 states them</div>
+   <div class="row">
+     <div class="col">
+       <div class="box" data-at="0.2"><b>Client data</b><small>Not used to train models. Identifiers pseudonymised before the AI sees them. Zero-retention mode and a data processing agreement available.</small></div>
+     </div>
+     <div class="col">
+       <div class="box" data-at="0.8"><b>Scope</b><small>Every review is scoped to United States law.</small></div>
+       <div class="box" data-at="4"><b>Responsibility</b><small>Decision support, not legal advice. The lawyer stays the reviewer of record. Open issues are flagged: <span class="mark">“silence never means clearance.”</span></small></div>
+     </div>
+   </div>`,
+  cap:[[0,"Pilot5 says client files are not used for training, and names are masked before the models see them."],[4,"It covers US law only, gives no legal advice, and leaves the lawyer as the decision-maker."]]},
+
+ {name:"Caveats", d:5, html:`
+   <div class="eyebrow" data-at="0">What the sources do not show</div>
+   <div class="row">
+     <div class="box col" data-at="0"><span class="k unknown">Not shown</span><small>No independent testing of accuracy or performance is reported. The claims are Pilot5’s own.</small></div>
+     <div class="box col" data-at="0.4"><span class="k known">Source of claims</span><small>Prices, safeguards and capabilities come from Pilot5’s website and its statements to Artificial Lawyer.</small></div>
+   </div>`,
+  cap:[[0,"Neither source reports independent testing. The performance claims are Pilot5’s own."]]},
+
+ {name:"Sources", d:2, html:`
+   <div class="eyebrow" data-at="0">Sources</div>
+   <h3 data-at="0">Artificial Lawyer, 7 October 2026 · legal.pilot5.ai</h3>`,
+  cap:[[0,"Sources: Artificial Lawyer and the Pilot5 Legal website."]]}
+];
+STORIES["paragon"]=[
+ {name:"Title", d:3, html:`
+   <div class="eyebrow" data-at="0">Surveillance technology briefing</div>
+   <h2 data-at="0">The limits of a spyware maker’s <span class="mark">promise</span></h2>
+   <p class="lead" data-at="0.3">WIRED’s exclusive interview with Andrew Boyd, CEO of Paragon Solutions and REDLattice.</p>`,
+  cap:[[0,"In an interview with WIRED, the head of spyware maker Paragon explains how much it can, and cannot, police its customers."]]},
+
+ {name:"The promise", d:7, html:`
+   <div class="eyebrow" data-at="0">How Paragon has presented itself</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Careful sales</b><small>Never to authoritarian governments or those with poor human rights records.</small></div>
+     <div class="box col" data-at="0.8"><b>Zero tolerance</b><small>Any customer caught targeting journalists, dissidents or other illegitimate targets is cut off.</small></div>
+   </div>
+   <p class="lead" data-at="3.5">Its spyware, known publicly as Graphite, extracts messages from chat apps including encrypted ones such as WhatsApp and Signal.</p>`,
+  cap:[[0,"Paragon has long cast itself as the responsible player in its industry, with strict sales rules and zero tolerance for misuse."],[3.5,"Its known product, Graphite, pulls messages from chat apps, including encrypted ones like WhatsApp and Signal."]]},
+
+ {name:"The allegation", d:9, html:`
+   <div class="eyebrow" data-at="0">Weeks after a December 2024 takeover</div>
+   <div class="row" style="align-items:center">
+     <div class="col" style="flex:0 0 auto">
+       <div class="fig" data-at="0.3">60+</div><small class="note" data-at="0.3">people targeted, per WhatsApp</small>
+       <div class="fig" data-at="1.2">20+</div><small class="note" data-at="1.2">countries</small>
+     </div>
+     <div class="col" data-at="0.3"><div class="phones" id="phones"></div><div class="note">Illustration: one phone per person</div></div>
+   </div>
+   <p class="lead" data-at="4.5">Most targets were not identified. Citizen Lab, a university research group, named two journalists and two activists in one country.</p>`,
+  cap:[[0,"Private-equity firm AE Industrial Partners bought Paragon in December 2024 and merged it with REDLattice, a cyber firm it owns."],[3,"Weeks later, WhatsApp alleged Graphite had infected the phones of more than 60 people, including journalists and activists."],[6,"Citizen Lab, a university research group, named four of them: two journalists and two activists."]],
+  init(){const g=document.getElementById('phones');for(let i=0;i<60;i++){const d=document.createElement('i');d.className='ph';g.appendChild(d);}},
+  tick(t){document.querySelectorAll('#phones .ph').forEach((d,i)=>d.classList.toggle('hit',i<Math.round(60*Math.min(1,Math.max(0,t-0.3)/2))));}},
+
+ {name:"The response", d:9, html:`
+   <div class="eyebrow" data-at="0">What Paragon did, and did not do</div>
+   <div class="row">
+     <div class="col">
+       <div class="box" data-at="0.2"><b>Cancelled two contracts</b><small>Within a week, with that government’s domestic and foreign intelligence agencies.</small></div>
+       <div class="box" data-at="5.5"><b>No investigation</b><small>No inquiry into whether the allegations were true, and no follow-up with WhatsApp or Citizen Lab.</small></div>
+     </div>
+     <div class="col" data-at="2.5" style="justify-content:center">
+       <blockquote>“just was not worth it, from a risk perspective, to maintain the relationship”</blockquote>
+       <cite>Andrew Boyd, on ending the contracts</cite>
+     </div>
+   </div>`,
+  cap:[[0,"Paragon at first declined to comment. Within a week it cancelled its two contracts with that country’s intelligence agencies."],[2.5,"Boyd now says the customer was dropped as a business risk, not because the allegations were verified."],[5.5,"Paragon did not investigate, and did not ask WhatsApp or Citizen Lab for details that might affect other customers."]]},
+
+ {name:"Findings", d:8, html:`
+   <div class="eyebrow" data-at="0">That government’s own investigators concluded</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Activists</b><small>Were hacked, but lawfully, as part of criminal investigations.</small></div>
+     <div class="box col" data-at="3.5"><b>One journalist</b><small>Was confirmed hacked, with no evidence that the country’s agencies were responsible.</small></div>
+   </div>
+   <p class="note" data-at="6">The government denied misuse. WIRED updated its article on 2 October 2026 to clarify these findings.</p>`,
+  cap:[[0,"The government denied misuse. Its investigators found the activists were hacked, but lawfully, within criminal investigations."],[3.5,"They confirmed one journalist was hacked, but found no evidence their own agencies did it."]]},
+
+ {name:"Blind spot", d:8, html:`
+   <div class="eyebrow" data-at="0">What Paragon can see of a customer’s use</div>
+   <div class="ledger" data-at="0.2">
+     <div><span>Who is targeted</span><i class="rd" id="d0"></i></div>
+     <div><span>Data extracted</span><i class="rd" id="d1"></i></div>
+     <div><span>Misuse alerts</span><i class="rd" id="d2"></i></div>
+   </div>
+   <p class="lead" data-at="4.5">It learns of misuse only if a customer admits it or outsiders uncover it. Boyd credits WhatsApp and Citizen Lab for doing just that.</p>`,
+  cap:[[0,"Boyd’s most significant admission: Paragon has no technical way to detect misuse."],[2.2,"It cannot see whom customers target or what data they take from phones."],[4.5,"It learns of abuse only if customers admit it or outside researchers expose it."]],
+  tick(t){for(let i=0;i<3;i++){const d=document.getElementById('d'+i);if(d)d.classList.toggle('on',t>=0.6+i*0.6);}}},
+
+ {name:"No kill switch", d:9, html:`
+   <div class="eyebrow" data-at="0">If a customer misbehaves</div>
+   <h3 data-at="0.2">No kill switch. Paragon can only stop support and updates.</h3>
+   <div class="clock" data-at="2">
+     <div class="hours"><span id="hrs">12</span>h</div>
+     <div class="meter"><i id="mt"></i></div>
+   </div>
+   <p class="lead" data-at="2">Boyd says the updates are frequent and essential. Without them, the system stops working in about 12 hours. He won’t say what they are.</p>`,
+  cap:[[0,"There is no kill switch to shut a customer out. Paragon can only halt its round-the-clock support and system updates."],[4.5,"Boyd says the updates are essential: without them, the spyware becomes ineffective in about 12 hours."]],
+  tick(t){const p=Math.min(1,Math.max(0,(t-2.5)/4));const h=document.getElementById('hrs'),m=document.getElementById('mt');if(h)h.textContent=String(Math.round(12*(1-p)));if(m)m.style.width=(100*(1-p))+'%';}},
+
+ {name:"Logs", d:8, html:`
+   <div class="eyebrow" data-at="0">Records of use</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Optional</b><small>Customers can switch on logging on some systems if they choose.</small></div>
+     <div class="box col" data-at="0.8"><b>Not seen by Paragon</b><small>The company has no access to the logs and does not want it.</small></div>
+     <div class="box col" data-at="3.5"><b>Left to governments</b><small>Oversight bodies can review them. WIRED notes an investigator could conceal misuse they find.</small></div>
+   </div>
+   <p class="lead" data-at="6">Boyd presents this as a selling point: customers would not buy if Paragon could see their targets.</p>`,
+  cap:[[0,"Logging is optional for customers, and Paragon cannot see the logs."],[3.5,"Boyd says government oversight bodies can use them. WIRED points out an investigator could hide what they find."],[6,"He calls the lack of access a selling point and the best balance between privacy and security."]]},
+
+ {name:"Versus NSO", d:8, html:`
+   <div class="eyebrow" data-at="0">Compared with its main rival, NSO Group</div>
+   <table class="cmp">
+     <tr id="t0"><th></th><th>NSO Group (its own reports)</th><th>Paragon (per Boyd)</th></tr>
+     <tr id="t1"><td>Sees targets</td><td>No</td><td>No</td></tr>
+     <tr id="t2"><td>Kill switch</td><td>Claims one</td><td class="no">None</td></tr>
+     <tr id="t3"><td>Usage logs</td><td>Claims tamper-proof logs</td><td>Optional, customer-held</td></tr>
+     <tr id="t4"><td>Duty to hand over logs</td><td>Contractual, or immediate suspension</td><td class="no">No access to logs</td></tr>
+   </table>`,
+  cap:[[0,"NSO Group, maker of Pegasus, has faced heavy criticism over its customers. It cannot see targets either."],[4,"But NSO says it can shut customers off, keeps tamper-proof logs, and requires customers to surrender them."],[7,"On those measures, Paragon has less oversight than the rival it claims to outdo."]],
+  tick(t){[0,0.3,1.5,4,5.5].forEach((a,i)=>{const r=document.getElementById('t'+i);if(r)r.classList.toggle('on',t>=a);});}},
+
+ {name:"Critics", d:8, html:`
+   <div class="eyebrow" data-at="0">Reaction</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>John Scott-Railton, Citizen Lab</b><small>Calls the lack of mandatory logging reckless. Says Paragon offers less oversight, transparency and contractual protection than NSO, and that the industry cannot be trusted to regulate itself. Researchers find only a small share of infections.</small></div>
+     <div class="box col" data-at="5"><b>Senator Ron Wyden</b><small>Surveillance tools without oversight are inevitably abused. Refusing to audit use of the tool is a serious warning sign.</small></div>
+   </div>`,
+  cap:[[0,"Citizen Lab’s John Scott-Railton calls the absence of mandatory logging reckless, and the opposite of Paragon’s self-image."],[2.8,"He notes Paragon relies on researchers to find misuse while working to hide its spyware from them."],[5,"Senator Ron Wyden says a company that avoids knowing how its tool is used is raising a major red flag."]]},
+
+ {name:"Ownership", d:10, html:`
+   <div class="eyebrow" data-at="0">How the company changed hands</div>
+   <div class="tl">
+     <div data-at="0.2"><div class="when">2019</div><small>Founded by a former military signals-intelligence commander and fellow veterans.</small></div>
+     <div data-at="1.4"><div class="when">2021–23</div><small>NSO and rival Candiru sanctioned. New rules curb government purchases of foreign-made spyware.</small></div>
+     <div data-at="2.8"><div class="when">Dec 2024</div><small>AE Industrial Partners buys Paragon for $900 million, giving it local ownership in its target market.</small></div>
+     <div data-at="4.2"><div class="when">2025</div><small>NSO and Candiru are also bought by investment groups in that market.</small></div>
+   </div>
+   <div class="row" data-at="6.5">
+     <div class="box col"><b>Local in name</b><small>WIRED: over 600 staff and offices remain abroad; products still need export licences there.</small></div>
+     <div class="box col"><b>No conditions</b><small>Boyd says government raised no objections and imposed no governance requirements.</small></div>
+   </div>`,
+  cap:[[0,"Paragon began as a foreign-owned startup, shut out of its main target market by new limits on buying foreign spyware."],[3.5,"A $900 million sale to AE Industrial Partners made it locally owned. WIRED calls this an end-run around those limits."],[7,"Boyd says officials raised no objections and set no conditions. Rivals NSO and Candiru have since made similar moves."]]},
+
+ {name:"CEO & tools", d:7, html:`
+   <div class="eyebrow" data-at="0">The CEO and the products</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Andrew Boyd</b><small>Former military intelligence officer and diplomat. Ran the CIA’s Center for Cyber Intelligence until 2023. CEO since eight months after the deal.</small></div>
+     <div class="box col" data-at="2.5"><b>5 to 10 products</b><small>Some hack remotely, some need physical access. Boyd calls them defensive tools and won’t confirm the Graphite name.</small></div>
+     <div class="box col" data-at="4.5"><b>Zero-click</b><small>WhatsApp and Citizen Lab report Graphite infects phones without the user doing anything.</small></div>
+   </div>`,
+  cap:[[0,"Boyd, a former CIA cyber chief, brings deep government ties. He says the merged company has five to ten products."],[3.5,"He objects to the word spyware. WhatsApp and Citizen Lab report Graphite can infect a phone with no action by its owner."]]},
+
+ {name:"Vetting", d:10, html:`
+   <div class="eyebrow" data-at="0">The safeguard Paragon relies on: choosing customers</div>
+   <div class="row">
+     <div class="col">
+       <div class="box" data-at="0.2"><b>Risk committee criteria</b><small>Political stability, human rights record, corruption ratings, strength of the legal system, record of obeying national laws.</small></div>
+       <div class="box" data-at="3"><b>Contract terms</b><small>No targeting of journalists, civil society or opposition politicians. Systems sold abroad block +1 phone numbers.</small></div>
+     </div>
+     <div class="col">
+       <div class="box" data-at="1.2"><b>Reach</b><small>20–30 approved countries. 100+ customers in 23 countries. National agencies only.</small></div>
+       <div class="box" data-at="6"><b>Boyd’s claim</b><small>Vetting works 99 times in 100. One misuse allegation so far shows it works. WIRED: the spyware is built to avoid detection, so misuse is rarely found.</small></div>
+     </div>
+   </div>`,
+  cap:[[0,"With no visibility, Paragon depends on vetting. A risk committee judges countries on stability, rights, corruption and rule of law."],[3,"Contracts ban targeting journalists, activists and opposition politicians. Systems sold abroad cannot target +1 phone numbers."],[6,"Boyd says vetting works 99 times in 100. WIRED notes few cases surface because the spyware is designed to stay hidden."]]},
+
+ {name:"Home market", d:8, html:`
+   <div class="eyebrow" data-at="0">Government customers at home</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Known contracts</b><small>$2 million with Homeland Security Investigations. Long-standing REDLattice work for the Air Force. Earlier, a drug enforcement contract.</small></div>
+     <div class="box col" data-at="2.5"><b>Targets</b><small>Particular interest in Pentagon and CIA contracts, and in planned government contracts for offensive operations against cybercriminals.</small></div>
+     <div class="box col" data-at="5"><b>If misuse is alleged</b><small>Boyd expects an inspector general or legislative committee to investigate, then Congress or the company to act.</small></div>
+   </div>`,
+  cap:[[0,"Publicly known domestic work includes a $2 million Homeland Security Investigations contract and Air Force contracts."],[2.5,"Boyd wants Pentagon and CIA business, and will bid for planned contracts to run offensive operations against cybercriminals."],[5,"If a domestic agency were accused of misuse, he expects an inspector general or Congress to investigate."]]},
+
+ {name:"Takeaways", d:6, html:`
+   <div class="eyebrow" data-at="0">For the record</div>
+   <div class="row">
+     <div class="col box" data-at="0.2"><span class="k known">Admitted by the CEO</span><small>No view of targets or data. No kill switch. No access to logs. No investigation of the 2025 allegations.</small></div>
+     <div class="col box" data-at="1.6"><span class="k claim">Claimed, unverified</span><small>Vetting works 99 times in 100. The company would know if a system were moved or used for another state.</small></div>
+     <div class="col box" data-at="3"><span class="k unknown">Unknown</span><small>The true number of infections. The full capabilities of the tools. Who the customers are.</small></div>
+   </div>`,
+  cap:[[0,"The company’s safeguards rest on choosing customers well, and on outsiders catching what it cannot see."],[3.5,"How many phones have been infected, and by whom, remains unknown."]]},
+
+ {name:"Source", d:2, html:`
+   <div class="eyebrow" data-at="0">Source</div>
+   <h3 data-at="0">WIRED, exclusive interview with Paragon CEO Andrew Boyd</h3>
+   <p class="lead" data-at="0">Updated 2 October 2026.</p>`,
+  cap:[[0,"Source: WIRED."]]}
+];
+STORIES["mimosa"]=[
+ {name:"Title", d:3, html:`
+   <div class="eyebrow" data-at="0">Device security briefing</div>
+   <h2 data-at="0">Compromised <span class="mark">before it is switched on</span></h2>
+   <p class="lead" data-at="0.3">Bitdefender Labs on the “Midnight Mimosa” campaign, 8 October 2026.</p>`,
+  cap:[[0,"Bitdefender found low-cost Android phones that carry malware straight out of the box."]]},
+
+ {name:"Out of the box", d:7, html:`
+   <div class="eyebrow" data-at="0">Where the malware lives</div>
+   <div class="tl">
+     <div data-at="0.2"><div class="when"><i class="dotr"></i>Firmware</div><small>Built into the phone’s system software before sale.</small></div>
+     <div data-at="0.9"><div class="when"><i class="dotr"></i>Sold</div><small>Low-cost, multi-brand Android phones with MediaTek chips.</small></div>
+     <div data-at="1.6"><div class="when"><i class="dotr"></i>Switched on</div><small>Already running. It cannot be uninstalled.</small></div>
+   </div>
+   <p class="lead" data-at="3.8">At its core is a hidden app labelled simply “System”, running with full system privileges.</p>`,
+  cap:[[0,"The malware is in the phone’s firmware, the software installed at the factory, so it is there before the first power-on."],[3.8,"Its core is a hidden app named “System”, with full system privileges. The owner cannot uninstall it."]]},
+
+ {name:"Scale", d:6, html:`
+   <div class="eyebrow" data-at="0">Observed reach, over about two years</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><div class="fig">150+</div><small>countries</small></div>
+     <div class="box col" data-at="0.6"><div class="fig">1,000s</div><small>of unique devices observed</small></div>
+     <div class="box col" data-at="2.5"><b>Fake flagship names</b><small>Many models imitate premium phones. Bitdefender treats model names as spoofed, not a real inventory.</small></div>
+   </div>`,
+  cap:[[0,"Bitdefender observed it on thousands of devices in more than 150 countries, mostly in Western Europe and the Americas."],[2.5,"Many of the phones pose as premium models. Bitdefender reads that as hardware sold through online marketplaces."]]},
+
+ {name:"How it works", d:11, html:`
+   <div class="eyebrow" data-at="0">The chain inside the phone</div>
+   <div class="flow">
+     <div class="stg" id="g0"><span class="s">1</span><b>Built-in app</b><small>Hidden “System” app with installer rights.</small></div>
+     <div class="stg" id="g1"><span class="s">2</span><b>Hidden layer</b><small>Unpacks an encrypted framework that can load new code remotely.</small></div>
+     <div class="stg" id="g2"><span class="s">3</span><b>Control server</b><small>Disguised as a weather service. Sends instructions and plugins.</small></div>
+     <div class="stg" id="g3"><span class="s">4</span><b>Silent installs</b><small>At least 32 disguised apps: app locks, weather, file managers.</small></div>
+     <div class="stg" id="g4"><span class="s">5</span><b>Play switched off</b><small>Google Play is disabled during each install, then turned back on.</small></div>
+   </div>
+   <p class="tagline" data-at="8">No prompt is shown to the user at any step.</p>`,
+  cap:[[0,"The built-in app unpacks a hidden layer that can download new code, steered by a server disguised as a weather service."],[4.5,"It silently installs at least 32 apps posing as everyday tools such as app locks, weather and file managers."],[8,"Before each install it switches off the Google Play Store, then turns it back on."]],
+  tick(t){[0,1.5,3,4.5,6.3].forEach((a,i)=>{const g=document.getElementById('g'+i);if(g){g.classList.toggle('on',t>=a);g.style.opacity=t>=a?1:.25;}});}},
+
+ {name:"What it does", d:8, html:`
+   <div class="eyebrow" data-at="0">What the installed apps do, per Bitdefender</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Hidden ads</b><small>Full-screen or overlay ads, often when the phone is idle, set to be invisible in screenshots and recordings.</small></div>
+     <div class="box col" data-at="1"><b>Fake clicks</b><small>Automated taps and conversions reported to advertisers.</small></div>
+     <div class="box col" data-at="3.5"><b>Proxy relay</b><small>One app enrols the phone as a relay for other people’s traffic. No relay traffic was observed in testing.</small></div>
+   </div>
+   <p class="note" data-at="5.5">Assessed purpose: revenue through ad fraud, click fraud and proxy or botnet use.</p>`,
+  cap:[[0,"The apps show hidden ads, including when the phone is idle, and fake clicks on them to collect advertising revenue."],[3.5,"One turns the phone into a relay for other people’s internet traffic. Bitdefender assesses the motive is money."]]},
+
+ {name:"Dormant powers", d:6, html:`
+   <div class="eyebrow" data-at="0">Permissions it holds</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><b>Accessibility</b><small>Can act on screen content.</small></div>
+     <div class="box col" data-at="0.5"><b>Notifications</b><small>Can read alerts.</small></div>
+     <div class="box col" data-at="0.8"><b>Text messages</b><small>Can read and send SMS.</small></div>
+   </div>
+   <p class="lead" data-at="2.5"><span class="k unknown" style="display:inline">Not observed in use</span> What they are used for depends on the control server.</p>`,
+  cap:[[0,"The core app also holds powerful permissions over screen content, notifications and text messages."],[2.5,"Bitdefender did not see them used, and says their use is up to whoever runs the control server."]]},
+
+ {name:"Google Play", d:6, html:`
+   <div class="eyebrow" data-at="0">Beyond preinstalled phones</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><div class="fig">13</div><small>Google Play apps carrying the same ad-fraud code and talking to the same servers.</small></div>
+     <div class="box col" data-at="1.5"><b>Passed review</b><small>Genuine Play signatures, at least two developer accounts, 13 signing certificates.</small></div>
+   </div>`,
+  cap:[[0,"The same ad-fraud code appears in 13 apps on Google Play, which passed Google’s review."],[3,"They use rotating signing identities. Bitdefender suggests the operator expects some apps to be taken down."]]},
+
+ {name:"Responsibility", d:6, html:`
+   <div class="eyebrow" data-at="0">Who is responsible</div>
+   <div class="row">
+     <div class="box col" data-at="0.2"><span class="k known">Technical observation</span><small>The core app’s signing certificate maps to Shenzhen Zediel Co., Ltd., an Android device maker.</small></div>
+     <div class="box col" data-at="2"><span class="k unknown">Not established</span><small>That Zediel wrote, distributed or knew of the malware. Where it entered the supply chain. Some infected phones lack Zediel firmware.</small></div>
+   </div>`,
+  cap:[[0,"The app’s signing certificate maps to a device maker, Shenzhen Zediel. Bitdefender says this does not prove it wrote or knew of the malware."],[3.5,"Where the malware entered the supply chain is unknown, and Bitdefender makes no legal determination."]]},
+
+ {name:"Remedy", d:5, html:`
+   <div class="eyebrow" data-at="0">What can be done</div>
+   <blockquote data-at="0.2">“on the phone before the owner switches it on for the first time”</blockquote>
+   <p class="lead" data-at="1.5">Uninstalling is not possible. Firmware-level fixes are unrealistic for most owners. Bitdefender says the lasting fix lies with the vendors and marketplaces selling the phones.</p>`,
+  cap:[[0,"Owners cannot remove it. Bitdefender says the lasting fix rests with the vendors and marketplaces that ship and sell these phones."]]},
+
+ {name:"Source", d:2, html:`
+   <div class="eyebrow" data-at="0">Source</div>
+   <h3 data-at="0">Bitdefender Labs, 8 October 2026</h3>
+   <p class="lead" data-at="0">Adrian Mihai Gozob and Alex Baciu.</p>`,
+  cap:[[0,"Source: Bitdefender Labs."]]}
+];
+
+const players={};
+function makePlayer(k){
+  const S=STORIES[k],root=document.getElementById('tab-'+k);
+  const stage=root.querySelector('.stage'),seek=root.querySelector('.seek'),timeEl=root.querySelector('.time'),playBtn=root.querySelector('.play'),chap=root.querySelector('.chap'),tx=root.querySelector('.tx');
+  let acc=0;S.forEach(s=>{s.start=acc;acc+=s.d;});const TOTAL=acc;seek.max=TOTAL;
+  const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+  const P={t:0,playing:false,cur:-1,active:false};
+  S.forEach(s=>{const b=document.createElement('button');b.textContent=s.name;b.onclick=()=>go(s.start);chap.appendChild(b);});
+  S.forEach(s=>s.cap.forEach(c=>{const li=document.createElement('li');li.textContent=c[1];tx.appendChild(li);}));
+  function render(i){P.cur=i;const s=S[i];
+    stage.innerHTML=`<div class="scene">${s.html}</div><div class="tag">${i+1} / ${S.length} · ${s.name}</div><div class="cap"><span class="capt"></span></div>`;
+    if(s.init)s.init();[...chap.children].forEach((b,j)=>b.classList.toggle('cur',j===i));}
+  function frame(){if(!P.active)return;
+    let i=S.findIndex(s=>P.t>=s.start&&P.t<s.start+s.d);if(i<0)i=S.length-1;
+    if(i!==P.cur)render(i);const s=S[i],lt=P.t-s.start;
+    stage.querySelectorAll('[data-at]').forEach(el=>el.classList.toggle('on',lt>=parseFloat(el.dataset.at)));
+    let c=s.cap[0][1];s.cap.forEach(x=>{if(lt>=x[0])c=x[1];});
+    const ce=stage.querySelector('.capt');if(ce&&ce.textContent!==c)ce.textContent=c;
+    if(s.tick)s.tick(lt);seek.value=P.t;timeEl.textContent=fmt(P.t)+' / '+fmt(TOTAL);}
+  function setPlay(p){P.playing=p;playBtn.textContent=p?'Pause':'Play';}
+  function go(x){P.t=Math.max(0,Math.min(TOTAL-.01,x));frame();}
+  playBtn.onclick=()=>{if(P.t>=TOTAL-.05)P.t=0;setPlay(!P.playing);};
+  root.querySelector('.restart').onclick=()=>{go(0);setPlay(true);};
+  seek.oninput=()=>go(parseFloat(seek.value));
+  P.step=dt=>{if(P.playing){P.t+=dt;if(P.t>=TOTAL){P.t=TOTAL-.01;setPlay(false);}}frame();};
+  P.activate=()=>{P.active=true;P.cur=-1;frame();};
+  P.deactivate=()=>{setPlay(false);P.active=false;P.cur=-1;stage.innerHTML='';};
+  P.toggle=()=>playBtn.click();
+  return P;
+}
+Object.keys(STORIES).forEach(k=>players[k]=makePlayer(k));
+let activeK=null;
+function show(k){
+  if(activeK&&activeK!==k)players[activeK].deactivate();
+  document.querySelectorAll('.tab').forEach(b=>{const on=b.dataset.k===k;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;});
+  document.querySelectorAll('.story').forEach(s=>s.hidden=s.id!=='tab-'+k);
+  activeK=k;players[k].activate();
+}
+const tabEls=[...document.querySelectorAll('.tab')];
+tabEls.forEach((b,i)=>{b.onclick=()=>show(b.dataset.k);b.onkeydown=e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabEls[(i+(e.key==='ArrowRight'?1:tabEls.length-1))%tabEls.length];n.focus();show(n.dataset.k);}};});
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target===document.body&&activeK){e.preventDefault();players[activeK].toggle();}});
+const h=(location.hash||'').slice(1);show(STORIES[h]?h:'poellm');
+let last=performance.now();
+function loop(now){const dt=Math.min(.1,(now-last)/1000);last=now;if(activeK)players[activeK].step(dt);requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+</script>
+
+</body></html>
